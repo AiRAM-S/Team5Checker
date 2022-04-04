@@ -5,7 +5,7 @@ CheckerButton::CheckerButton(QWidget *parent)
     : QPushButton{parent}
 {
 
-    setCheckable(false);
+    setCheckable(true);
     setAutoExclusive(true);
 
     connect(this,&CheckerButton::clicked,this,[=](){
