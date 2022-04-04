@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include<QPushButton>
+#include "checkerbutton.h"
+#include <QMouseEvent>
+#include <QLabel>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -14,6 +18,9 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+
+    void mousePressEvent(QMouseEvent* ev);
+
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -22,13 +29,15 @@ private:
     void DrawCheckerboard();
     void InitCheckerboard();
     QPointF loc[17][17];//标记是否有棋子
-    QPushButton *rbtn[10],*bbtn[10];//红蓝双方棋子
+    CheckerButton *rbtn[10],*bbtn[10];//红蓝双方棋子
 
     int flag;  //判断下棋方
 
-    QPushButton chosen;
+    QPointF chosen;
     bool ischosen=false;
-    QPoint obj;
+    QPointF obj;
+
+    QLabel* test;
 
 };
 #endif // WIDGET_H
