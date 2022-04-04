@@ -1,3 +1,4 @@
+//move成功以后记得把ischosen改成false 虽然我不记得为什么要写这个了 提醒自己一下
 #include "widget.h"
 #include "ui_widget.h"
 #include<QPainter>
