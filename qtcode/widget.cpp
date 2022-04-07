@@ -170,23 +170,25 @@ bool Widget::islegal(){
     //判断是否为跳跃(这一块就比较乱了，等把下面两个转换函数实现了应该就比较清楚了，如果写到这里相关的内容可以踹我一起讨论）
     //（这里主要是记一下大概框架和思路）
     bool jumpmove=false;
+    QPointF mid=(chosen+obj)/2; //不知道为什么单独出来就可以。。。
     if(fabs(obj.rx()-chosen.rx())==20&&fabs(obj.ry()-chosen.ry())==JY){
-        if(loc[pixel2int((chosen+obj)/2).rx()][loc[pixel2int((chosen+obj)/2).ry()]]!=QPoint(0,0))
+        if(!isfill[pixel2int(mid)/17][pixel2int(mid)%17])
             jumpmove=true;
     }
     else if(fabs(obj.rx()-chosen.rx())==40){
         if(obj.ry()==chosen.ry()){
-            if(loc[pixel2int((chosen+obj)/2).rx()][loc[pixel2int((chosen+obj)/2).ry()]]!=QPoint(0,0))
+            if(isfill[pixel2int(mid)/17][pixel2int(mid)%17])
                 jumpmove=true;
         }
     }
+    return jumpmove;
 }
 
 void int2pixel(){
 
 }
 
-QPointF Widget::pixel2int(const QPointF& pixel){
+int Widget::pixel2int(QPointF& pixel){
     int x=0,y=0;
     double d=(loc[0][0].rx()-pixel.rx())*(loc[0][0].rx()-pixel.rx())+(loc[0][0].ry()-pixel.ry())*(loc[0][0].ry()-pixel.ry());
     for(int i=0;i<17;i++){
@@ -200,8 +202,9 @@ QPointF Widget::pixel2int(const QPointF& pixel){
             }
         }
     }
-    return loc[x][y];
+    return x*17+y;//进行一个下标的转换
 }
+
 void Widget::CheckerMove(CheckerButton*btn,QPointF p){
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos");
 

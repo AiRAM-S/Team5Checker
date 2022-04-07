@@ -22,7 +22,7 @@ public:
     void mousePressEvent(QMouseEvent* ev);
     bool islegal();
     void int2pixel();   //将loc坐标转换为像素坐标
-    QPointF pixel2int(const QPointF& pixel);
+    int pixel2int(QPointF& pixel);
     void CheckerMove(CheckerButton*btn,QPointF p);
 
 protected:
