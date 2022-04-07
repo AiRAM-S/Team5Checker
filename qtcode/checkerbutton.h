@@ -14,7 +14,7 @@ public:
     ~CheckerButton();
 
     int player;
-    int x,y;//这里的x，y对应i，j
+    int x,y;//所在位置为loc[x][y]
 
 signals:
     void is_chosen(CheckerButton&);
