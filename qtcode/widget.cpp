@@ -24,7 +24,6 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     this->setFixedSize(700,700);
     DrawCheckerboard();
-   // CheckerMove(btn[0][0],obj);
     //初始化loc，如果是没有棋子的点就先赋为（0，0）吧，或者我们可以重新写一个数组来存是否有棋子
     for(int i1=0;i1<17;i1++){
         for(int i2=0;i2<17;i2++){
@@ -47,9 +46,7 @@ Widget::Widget(QWidget *parent)
                    chosenloc[1]=but.y;
                    ischosen=true;
                }
-               connect(btn[j][t],SIGNAL(clicked()),this,SLOT(move(btn[j][t],obj)));
             });
-         //  connect(btn[j][t],SIGNAL(clicked()),this,SLOT(this->CheckerMove(CheckerButton*btn[0][0],QPointF obj)));
         }
     }
 
@@ -66,12 +63,7 @@ Widget::Widget(QWidget *parent)
     connect(end,&QPushButton::clicked,this,[=](){
         flag = (flag+1)%playernum;
     });
-   if(islegal())
-        CheckerMove(btn[0][0],obj);
 
-}
-void Widget::move(CheckerButton* btn,QPointF p){
-    CheckerMove(btn,p);
 }
 Widget::~Widget()
 {
@@ -152,7 +144,7 @@ void Widget::mousePressEvent(QMouseEvent *ev){
     QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
     test->setText(posi);
 
-    QPointF td=ev->pos(); //CheckerMove(btn[0][0],td);
+    QPointF td=ev->pos();
     int l=pixel2int(td);
     if((td.rx()-loc[l/17][l%17].rx())*(td.rx()-loc[l/17][l%17].rx())+(td.ry()-loc[l/17][l%17].ry())*(td.ry()-loc[l/17][l%17].ry())>R){
         jumpmove=false;
@@ -161,7 +153,6 @@ void Widget::mousePressEvent(QMouseEvent *ev){
         jumpmove=true;
         obj=loc[l/17][l%17];
     }
-    //if(islegal()) CheckerMove(chosenbtn,obj);
 }//在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
 
 bool Widget::islegal(){

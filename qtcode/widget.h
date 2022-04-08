@@ -47,7 +47,5 @@ private:
     bool jumpmove;
     QLabel* test;
     QPushButton* end;
-public slots:
-    void move(CheckerButton*,QPointF);
 };
 #endif // WIDGET_H
