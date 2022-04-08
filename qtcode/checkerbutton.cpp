@@ -11,6 +11,7 @@ CheckerButton::CheckerButton(QWidget *parent)
     connect(this,&CheckerButton::clicked,this,[=](){
         emit is_chosen(*this);
     });
+
 }
 
 CheckerButton::~CheckerButton(){
