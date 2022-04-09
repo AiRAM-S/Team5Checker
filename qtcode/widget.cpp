@@ -13,7 +13,7 @@
 #define red 0
 #define blue 1
 #define green 2
-#define yellow 3
+#define pink 3
 #define purple 4
 #define orange 5
 
@@ -170,35 +170,20 @@ void Widget::mousePressEvent(QMouseEvent *ev){
 
         QPointF td=ev->pos();
         int l=pixel2int(td);
-        if((td.rx()-loc[l/17][l%17].rx())*(td.rx()-loc[l/17][l%17].rx())+(td.ry()-loc[l/17][l%17].ry())*(td.ry()-loc[l/17][l%17].ry())>R){
-            test->setText("here1");
+        if((td.rx()-loc[l/17][l%17].rx()-R)*(td.rx()-loc[l/17][l%17].rx()-R)+(td.ry()-loc[l/17][l%17].ry()-R)*(td.ry()-loc[l/17][l%17].ry()-R)>RR*RR){
+            test->setText("here1");//不合法
         }
         else{
-            obj=loc[l/17][l%17];
+            obj.setX(loc[l/17][l%17].rx()-RR/4);
+            obj.setY(loc[l/17][l%17].ry()-RR/4);
+            isobjset=true;//is obj set
         }
         //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
         objloc[0] = pixel2int(ev->position())/17;
         objloc[1] = pixel2int(ev->position())%17;
-        if(islegal()){
-            //这里需要添加一个 将鼠标点击点处最近的圆心的横纵坐标录入obj
-            CheckerMove(checked,obj);
-            isfill[objloc[0]][objloc[1]]=true;
-            isfill[chosenloc[0]][chosenloc[1]]=false;
-            if(shouldSwitch){
-                flag = (flag+1)%playernum;
-                shouldSwitch=false;
-                for(int t=0;t<10;t++)
-                    btn[flag][t]->setCheckable(true);
-
-            }
-            else{
-                obj=loc[l/17][l%17];
-            }
-            //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
-            objloc[0] = pixel2int(ev->position())/17;
-            objloc[1] = pixel2int(ev->position())%17;
-            if(islegal()){
+            if(islegal()&&isobjset){
                 CheckerMove(checked,obj);
+                isobjset=false;
                 isfill[objloc[0]][objloc[1]]=true;
                 isfill[chosenloc[0]][chosenloc[1]]=false;
                 if(shouldSwitch){
@@ -219,7 +204,7 @@ void Widget::mousePressEvent(QMouseEvent *ev){
                 }
             }
         }
-    
+
 }
 
 

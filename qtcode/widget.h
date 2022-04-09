@@ -48,7 +48,7 @@ private:
     int chosenloc[2];//选中棋子所在位置
     CheckerButton* chosenbtn;//选中棋子
     bool ischosen=false;//是否有棋子被选中
-
+    bool isobjset=false;;
     QPointF obj;//目标位置
     int objloc[2];//目标位置坐标
 
