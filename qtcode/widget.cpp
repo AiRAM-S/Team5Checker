@@ -280,7 +280,7 @@ int Widget::pixel2int(QPointF pixel){
 void Widget::CheckerMove(CheckerButton*btn,QPointF p){
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
 
-    anim->setDuration(1000);
+    anim->setDuration(300);
     anim->setStartValue(btn->pos());
     anim->setEndValue(QPointF(p.rx(),p.ry()));
     anim->start(QPropertyAnimation::KeepWhenStopped);
