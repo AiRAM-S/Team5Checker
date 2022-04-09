@@ -171,7 +171,7 @@ void Widget::mousePressEvent(QMouseEvent *ev){
         QPointF td=ev->pos();
         int l=pixel2int(td);
         if((td.rx()-loc[l/17][l%17].rx())*(td.rx()-loc[l/17][l%17].rx())+(td.ry()-loc[l/17][l%17].ry())*(td.ry()-loc[l/17][l%17].ry())>R){
-            test->setText("here1");
+            test->setText("here1");//不合法
         }
         else{
             obj=loc[l/17][l%17];
@@ -179,24 +179,6 @@ void Widget::mousePressEvent(QMouseEvent *ev){
         //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
         objloc[0] = pixel2int(ev->position())/17;
         objloc[1] = pixel2int(ev->position())%17;
-        if(islegal()){
-            //这里需要添加一个 将鼠标点击点处最近的圆心的横纵坐标录入obj
-            CheckerMove(checked,obj);
-            isfill[objloc[0]][objloc[1]]=true;
-            isfill[chosenloc[0]][chosenloc[1]]=false;
-            if(shouldSwitch){
-                flag = (flag+1)%playernum;
-                shouldSwitch=false;
-                for(int t=0;t<10;t++)
-                    btn[flag][t]->setCheckable(true);
-
-            }
-            else{
-                obj=loc[l/17][l%17];
-            }
-            //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
-            objloc[0] = pixel2int(ev->position())/17;
-            objloc[1] = pixel2int(ev->position())%17;
             if(islegal()){
                 CheckerMove(checked,obj);
                 isfill[objloc[0]][objloc[1]]=true;
