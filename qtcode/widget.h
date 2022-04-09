@@ -37,14 +37,18 @@ private:
     QPointF loc[17][17];//棋盘每个位置的坐标
     bool isfill[17][17];//棋盘每个位置是否有棋子
     CheckerButton* btn[6][10]; //六方棋子
-
     int playernum; //棋手个数
     int flag;  //判断下棋方
 
+
     QPointF chosen;//选中的棋子
     CheckerButton* checked;//被选中的棋子
+
+
     int chosenloc[2];//选中棋子所在位置
+    CheckerButton* chosenbtn;//选中棋子
     bool ischosen=false;//是否有棋子被选中
+
     QPointF obj;//目标位置
     int objloc[2];//目标位置坐标
 
@@ -54,6 +58,8 @@ private:
     bool shouldSwitch;
 
 public slots:
+
+
 
 };
 #endif // WIDGET_H
