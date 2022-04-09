@@ -25,8 +25,11 @@ Widget::Widget(QWidget *parent)
     this->setFixedSize(700,700);
     DrawCheckerboard();
 
+
     //初始化部分
     //初始化isfill
+
+
     for(int i1=0;i1<17;i1++){
         for(int i2=0;i2<17;i2++){
             isfill[i1][i2]=false;
@@ -66,8 +69,6 @@ Widget::Widget(QWidget *parent)
     //红方先手
     flag=red;
 
-
-
     //建立连接：按下棋子后记录被选中者
     for(int t=0;t<10;t++){
         for(int j=0;j<playernum;j++){
@@ -75,6 +76,7 @@ Widget::Widget(QWidget *parent)
                if(flag==but.player){
                    chosen.setX(but.pos().rx());
                    chosen.setY(but.pos().ry());
+                   chosenbtn=btn[j][t];
                    chosenloc[0]=but.x;
                    chosenloc[1]=but.y;
                    ischosen=true;
@@ -104,7 +106,6 @@ Widget::Widget(QWidget *parent)
 
 
 }
-
 Widget::~Widget()
 {
     delete ui;
@@ -112,7 +113,6 @@ Widget::~Widget()
 void Widget::paintEvent(QPaintEvent *)
 {
     DrawCheckerboard();       //棋盘
-   // InitCheckerboard();
    // update();          //强制更新界面
 }
 
@@ -159,10 +159,12 @@ void Widget::DrawCheckerboard(void)
 }
 
 void Widget::mousePressEvent(QMouseEvent *ev){
+
 //    QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
 //    test->setText(posi);
     //录入obj 并进行棋子移动
     if(ischosen){
+
         QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
         test->setText(posi);
 
@@ -187,20 +189,40 @@ void Widget::mousePressEvent(QMouseEvent *ev){
                 shouldSwitch=false;
                 for(int t=0;t<10;t++)
                     btn[flag][t]->setCheckable(true);
+
             }
             else{
-                chosenloc[0]=objloc[0];
-                chosenloc[1]=objloc[1];
-                //禁止选中刚才没跳的棋子
-                for(int t=0;t<10;t++){
-                    if(&btn[flag][t]!=&checked){
-                        btn[flag][t]->setCheckable(false);
+                obj=loc[l/17][l%17];
+            }
+            //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
+            objloc[0] = pixel2int(ev->position())/17;
+            objloc[1] = pixel2int(ev->position())%17;
+            if(islegal()){
+                CheckerMove(checked,obj);
+                isfill[objloc[0]][objloc[1]]=true;
+                isfill[chosenloc[0]][chosenloc[1]]=false;
+                if(shouldSwitch){
+                    flag = (flag+1)%playernum;
+                    shouldSwitch=false;
+                    for(int t=0;t<10;t++)
+                        btn[flag][t]->setCheckable(true);
+                }
+                else{
+                    chosenloc[0]=objloc[0];
+                    chosenloc[1]=objloc[1];
+                    //禁止选中刚才没跳的棋子
+                    for(int t=0;t<10;t++){
+                        if(&btn[flag][t]!=&checked){
+                            btn[flag][t]->setCheckable(false);
+                        }
                     }
                 }
             }
         }
-    }
+    
 }
+
+
 
 bool Widget::islegal(){
     //判断是否已经有选中棋子
@@ -224,6 +246,7 @@ bool Widget::islegal(){
         shouldSwitch=true;//阻止下一步
         return true;
     }
+
     //判断是否为跳跃
     bool jumpmove=false;
     int midloc[2];
@@ -236,6 +259,8 @@ bool Widget::islegal(){
      ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]+2)
      ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]-2)){
         if(isfill[midloc[0]][midloc[1]])
+
+
             jumpmove=true;
     }
     //排查是否可以进行下一次跳跃
@@ -245,6 +270,7 @@ bool Widget::islegal(){
     else{
         shouldSwitch=false;
     }
+   // if()
     return jumpmove;
 }
 
@@ -273,6 +299,7 @@ void Widget::CheckerMove(CheckerButton*btn,QPointF p){
     anim->setStartValue(btn->pos());
     anim->setEndValue(QPointF(p.rx(),p.ry()));
     anim->start(QPropertyAnimation::KeepWhenStopped);
+
 }
 
 bool Widget::canJump(){
