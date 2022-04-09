@@ -24,7 +24,6 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     this->setFixedSize(700,700);
     DrawCheckerboard();
-
     //初始化loc，如果是没有棋子的点就先赋为（0，0）吧，或者我们可以重新写一个数组来存是否有棋子
     for(int i1=0;i1<17;i1++){
         for(int i2=0;i2<17;i2++){
@@ -35,7 +34,6 @@ Widget::Widget(QWidget *parent)
     //红方先手
     flag=red;
 
-
     //建立连接：按下棋子后记录被选中者
     for(int t=0;t<10;t++){
         for(int j=0;j<playernum;j++){
@@ -43,6 +41,7 @@ Widget::Widget(QWidget *parent)
                if(flag==but.player){
                    chosen.setX(but.pos().rx());
                    chosen.setY(but.pos().ry());
+                   chosenbtn=btn[j][t];
                    chosenloc[0]=but.x;
                    chosenloc[1]=but.y;
                    ischosen=true;
@@ -66,7 +65,6 @@ Widget::Widget(QWidget *parent)
     });
 
 }
-
 Widget::~Widget()
 {
     delete ui;
@@ -74,7 +72,6 @@ Widget::~Widget()
 void Widget::paintEvent(QPaintEvent *)
 {
     DrawCheckerboard();       //棋盘
-   // InitCheckerboard();
    // update();          //强制更新界面
 }
 
@@ -146,7 +143,17 @@ void Widget::DrawCheckerboard(void)
 void Widget::mousePressEvent(QMouseEvent *ev){
     QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
     test->setText(posi);
-}
+
+    QPointF td=ev->pos();
+    int l=pixel2int(td);
+    if((td.rx()-loc[l/17][l%17].rx())*(td.rx()-loc[l/17][l%17].rx())+(td.ry()-loc[l/17][l%17].ry())*(td.ry()-loc[l/17][l%17].ry())>R){
+        jumpmove=false;
+    }
+    else{
+        jumpmove=true;
+        obj=loc[l/17][l%17];
+    }
+}//在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
 
 bool Widget::islegal(){
     //判断是否已经有选中棋子
@@ -169,7 +176,7 @@ bool Widget::islegal(){
     }
     //判断是否为跳跃(这一块就比较乱了，等把下面两个转换函数实现了应该就比较清楚了，如果写到这里相关的内容可以踹我一起讨论）
     //（这里主要是记一下大概框架和思路）
-    bool jumpmove=false;
+    if(jumpmove==false) return jumpmove;
     QPointF mid=(chosen+obj)/2; //不知道为什么单独出来就可以。。。
     if(fabs(obj.rx()-chosen.rx())==20&&fabs(obj.ry()-chosen.ry())==JY){
         if(!isfill[pixel2int(mid)/17][pixel2int(mid)%17])
@@ -181,6 +188,7 @@ bool Widget::islegal(){
                 jumpmove=true;
         }
     }
+   // if()
     return jumpmove;
 }
 
@@ -212,5 +220,6 @@ void Widget::CheckerMove(CheckerButton*btn,QPointF p){
     anim->setStartValue(btn->pos());
     anim->setEndValue(QPointF(p.rx(),p.ry()));
     anim->start(QPropertyAnimation::KeepWhenStopped);
+
 }
 
