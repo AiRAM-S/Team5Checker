@@ -25,8 +25,8 @@ public:
     int pixel2int(QPointF pixel);
     void CheckerMove(CheckerButton*btn,QPointF p);
 
-    bool canJump();//排查是否可以进行下一次跳跃
-
+    bool canJump(int x,int y);//排查是否可以进行下一次跳跃
+    void shouldSwitcht2f();
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -54,11 +54,11 @@ private:
 
     QLabel* test;
     QPushButton* end;
-
     bool shouldSwitch;
-
+signals:
+    void shouldSwitchChanged();
 public slots:
-
+    void changeplayer();
 
 
 };
