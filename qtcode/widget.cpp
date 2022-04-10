@@ -9,11 +9,12 @@
 #define JY sqrt(3)*20 //行距
 #define R 20
 #define RR 34 //棋子半径
+#define RRR 24
 
 #define red 0
 #define blue 1
 #define green 2
-#define yellow 3
+#define pink 3
 #define purple 4
 #define orange 5
 
@@ -25,6 +26,7 @@ Widget::Widget(QWidget *parent)
     this->setFixedSize(700,700);
     DrawCheckerboard();
 
+    connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
 
     //初始化部分
     //初始化isfill
@@ -37,9 +39,14 @@ Widget::Widget(QWidget *parent)
     }
     //初始化是否需要更换棋手
     shouldSwitch=false;
+    //先实现1v1
+    playernum=2;
+    //红方先手
+    flag=red;
 
     //初始化棋子 2player
     int k=0;
+    if(playernum==2){
     for(int j=5;j<=8;j++){
         for(int i=j-4;i<=4;i++){
             btn[0][k]=new CheckerButton(this);
@@ -63,20 +70,139 @@ Widget::Widget(QWidget *parent)
             k++;
         }
     }
+    }
+    if(playernum==3){
+        k=0;
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                btn[0][k]=new CheckerButton(this);
+                btn[0][k]->setGeometry(loc[i+8][j+8].x()-R/4,loc[i+8][j+8].y()-R/4,RR,RR);
+                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+                btn[0][k]->setIconSize(QSize(RR,RR));
+                btn[0][k]->setFlat(true);
+                btn[0][k]->player=red; //set player
+                btn[0][k]->x=i+8;
+                btn[0][k]->y=j+8;
+                isfill[i+8][j+8]=true;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                btn[1][k]=new CheckerButton(this);
+                btn[1][k]->setGeometry(loc[i+8][j+8].x()-R/4,loc[i+8][j+8].y()-R/4,RR,RR);
+                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+                btn[1][k]->setIconSize(QSize(RR,RR));
+                btn[1][k]->setFlat(true);
+                btn[1][k]->player=blue; //set player
+                btn[1][k]->x=i+8;
+                btn[1][k]->y=j+8;
+                isfill[i+8][j+8]=true;
+                k++;
+            }
+        }
 
-    //先实现1v1
-    playernum=2;
-    //红方先手
-    flag=red;
+        k=0;
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                btn[2][k]=new CheckerButton(this);
+                btn[2][k]->setGeometry(loc[-i+8][-j+8].x()-R/4,loc[-i+8][-j+8].y()-R/4,RR,RR);
+                btn[2][k]->setIcon(QPixmap(":/image/green.png"));
+                btn[2][k]->setIconSize(QSize(RRR,RRR));
+                btn[2][k]->setFlat(true);
+                btn[2][k]->player=green; //set player
+                btn[2][k]->x=-i+8;
+                btn[2][k]->y=-j+8;
+                isfill[-i+8][-j+8]=true;
+                k++;
+            }
+        }
+    }
+    if(playernum==6){
+        k=0;
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                btn[0][k]=new CheckerButton(this);
+                btn[0][k]->setGeometry(loc[i+8][j+8].x()-R/4,loc[i+8][j+8].y()-R/4,RR,RR);
+                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+                btn[0][k]->setIconSize(QSize(RR,RR));
+                btn[0][k]->setFlat(true);
+                btn[0][k]->player=red; //set player
+                btn[0][k]->x=i+8;
+                btn[0][k]->y=j+8;
+                isfill[i+8][j+8]=true;
+                btn[3][k]=new CheckerButton(this);
+                btn[3][k]->setGeometry(loc[-i+8][-j+8].x()-R/4,loc[-i+8][-j+8].y()-R/4,RR,RR);
+                btn[3][k]->setIcon(QPixmap(":/image/pink.png"));
+                btn[3][k]->setIconSize(QSize(RRR,RRR));
+                btn[3][k]->setFlat(true);
+                btn[3][k]->player=pink;//set player
+                btn[3][k]->x=-i+8;
+                btn[3][k]->y=-j+8;
+                isfill[-i+8][-j+8]=true;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                btn[2][k]=new CheckerButton(this);
+                btn[2][k]->setGeometry(loc[i+8][j+8].x()-R/4,loc[i+8][j+8].y()-R/4,RR,RR);
+                btn[2][k]->setIcon(QPixmap(":/image/green.png"));
+                btn[2][k]->setIconSize(QSize(RRR,RRR));
+                btn[2][k]->setFlat(true);
+                btn[2][k]->player=green; //set player
+                btn[2][k]->x=i+8;
+                btn[2][k]->y=j+8;
+                isfill[i+8][j+8]=true;
+                btn[5][k]=new CheckerButton(this);
+                btn[5][k]->setGeometry(loc[-i+8][-j+8].x()-R/4,loc[-i+8][-j+8].y()-R/4,RR,RR);
+                btn[5][k]->setIcon(QPixmap(":/image/orange.png"));
+                btn[5][k]->setIconSize(QSize(RRR,RRR));
+                btn[5][k]->setFlat(true);
+                btn[5][k]->player=orange; //set player
+                btn[5][k]->x=-i+8;
+                btn[5][k]->y=-j+8;
+                isfill[-i+8][-j+8]=true;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                btn[4][k]=new CheckerButton(this);
+                btn[4][k]->setGeometry(loc[-i+8][-j+8].x()-R/4,loc[-i+8][-j+8].y()-R/4,RR,RR);
+                btn[4][k]->setIcon(QPixmap(":/image/purple.png"));
+                btn[4][k]->setIconSize(QSize(RRR,RRR));
+                btn[4][k]->setFlat(true);
+                btn[4][k]->player=purple; //set player
+                btn[4][k]->x=-i+8;
+                btn[4][k]->y=-j+8;
+                isfill[-i+8][-j+8]=true;
+                btn[1][k]=new CheckerButton(this);
+                btn[1][k]->setGeometry(loc[i+8][j+8].x()-R/4,loc[i+8][j+8].y()-R/4,RR,RR);
+                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+                btn[1][k]->setIconSize(QSize(RR,RR));
+                btn[1][k]->setFlat(true);
+                btn[1][k]->player=blue; //set player
+                btn[1][k]->x=i+8;
+                btn[1][k]->y=j+8;
+                isfill[i+8][j+8]=true;
+                k++;
+            }
+        }
+    }
 
     //建立连接：按下棋子后记录被选中者
+
     for(int t=0;t<10;t++){
         for(int j=0;j<playernum;j++){
             connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
                if(flag==but.player){
                    chosen.setX(but.pos().rx());
                    chosen.setY(but.pos().ry());
-                   chosenbtn=btn[j][t];
+                //   chosenbtn=btn[j][t];
                    chosenloc[0]=but.x;
                    chosenloc[1]=but.y;
                    ischosen=true;
@@ -100,7 +226,9 @@ Widget::Widget(QWidget *parent)
     end->setGeometry(293,640,100,50);
     //实现更换执棋方功能
     connect(end,&QPushButton::clicked,this,[=](){
-        flag = (flag+1)%playernum;
+        shouldSwitch=true;
+        shouldSwitcht2f();
+        //flag = (flag+1)%playernum;
         shouldSwitch=false;
     });
 
@@ -113,7 +241,7 @@ Widget::~Widget()
 void Widget::paintEvent(QPaintEvent *)
 {
     DrawCheckerboard();       //棋盘
-   // update();          //强制更新界面
+    update();          //强制更新界面
 }
 
 
@@ -170,41 +298,50 @@ void Widget::mousePressEvent(QMouseEvent *ev){
 
         QPointF td=ev->pos();
         int l=pixel2int(td);
-        if((td.rx()-loc[l/17][l%17].rx())*(td.rx()-loc[l/17][l%17].rx())+(td.ry()-loc[l/17][l%17].ry())*(td.ry()-loc[l/17][l%17].ry())>R){
+        if((td.rx()-loc[l/17][l%17].rx()-R)*(td.rx()-loc[l/17][l%17].rx()-R)+(td.ry()-loc[l/17][l%17].ry()-R)*(td.ry()-loc[l/17][l%17].ry()-R)>RR*RR){
             test->setText("here1");//不合法
         }
         else{
-            obj=loc[l/17][l%17];
+            obj.setX(loc[l/17][l%17].rx()-RR/4);
+            obj.setY(loc[l/17][l%17].ry()-RR/4);
+
+            isobjset=true;//is obj set
         }
         //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
         objloc[0] = pixel2int(ev->position())/17;
         objloc[1] = pixel2int(ev->position())%17;
-            if(islegal()){
+            if(islegal()&&isobjset){
                 CheckerMove(checked,obj);
+                isobjset=false;
                 isfill[objloc[0]][objloc[1]]=true;
                 isfill[chosenloc[0]][chosenloc[1]]=false;
                 if(shouldSwitch){
-                    flag = (flag+1)%playernum;
-                    shouldSwitch=false;
-                    for(int t=0;t<10;t++)
-                        btn[flag][t]->setCheckable(true);
+                    shouldSwitcht2f();
                 }
                 else{
                     chosenloc[0]=objloc[0];
                     chosenloc[1]=objloc[1];
-                    //禁止选中刚才没跳的棋子
-                    for(int t=0;t<10;t++){
-                        if(&btn[flag][t]!=&checked){
-                            btn[flag][t]->setCheckable(false);
-                        }
-                    }
                 }
             }
         }
-    
+
 }
 
+void Widget::shouldSwitcht2f(){
+    if(shouldSwitch==true){
+        shouldSwitch=false;
+        emit shouldSwitchChanged();
+    }
+}
 
+void Widget::changeplayer(){
+    for(int t=0;t<10;t++){
+            btn[flag][t]->setCheckable(false);//禁止选中刚才没跳的棋子
+    }
+    flag = (flag+1)%playernum;
+    for(int t=0;t<10;t++)
+        btn[flag][t]->setCheckable(true);
+}
 
 bool Widget::islegal(){
     //判断是否已经有选中棋子
@@ -241,18 +378,16 @@ bool Widget::islegal(){
      ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]+2)
      ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]-2)){
         if(isfill[midloc[0]][midloc[1]])
-
-
             jumpmove=true;
+
     }
     //排查是否可以进行下一次跳跃
-    if(!canJump()){
+    if(!canJump(chosenloc[0],chosenloc[1])){
        shouldSwitch=true;
     }
     else{
         shouldSwitch=false;
     }
-   // if()
     return jumpmove;
 }
 
@@ -276,17 +411,15 @@ int Widget::pixel2int(QPointF pixel){
 
 void Widget::CheckerMove(CheckerButton*btn,QPointF p){
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
-
-    anim->setDuration(1000);
+    anim->setDuration(300);
     anim->setStartValue(btn->pos());
     anim->setEndValue(QPointF(p.rx(),p.ry()));
     anim->start(QPropertyAnimation::KeepWhenStopped);
 
 }
 
-bool Widget::canJump(){
+bool Widget::canJump(int x,int y){//不能跳回原位
     int direction[6][2]={{2,2},{0,2},{-2,0},{-2,-2},{0,-2},{2,0}};
-    for(int s=0;s<10;s++){
         for(int t=0;t<6;t++){
             int x1 = objloc[0]+direction[t][0];
             int y1 = objloc[1]+direction[t][1];
@@ -295,11 +428,10 @@ bool Widget::canJump(){
              ||(x1==objloc[0]&&y1==objloc[1]+2)
              ||(x1==objloc[0]-2&&y1==objloc[1])
              ||(x1==objloc[0]-2&&y1==objloc[1]-2)
-             ||(x1==objloc[0]&&y1==objloc[1]-2)){
-                if(isfill[(x1+objloc[0])/2][(y1+objloc[1])/2])
+             ||(x1==objloc[0]&&y1==objloc[1]-2))
+                if(isfill[(x1+objloc[0])/2][(y1+objloc[1])/2]&&x1!=x&&y1!=y)
                     return true;
-            }
-        }
+
     }
     return false;
 }

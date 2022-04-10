@@ -25,8 +25,8 @@ public:
     int pixel2int(QPointF pixel);
     void CheckerMove(CheckerButton*btn,QPointF p);
 
-    bool canJump();//排查是否可以进行下一次跳跃
-
+    bool canJump(int x,int y);//排查是否可以进行下一次跳跃
+    void shouldSwitcht2f();
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -48,17 +48,17 @@ private:
     int chosenloc[2];//选中棋子所在位置
     CheckerButton* chosenbtn;//选中棋子
     bool ischosen=false;//是否有棋子被选中
-
+    bool isobjset=false;
     QPointF obj;//目标位置
     int objloc[2];//目标位置坐标
 
     QLabel* test;
     QPushButton* end;
-
     bool shouldSwitch;
-
+signals:
+    void shouldSwitchChanged();
 public slots:
-
+    void changeplayer();
 
 
 };
