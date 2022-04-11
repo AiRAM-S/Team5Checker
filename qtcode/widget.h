@@ -52,7 +52,7 @@ private:
     bool isobjset=false;
     QPointF obj;//目标位置
     int objloc[2];//目标位置坐标
-    bool ischange=false;
+    bool ischange=true;
     int btnx,btny;//记录选中棋子初始位置
     QLabel* test;
     QLabel* nowplayer;
