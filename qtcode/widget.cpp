@@ -27,8 +27,6 @@ Widget::Widget(QWidget *parent)
     this->setFixedSize(700,700);
     DrawCheckerboard();
 
-    connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
-
     //初始化部分
     //初始化isfill
     for(int i1=0;i1<17;i1++){
@@ -46,6 +44,7 @@ Widget::Widget(QWidget *parent)
     nowplayer = new QLabel(this);
     nowplayer->setGeometry(0,20,200,20);
     nowplayer->setText("player:red");
+
     //记录上一步是否为跳子
     haveJumped=false;
 
@@ -237,8 +236,37 @@ Widget::Widget(QWidget *parent)
         qDebug() << "player changed";
     });
 
+    connect(this,SIGNAL(shouldSwitchChanged()),this,Widget::changeplayer);
 
 }
+
+void Widget::shouldSwitcht2f(){
+    if(shouldSwitch==true){
+        shouldSwitch=false;
+        emit shouldSwitchChanged();
+    }
+}
+
+void Widget::changeplayer(){
+    for(int i=0;i<10;i++){
+        btn[flag][i]->setCheckable(false);
+    }
+    for(int j=0;j<10;j++){
+        btn[(flag+1)%playernum][j]->setCheckable(true);
+    }
+    flag = (flag+1)%playernum;
+    if(flag==red)
+        nowplayer->setText("player:red");
+    else
+        nowplayer->setText("player:blue");
+    haveJumped=false;
+    ischosen=false;
+    isobjset=false;
+    checked=NULL;
+    jumped=NULL;
+}
+
+
 Widget::~Widget()
 {
     delete ui;
@@ -332,32 +360,6 @@ void Widget::mousePressEvent(QMouseEvent *ev){
             }
         }
     }
-}
-
-void Widget::shouldSwitcht2f(){
-    if(shouldSwitch==true){
-        shouldSwitch=false;
-        emit shouldSwitchChanged();
-    }
-}
-
-void Widget::changeplayer(){
-    for(int i=0;i<10;i++){
-        btn[flag][i]->setCheckable(false);
-    }
-    for(int j=0;j<10;j++){
-        btn[(flag+1)%playernum][j]->setCheckable(true);
-    }
-    flag = (flag+1)%playernum;
-    if(flag==red)
-        nowplayer->setText("player:red");
-    else
-        nowplayer->setText("player:blue");
-    haveJumped=false;
-    ischosen=false;
-    isobjset=false;
-    checked=NULL;
-    jumped=NULL;
 }
 
 int Widget::islegal(){
