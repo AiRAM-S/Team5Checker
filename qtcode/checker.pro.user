@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< Updated upstream
-<!-- Written by QtCreator 7.0.0, 2022-04-11T19:52:03. -->
-=======
-<!-- Written by QtCreator 7.0.0, 2022-04-11T17:22:41. -->
->>>>>>> Stashed changes
+<!-- Written by QtCreator 7.0.0, 2022-04-11T20:01:09. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -242,6 +238,7 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">checker2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/wzr/Team5Checker/qtcode/checker.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/wzr/Team5Checker/qtcode/checker.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
