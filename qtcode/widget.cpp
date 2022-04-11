@@ -1,4 +1,5 @@
 //move成功以后记得把ischosen改成false 虽然我不记得为什么要写这个了 提醒自己一下
+//目前的问题是不能换人
 #include "widget.h"
 #include "ui_widget.h"
 #include<QPainter>
@@ -30,8 +31,6 @@ Widget::Widget(QWidget *parent)
 
     //初始化部分
     //初始化isfill
-
-
     for(int i1=0;i1<17;i1++){
         for(int i2=0;i2<17;i2++){
             isfill[i1][i2]=false;
@@ -43,6 +42,12 @@ Widget::Widget(QWidget *parent)
     playernum=2;
     //红方先手
     flag=red;
+    //记录棋手
+    nowplayer = new QLabel(this);
+    nowplayer->setGeometry(0,20,200,20);
+    nowplayer->setText("player:red");
+    //记录上一步是否为跳子
+    haveJumped=false;
 
     //初始化棋子 2player
     int k=0;
@@ -195,18 +200,17 @@ Widget::Widget(QWidget *parent)
     }
 
     //建立连接：按下棋子后记录被选中者
-
     for(int t=0;t<10;t++){
         for(int j=0;j<playernum;j++){
             connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
-               if(flag==but.player){
+                if(flag==but.player){
                    chosen.setX(but.pos().rx());
                    chosen.setY(but.pos().ry());
-                //   chosenbtn=btn[j][t];
                    chosenloc[0]=but.x;
                    chosenloc[1]=but.y;
                    ischosen=true;
                    checked=&but;
+                   qDebug() << "choose a check";
                }
                else{
                    //返回警告
@@ -215,9 +219,9 @@ Widget::Widget(QWidget *parent)
         }
     }
 
-    //在左上角反映坐标 全部做完以后删
+    //调错用 做完删
     test = new QLabel(this);
-    test->setGeometry(0,0,100,20);
+    test->setGeometry(0,0,1000,20);
     test->setText("here");
 
     //初始化回合结束按钮
@@ -230,6 +234,7 @@ Widget::Widget(QWidget *parent)
         shouldSwitcht2f();
         //flag = (flag+1)%playernum;
         shouldSwitch=false;
+        qDebug() << "player changed";
     });
 
 
@@ -287,44 +292,46 @@ void Widget::DrawCheckerboard(void)
 }
 
 void Widget::mousePressEvent(QMouseEvent *ev){
-
-//    QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
-//    test->setText(posi);
     //录入obj 并进行棋子移动
     if(ischosen){
+          //反映鼠标点击点坐标
+//        QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
+//        test->setText(posi);
 
-        QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
-        test->setText(posi);
-
+        //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
         QPointF td=ev->pos();
         int l=pixel2int(td);
         if((td.rx()-loc[l/17][l%17].rx()-R)*(td.rx()-loc[l/17][l%17].rx()-R)+(td.ry()-loc[l/17][l%17].ry()-R)*(td.ry()-loc[l/17][l%17].ry()-R)>RR*RR){
-            test->setText("here1");//不合法
+            test->setText("out range");//不合法
         }
         else{
-            obj.setX(loc[l/17][l%17].rx()-RR/4);
-            obj.setY(loc[l/17][l%17].ry()-RR/4);
-
             isobjset=true;//is obj set
-        }
-        //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
-        objloc[0] = pixel2int(ev->position())/17;
-        objloc[1] = pixel2int(ev->position())%17;
+            obj.setX(loc[l/17][l%17].rx()-RR/4);
+            obj.setY(loc[l/17][l%17].ry()-RR/4);    
+            objloc[0] = pixel2int(ev->position())/17;
+            objloc[1] = pixel2int(ev->position())%17;
             if(islegal()&&isobjset){
+                int mv=islegal();
                 CheckerMove(checked,obj);
                 isobjset=false;
-                isfill[objloc[0]][objloc[1]]=true;
-                isfill[chosenloc[0]][chosenloc[1]]=false;
-                if(shouldSwitch){
+                if(mv==1){
                     shouldSwitcht2f();
                 }
-                else{
+                else if(mv==2){
+                    jumped=checked;
                     chosenloc[0]=objloc[0];
                     chosenloc[1]=objloc[1];
                 }
+//                if(shouldSwitch){
+//                   shouldSwitcht2f();
+//                }
+//                else{
+//                   chosenloc[0]=objloc[0];
+//                   chosenloc[1]=objloc[1];
+//                }
             }
         }
-
+    }
 }
 
 void Widget::shouldSwitcht2f(){
@@ -335,22 +342,34 @@ void Widget::shouldSwitcht2f(){
 }
 
 void Widget::changeplayer(){
-    for(int t=0;t<10;t++){
-            btn[flag][t]->setCheckable(false);//禁止选中刚才没跳的棋子
+    for(int i=0;i<10;i++){
+        btn[flag][i]->setCheckable(false);
+    }
+    for(int j=0;j<10;j++){
+        btn[(flag+1)%playernum][j]->setCheckable(true);
     }
     flag = (flag+1)%playernum;
-    for(int t=0;t<10;t++)
-        btn[flag][t]->setCheckable(true);
+    if(flag==red)
+        nowplayer->setText("player:red");
+    else
+        nowplayer->setText("player:blue");
+    haveJumped=false;
+    ischosen=false;
+    isobjset=false;
+    checked=NULL;
+    jumped=NULL;
 }
 
-bool Widget::islegal(){
+int Widget::islegal(){
     //判断是否已经有选中棋子
     if(!ischosen){
-        return false;
+        test->setText("no chosen checker");
+        return 0;
     }
     //判断目标点是否为空位
     if(isfill[objloc[0]][objloc[1]]==true){
-        return false;
+        test->setText("object is filled");
+        return 0;
     }
     //判断是否平动
     bool flatmove;
@@ -360,14 +379,19 @@ bool Widget::islegal(){
             ||(objloc[0]==chosenloc[0]-1&&objloc[1]==chosenloc[1]-1)
             ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]+1)
             ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]-1);
-    if(flatmove){
+    if(flatmove&&haveJumped==false){
         ischosen=false;
         shouldSwitch=true;//阻止下一步
-        return true;
+        test->setText("flatmove made");
+        return 1;
     }
 
+    //判断连跳
+    if(haveJumped&&jumped!=checked){
+        test->setText("jump checker changed");
+        return 0;
+    }
     //判断是否为跳跃
-    bool jumpmove=false;
     int midloc[2];
     midloc[0]=(objloc[0]+chosenloc[0])/2;
     midloc[1]=(objloc[1]+chosenloc[1])/2;
@@ -377,18 +401,21 @@ bool Widget::islegal(){
      ||(objloc[0]==chosenloc[0]-2&&objloc[1]==chosenloc[1]-2)
      ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]+2)
      ||(objloc[0]==chosenloc[0]&&objloc[1]==chosenloc[1]-2)){
-        if(isfill[midloc[0]][midloc[1]])
-            jumpmove=true;
-
+        if(isfill[midloc[0]][midloc[1]]){
+            if(!canJump(chosenloc[0],chosenloc[1])){
+               shouldSwitch=true;
+            }
+            else{
+                shouldSwitch=false;
+            }
+            test->setText("jump made");
+            haveJumped=true;
+            return 2;
+        }
     }
     //排查是否可以进行下一次跳跃
-    if(!canJump(chosenloc[0],chosenloc[1])){
-       shouldSwitch=true;
-    }
-    else{
-        shouldSwitch=false;
-    }
-    return jumpmove;
+    test->setText("undefined move");
+    return 0;
 }
 
 
@@ -415,6 +442,8 @@ void Widget::CheckerMove(CheckerButton*btn,QPointF p){
     anim->setStartValue(btn->pos());
     anim->setEndValue(QPointF(p.rx(),p.ry()));
     anim->start(QPropertyAnimation::KeepWhenStopped);
+    isfill[objloc[0]][objloc[1]]=true;
+    isfill[chosenloc[0]][chosenloc[1]]=false;
 
 }
 

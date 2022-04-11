@@ -20,7 +20,7 @@ public:
     ~Widget();
 
     void mousePressEvent(QMouseEvent* ev);
-    bool islegal();//判断移动是否合法
+    int islegal();//判断移动是否合法
 
     int pixel2int(QPointF pixel);
     void CheckerMove(CheckerButton*btn,QPointF p);
@@ -43,16 +43,18 @@ private:
 
     QPointF chosen;//选中的棋子
     CheckerButton* checked;//被选中的棋子
+    bool haveJumped;
+    CheckerButton* jumped;
 
 
     int chosenloc[2];//选中棋子所在位置
-    CheckerButton* chosenbtn;//选中棋子
     bool ischosen=false;//是否有棋子被选中
     bool isobjset=false;
     QPointF obj;//目标位置
     int objloc[2];//目标位置坐标
 
     QLabel* test;
+    QLabel* nowplayer;
     QPushButton* end;
     bool shouldSwitch;
 signals:
