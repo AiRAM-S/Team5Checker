@@ -225,10 +225,6 @@ Widget::Widget(QWidget *parent)
     test = new QLabel(this);
     test->setGeometry(0,0,1000,20);
     test->setText("here");
-  /*  nowbtnloc= new QLabel(this);
-    nowbtnloc->setGeometry(0,60,1000,20);
-    objl=new QLabel(this);
-    objl->setGeometry(0,80,1000,20);*/
     //初始化回合结束按钮
     end = new QPushButton(this);
     end->setText("回合结束");
