@@ -8,6 +8,7 @@
 #include"mydialog1.h"
 #include <QMouseEvent>
 #include <QLabel>
+#include <QDialog>
 #include<QPropertyAnimation>
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -51,7 +52,7 @@ private:
     bool haveJumped;
     CheckerButton* jumped;
 
-
+    QDialog *nobai;
     int chosenloc[2];//选中棋子所在位置
     bool ischosen=false;//是否有棋子被选中
     bool isobjset=false;

@@ -22,6 +22,7 @@ HEADERS += \
     widget.h
 
 FORMS += \
+    mydialog.ui \
     widget.ui
 
 # Default rules for deployment.

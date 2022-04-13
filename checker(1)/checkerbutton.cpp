@@ -13,7 +13,6 @@ CheckerButton::CheckerButton(QWidget *parent)
     });
 
 }
-
 CheckerButton::~CheckerButton(){
 }
 

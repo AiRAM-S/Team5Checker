@@ -1,3 +1,4 @@
+//.cpp
 #include"mydialog.h"
 #include<QPushButton>
 
@@ -54,8 +55,17 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));  //不加入游戏
     connect(join, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
+        if(setplayer->currentIndex()!=-1){
             joinSuccessed = true;
-            close();
+            hide();
+        }
     });
-}
 
+    setplayer = new QComboBox(this);
+    setplayer->setPlaceholderText(QStringLiteral("请选择玩家人数"));
+    setplayer->setCurrentIndex(-1);
+    setplayer->addItem("2");
+    setplayer->addItem("3");
+    setplayer->addItem("6");
+    setplayer->setGeometry(180,350,125,30);
+}

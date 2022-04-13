@@ -1,0 +1,10 @@
+release/checkerbutton.o
+release/main.o
+release/mydialog.o
+release/mydialog1.o
+release/widget.o
+release/qrc_image.o
+release/moc_checkerbutton.o
+release/moc_mydialog.o
+release/moc_mydialog1.o
+release/moc_widget.o
