@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "D:/QtDemo/checker(1)/mydialog1.h"
+#include "../mydialog1.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
