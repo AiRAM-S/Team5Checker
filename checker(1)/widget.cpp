@@ -4,6 +4,7 @@
 #include<QPainter>
 #include<QPointF>
 #include<QDebug>
+#include<QLabel>
 #define I 40 //横向间距
 #define JX 20
 #define JY sqrt(3)*20 //行距
@@ -28,14 +29,31 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    myDialog *d = new myDialog;  //是否加入
+    //开始界面 设置玩家人数
+    myDialog *d = new myDialog;
     d->exec();
-    if(!d->Join())
+    int ifstart=d->Join();
+    QString str=d->setplayer->currentText();
+        if(str=="2")
+            playernum=2;
+        else if(str=="3")
+            playernum=3;
+        else
+            playernum=6;
+    if(!ifstart)
         exit(0);
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
+    this->setWindowTitle("Checker");
 
-    setWindowFlags(Qt::FramelessWindowHint | windowFlags());
+    //设置禁止摆烂弹窗
+    nobai = new QDialog(this);
+    QLabel *lb = new QLabel("禁止摆烂",nobai);
+    nobai->setFixedSize(200,100);
+    lb->setFont(QFont("Microsoft YaHei",20,75));
+    lb->setGeometry(45,25,200,50);
+    nobai->hide();
+
     this->setFixedSize(700,700);
     DrawCheckerboard();
     //初始化部分
@@ -48,7 +66,7 @@ Widget::Widget(QWidget *parent)
         //初始化是否需要更换棋手
         shouldSwitch=false;
         //先实现1v1
-        playernum=2;
+        //playernum=2;
         //红方先手
         flag=red;
         //记录棋手
@@ -249,7 +267,9 @@ Widget::Widget(QWidget *parent)
                 ischange=true;
                 qDebug() << "player changed";
             }
-
+            else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
+                nobai->show();
+            }
         });
 
         connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));

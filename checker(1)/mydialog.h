@@ -1,3 +1,4 @@
+//.h
 #ifndef MYDIALOG_H
 #define MYDIALOG_H
 
@@ -9,10 +10,12 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QMouseEvent>
-#include<QPoint>
+#include <QPoint>
+#include <QComboBox>
 
 class myDialog:public QDialog
 {
+    Q_OBJECT
 public:
     myDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
 
@@ -26,6 +29,7 @@ public:
        p.setY((int)f.y());
        return p;
     };
+    QComboBox *setplayer;
 protected:
     void mpe(QMouseEvent *mo);
 
@@ -36,9 +40,14 @@ private:
     QPushButton *an;
     QPushButton *quit;  //退出游戏
 
+    QLabel *setp;
+
     bool joinSuccessed;
 
     QPoint p;
+
+//signals:
+//    void plnum(QString);
 };
 
 #endif // MYDIALOG_H
