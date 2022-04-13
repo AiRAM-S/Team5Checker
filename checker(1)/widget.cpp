@@ -5,6 +5,7 @@
 #include<QPointF>
 #include<QDebug>
 #include<QLabel>
+#include<QFont>
 #define I 40 //横向间距
 #define JX 20
 #define JY sqrt(3)*20 //行距
@@ -71,8 +72,10 @@ Widget::Widget(QWidget *parent)
         flag=red;
         //记录棋手
         nowplayer = new QLabel(this);
-        nowplayer->setGeometry(0,20,200,20);
-        nowplayer->setText("player:red");
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player:  RED");
+        nowplayer->setStyleSheet("color:red;");
 
         //记录上一步是否为跳子
         haveJumped=false;
@@ -294,22 +297,28 @@ Widget::Widget(QWidget *parent)
         //if(flag==red)
         switch(flag){
         case red:
-            nowplayer->setText("player:red");
+            nowplayer->setText("Player:  RED");
+            nowplayer->setStyleSheet("color:red;");
             break;
         case blue:
-            nowplayer->setText("player:blue");
+            nowplayer->setText("Player: BLUE");
+            nowplayer->setStyleSheet("color:blue;");
             break;
         case green:
-            nowplayer->setText("player:green");
+            nowplayer->setText("Player:GREEN");
+            nowplayer->setStyleSheet("color:green;");
             break;
         case pink:
-            nowplayer->setText("player:pink");
+            nowplayer->setText("Player:PINK");
+            nowplayer->setStyleSheet("color:#DB7093;");
             break;
         case purple:
-            nowplayer->setText("player:purple");
+            nowplayer->setText("Player:PURPLE");
+            nowplayer->setStyleSheet("color:#800080;");
             break;
           case orange:
-            nowplayer->setText("player:orange");
+            nowplayer->setText("Player:ORANGE");
+            nowplayer->setStyleSheet("color:#FF4500;");
             break;
         }
         haveJumped=false;
