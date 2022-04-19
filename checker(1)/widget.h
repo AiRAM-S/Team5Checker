@@ -60,6 +60,7 @@ private:
     int objloc[2];//目标位置坐标
     bool ischange=false;
     int btnx,btny;//记录选中棋子初始位置
+    int step=0;
     QLabel* test;
     QLabel* nowplayer;
     QPushButton* end;

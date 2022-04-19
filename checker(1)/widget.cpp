@@ -1,4 +1,3 @@
-//move成功以后记得把ischosen改成false 虽然我不记得为什么要写这个了 提醒自己一下
 #include "widget.h"
 #include "ui_widget.h"
 #include<QPainter>
@@ -234,7 +233,7 @@ Widget::Widget(QWidget *parent)
         for(int t=0;t<10;t++){
             for(int j=0;j<playernum;j++){
                 connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
-                    if(flag==but.player){
+                    if(flag==but.player&&step==0){
                        chosen.setX(but.pos().rx());
                        chosen.setY(but.pos().ry());
                        chosenloc[0]=but.x;
@@ -326,6 +325,7 @@ Widget::Widget(QWidget *parent)
         isobjset=false;
         checked=NULL;
         jumped=NULL;
+        step=0;
     }
 
 
@@ -505,14 +505,14 @@ Widget::Widget(QWidget *parent)
         QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
         anim->setDuration(300);
         anim->setStartValue(btn->pos());
-        anim->setEndValue(QPointF(p.rx()-R/2,p.ry()-R/2));
+        anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
         anim->start(QPropertyAnimation::KeepWhenStopped);
         btn->x=objloc[0];
         btn->y=objloc[1];
         isfill[objloc[0]][objloc[1]]=true;
         isfill[chosenloc[0]][chosenloc[1]]=false;
         ischange=false;
-
+        step++;
     }
 
     bool Widget::canJump(int x,int y){//不能跳回原位
