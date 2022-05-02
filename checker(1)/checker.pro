@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,18 +10,27 @@ CONFIG += c++17
 
 SOURCES += \
     checkerbutton.cpp \
+    clientwindow.cpp \
     main.cpp \
     mydialog.cpp \
     mydialog1.cpp \
+    networkdata.cpp \
+    networkserver.cpp \
+    networksocket.cpp \
     widget.cpp
 
 HEADERS += \
     checkerbutton.h \
+    clientwindow.h \
     mydialog.h \
     mydialog1.h \
+    networkdata.h \
+    networkserver.h \
+    networksocket.h \
     widget.h
 
 FORMS += \
+    clientwindow.ui \
     mydialog.ui \
     widget.ui
 
