@@ -29,6 +29,11 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    //初始化server
+    server = new NetworkServer(this);
+    server->listen(QHostAddress("10.46.156.60"),9999);
+
     //开始界面 设置玩家人数
     myDialog *d = new myDialog;
     d->exec();

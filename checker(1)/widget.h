@@ -10,6 +10,9 @@
 #include <QLabel>
 #include <QDialog>
 #include<QPropertyAnimation>
+#include"networkserver.h"
+#include"networksocket.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -66,6 +69,9 @@ private:
     QPushButton* end;
     bool shouldSwitch;
     mydialog1 *z;
+
+    NetworkServer* server;//监听
+    NetworkSocket* conn;//通信
 signals:
     void shouldSwitchChanged();
 public slots:
