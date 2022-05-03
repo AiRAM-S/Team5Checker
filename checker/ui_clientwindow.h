@@ -43,6 +43,7 @@ public:
         QUIT = new QPushButton(ClientWindow);
         QUIT->setObjectName(QString::fromUtf8("QUIT"));
         QUIT->setGeometry(QRect(600, 50, 60, 30));
+        QUIT->setText("QUIT");
         QFont font;
         font.setPointSize(11);
         font.setBold(true);
