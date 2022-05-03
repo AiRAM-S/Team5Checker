@@ -60,7 +60,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         exit(0);
 
     //这行会报错 说没有QUIT成员 有点奇怪 不知道怎么改
-    //connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
+    connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");
 
     //设置禁止摆烂弹窗
