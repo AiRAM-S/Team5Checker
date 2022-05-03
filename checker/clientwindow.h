@@ -10,6 +10,8 @@
 #include <QLabel>
 #include <QDialog>
 #include<QPropertyAnimation>
+#include<QTimerEvent>
+#include "rank.h"
 #include "networksocket.h"
 
 namespace Ui {
@@ -38,10 +40,10 @@ public:
     void isfinish();//棋子是否走完
 protected:
     void paintEvent(QPaintEvent *);
+    void timerEvent(QTimerEvent *event);
 
 private:
     Ui::ClientWindow *ui;
-    NetworkSocket* socket;
 
     void DrawCheckerboard();
     void InitCheckerboard();
@@ -75,14 +77,26 @@ private:
     mydialog1 *z;
     int totalstep=0;
 
+    //stage2用到的
+    char myPos;//记录该玩家所处位置（ABCDEF)
+    NetworkSocket* socket;
+    QString myName;
+    QString path;
+    QStringList players;
+    int playerState[6];
+    int id;//计时器id,负责倒计时
+    QLabel* clock1;//显示倒计时提示
+    QLabel* clock2;//显示时间
+    bool iswin;//是否胜利，不知道有没有用先写着
+    Rank* rank;
+
 signals:
     void shouldSwitchChanged();
     void finish(int);
     void gameover();
 public slots:
     void changeplayer();
-    void receive();
-
+    void receive(NetworkData);
 };
 
 #endif // CLIENTWINDOW_H

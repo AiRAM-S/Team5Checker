@@ -6,6 +6,8 @@
 #include<QDebug>
 #include<QLabel>
 #include<QFont>
+#include"networkdata.h"
+
 #define I 40 //横向间距
 #define JX 20
 #define JY sqrt(3)*20 //行距
@@ -74,6 +76,18 @@ ClientWindow::ClientWindow(QWidget *parent) :
     this->setFixedSize(700,700);
     DrawCheckerboard();
     //初始化部分
+        //初始化秒表
+        clock1 = new QLabel("剩余时间",this);
+        clock1->setFont(QFont("Microsoft YaHei",20));
+        clock1->setGeometry(70,500,300,50);
+        clock1->setStyleSheet("color:brown;");
+        clock1->hide();
+        clock2 = new QLabel("30 s",this);
+        clock2->setFont(QFont("Agency FB",20));
+        clock2->setStyleSheet("color:brown;");
+        clock2->setGeometry(70,530,300,50);
+        clock2->hide();
+
         //初始化isfill
         for(int i1=0;i1<17;i1++){
             for(int i2=0;i2<17;i2++){
@@ -85,23 +99,25 @@ ClientWindow::ClientWindow(QWidget *parent) :
         }
         //初始化是否需要更换棋手
         shouldSwitch=false;
-        //先实现1v1
-        //playernum=2;
-        //红方先手
-        flag=red;
-        //记录棋手
-        nowplayer = new QLabel(this);
-        nowplayer->setFont(QFont("Agency FB",24));
-        nowplayer->setGeometry(275,0,300,50);
-        nowplayer->setText("Player:  RED");
-        nowplayer->setStyleSheet("color:red;");
-
+        //初始化是否胜利
+        iswin=false;
         //记录上一步是否为跳子
         haveJumped=false;
+        //初始化游戏结束排名表
+        rank = new Rank(this);
+        rank->show();
+
 
         //初始化棋子 2player
         int k=0;
         if(playernum==2){
+            flag = blue;//12点的蓝方先手
+            //记录棋手
+            nowplayer = new QLabel(this);
+            nowplayer->setFont(QFont("Agency FB",24));
+            nowplayer->setGeometry(275,0,300,50);
+            nowplayer->setText("Player: BLUE");
+            nowplayer->setStyleSheet("color:blue;");
         for(int j=5;j<=8;j++){
             for(int i=j-4;i<=4;i++){
                 btn[0][k]=new CheckerButton(this);
@@ -127,6 +143,13 @@ ClientWindow::ClientWindow(QWidget *parent) :
         }
         }
         if(playernum==3){
+            flag = blue;
+            //记录棋手
+            nowplayer = new QLabel(this);
+            nowplayer->setFont(QFont("Agency FB",24));
+            nowplayer->setGeometry(275,0,300,50);
+            nowplayer->setText("Player: BLUE");
+            nowplayer->setStyleSheet("color:blue;");
             k=0;
             for(int j=5;j<=8;j++){
                 for(int i=j-4;i<=4;i++){
@@ -175,6 +198,13 @@ ClientWindow::ClientWindow(QWidget *parent) :
             }
         }
         if(playernum==6){
+            flag = pink;
+            //记录棋手
+            nowplayer = new QLabel(this);
+            nowplayer->setFont(QFont("Agency FB",24));
+            nowplayer->setGeometry(275,0,300,50);
+            nowplayer->setText("Player:PINK");
+            nowplayer->setStyleSheet("color:#DB7093;");
             k=0;
             for(int j=5;j<=8;j++){
                 for(int i=j-4;i<=4;i++){
@@ -308,6 +338,7 @@ void ClientWindow::changeplayer(){
     for(int i=0;i<10;i++){
         btn[flag][i]->setCheckable(false);
     }
+
     flag = (flag+1)%playernum;
     while(isover[flag]){
         flag = (flag+1)%playernum;
@@ -315,6 +346,10 @@ void ClientWindow::changeplayer(){
     for(int j=0;j<10;j++){
         btn[flag][j]->setCheckable(true);
     }
+  
+    NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
+    socket->send(mv);//发送move信号
+
     switch(flag){
     case red:
         nowplayer->setText("Player:  RED");
@@ -347,6 +382,7 @@ void ClientWindow::changeplayer(){
     checked=NULL;
     jumped=NULL;
     step=0;
+    path = QString("");
 }
 
 void ClientWindow::paintEvent(QPaintEvent *)
@@ -529,10 +565,17 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     isfill[chosenloc[0]][chosenloc[1]]=0;
     ischange=false;
     step++;
+
+    if(step==1){
+        path = QString(QString::number(chosenloc[0]).append(" ").append(QString::number(chosenloc[1])));
+    }
+    path.append(" ").append(QString::number(objloc[0]).append(" ").append(QString::number(objloc[1])));
+
     totalstep++;
     if(totalstep>60*playernum){
         isfinish();
     }
+
 }
 
 bool ClientWindow::canJump(int x,int y){//不能跳回原位
@@ -557,8 +600,117 @@ ClientWindow::~ClientWindow()
     delete ui;
 }
 
-void ClientWindow::receive(){
-    //实现receive槽函数
+static int timeLeft=30;
+
+void ClientWindow::receive(NetworkData data){
+    switch(data.op){
+        case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
+            players = data.data1.split(" ");//载入已有玩家姓名
+            for(int i=0;i<data.data2.length();i++){
+                playerState[i]=QString(data.data2.at(i)).toInt();
+            }//设置已有玩家状态
+            players.append(myName);
+            playerState[data.data2.length()] = 0;
+        break;
+        case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
+            players.removeOne(data.data1);
+            //这里没有改playerState，我觉得应该影响不大
+        break;
+        case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现
+        break;
+        case OPCODE::PLAYER_READY_OP://有玩家准备就绪
+            playerState[players.indexOf(data.data1)] = 1;
+        break;
+        case OPCODE::START_GAME_OP://开始游戏 实现了一半
+           {
+            QStringList pls = data.data1.split(" ");
+            QStringList seq = data.data2.split(" ");
+            playernum=data.data2.length();
+            for(int i=0;i<playernum;i++){
+                players.replace(seq.at(i).toInt()-65,pls.at(i));
+            }
+            myPos = *(seq.at(pls.indexOf(myName)).toLatin1().data());
+            //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
+        }
+        break;
+        case OPCODE::START_TURN_OP://我的回合开始
+            timeLeft=30;
+            id=startTimer(1000);
+            clock1->show();
+            clock2->show();
+        break;
+        case OPCODE::MOVE_OP://其他玩家移动棋子
+            {
+                if(data.data2=="-1"){
+                    //移除该玩家所有棋子
+                    char outpl = data.data1.toLatin1()[0];
+                    for(int i=0;i<10;i++){
+                        btn[outpl-65][i]->hide();
+                    }
+                }
+                else{
+                    QStringList checkerpath = data.data2.split(" ");
+                    int stepnum = checkerpath.length()/2-1;
+                    int origin[2];
+                    origin[0]= checkerpath.at(0).toInt();
+                    origin[1]= checkerpath.at(1).toInt();
+                    char plnow = data.data1.toLatin1()[0];
+                    for(int i=0;i<10;i++){
+                        if(btn[plnow-65][i]->x==origin[0]
+                           &&btn[plnow-65][i]->y==origin[1]){
+                            for(int j=1;j<=stepnum;j++){
+                                int aimloc[2];
+                                aimloc[0]= checkerpath.at(2*j).toInt();
+                                aimloc[1]=checkerpath.at(2*j+1).toInt();
+                                QPointF aim;
+                                aim.setX(loc[aimloc[0]][aimloc[1]].rx()-RR/4);
+                                aim.setY(loc[aimloc[0]][aimloc[1]].ry()-RR/4);
+                                CheckerMove(btn[plnow-65][i],aim);
+                            }
+                        }
+                    }
+                }
+            }
+        break;
+    case OPCODE::END_TURN_OP://胜利反馈
+        iswin=true;
+    break;
+    case OPCODE::END_GAME_OP://游戏结束
+        //弹排名界面
+        rank->ranktable->setRowCount(data.data1.length());
+        rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+        QStringList header;
+        for(int i=0;i<data.data1.length();i++){
+            if(i==0)
+                header << "1st";
+            else if(i==1)
+                header << "2nd";
+            else{
+                header << QString("%1th").arg(i);
+            }
+        }
+        rank->ranktable->setVerticalHeaderLabels(header);
+        for(int i=0;i<data.data1.length();i++){
+            char plnow=data.data1.toLatin1()[i];
+            rank->ranktable->setItem(i,0,new QTableWidgetItem(players[plnow-65]));
+        }
+        //断开连接
+        socket->bye();
+    }
+    break;
+    case OPCODE::ERROR_OP://错误
+        //迷惑。
+
+}
+
+void ClientWindow::timerEvent(QTimerEvent *event){
+    timeLeft--;
+    if(timeLeft<0){
+        this->killTimer(id);//停止计时
+    }
+    else{
+       clock2->setText(QString("%1 s").arg(timeLeft));
+    }
 }
 
 void ClientWindow::isfinish(){
