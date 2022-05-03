@@ -49,7 +49,7 @@ Widget::Widget(QWidget *parent)
         exit(0);
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
-    this->setWindowTitle("Checker");
+    this->setWindowTitle("Server");
 
     //设置禁止摆烂弹窗
     nobai = new QDialog(this);

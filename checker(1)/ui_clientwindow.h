@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -21,8 +22,9 @@ QT_BEGIN_NAMESPACE
 class Ui_ClientWindow
 {
 public:
-    QMenuBar *menubar;
     QWidget *centralwidget;
+    QPushButton *QUIT;
+    QMenuBar *menubar;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *ClientWindow)
@@ -30,12 +32,16 @@ public:
         if (ClientWindow->objectName().isEmpty())
             ClientWindow->setObjectName(QString::fromUtf8("ClientWindow"));
         ClientWindow->resize(800, 600);
-        menubar = new QMenuBar(ClientWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        ClientWindow->setMenuBar(menubar);
         centralwidget = new QWidget(ClientWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+        QUIT = new QPushButton(centralwidget);
+        QUIT->setObjectName(QString::fromUtf8("QUIT"));
+        QUIT->setGeometry(QRect(530, 50, 80, 18));
         ClientWindow->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(ClientWindow);
+        menubar->setObjectName(QString::fromUtf8("menubar"));
+        menubar->setGeometry(QRect(0, 0, 800, 17));
+        ClientWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(ClientWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         ClientWindow->setStatusBar(statusbar);
@@ -48,6 +54,7 @@ public:
     void retranslateUi(QMainWindow *ClientWindow)
     {
         ClientWindow->setWindowTitle(QCoreApplication::translate("ClientWindow", "MainWindow", nullptr));
+        QUIT->setText(QCoreApplication::translate("ClientWindow", "QUIT", nullptr));
     } // retranslateUi
 
 };
