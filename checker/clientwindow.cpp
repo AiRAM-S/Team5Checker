@@ -47,7 +47,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
     socket->hello(ip,port);
 
-    //开始界面 设置玩家人数
+    //开始界面 设置玩家人数 需改成进入房间时获取
     myDialog *d = new myDialog;
     d->exec();
     int ifstart=d->Join();
@@ -61,7 +61,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
     if(!ifstart)
         exit(0);
 
-    //这行会报错 说没有QUIT成员 有点奇怪 不知道怎么改
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");
 
@@ -107,177 +106,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         rank = new Rank(this);
         rank->show();
 
-
-        //初始化棋子 2player
-        int k=0;
-        if(playernum==2){
-            flag = blue;//12点的蓝方先手
-            //记录棋手
-            nowplayer = new QLabel(this);
-            nowplayer->setFont(QFont("Agency FB",24));
-            nowplayer->setGeometry(275,0,300,50);
-            nowplayer->setText("Player: BLUE");
-            nowplayer->setStyleSheet("color:blue;");
-        for(int j=5;j<=8;j++){
-            for(int i=j-4;i<=4;i++){
-                btn[0][k]=new CheckerButton(this);
-                btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
-                btn[0][k]->setIconSize(QSize(RR,RR));
-                btn[0][k]->setFlat(true);
-                btn[0][k]->player=red; //set player
-                btn[0][k]->x=i+8;
-                btn[0][k]->y=-j+8;
-                isfill[i+8][-j+8]=red+1;
-                btn[1][k]=new CheckerButton(this);
-                btn[1][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
-                btn[1][k]->setIconSize(QSize(RR,RR));
-                btn[1][k]->setFlat(true);
-                btn[1][k]->player=blue;//set player
-                btn[1][k]->x=-i+8;
-                btn[1][k]->y=j+8;
-                isfill[-i+8][j+8]=blue+1;
-                k++;
-            }
-        }
-        }
-        if(playernum==3){
-            flag = blue;
-            //记录棋手
-            nowplayer = new QLabel(this);
-            nowplayer->setFont(QFont("Agency FB",24));
-            nowplayer->setGeometry(275,0,300,50);
-            nowplayer->setText("Player: BLUE");
-            nowplayer->setStyleSheet("color:blue;");
-            k=0;
-            for(int j=5;j<=8;j++){
-                for(int i=j-4;i<=4;i++){
-                    btn[0][k]=new CheckerButton(this);
-                    btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[0][k]->setIcon(QPixmap(":/image/red.png"));
-                    btn[0][k]->setIconSize(QSize(RR,RR));
-                    btn[0][k]->setFlat(true);
-                    btn[0][k]->player=red; //set player
-                    btn[0][k]->x=i+8;
-                    btn[0][k]->y=-j+8;
-                    isfill[i+8][-j+8]=red+1;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=1; i<5; i++){
-                for(int j=-4; j<i-4; j++){
-                    btn[1][k]=new CheckerButton(this);
-                    btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
-                    btn[1][k]->setIconSize(QSize(RR,RR));
-                    btn[1][k]->setFlat(true);
-                    btn[1][k]->player=blue; //set player
-                    btn[1][k]->x=i+8;
-                    btn[1][k]->y=-j+8;
-                    isfill[i+8][-j+8]=blue+1;
-                    k++;
-                }
-            }
-
-            k=0;
-            for(int i=5;i<=8;i++){
-                for(int j=i-4;j<=4;j++){
-                    btn[2][k]=new CheckerButton(this);
-                    btn[2][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[2][k]->setIcon(QPixmap(":/image/green.png"));
-                    btn[2][k]->setIconSize(QSize(RRR,RRR));
-                    btn[2][k]->setFlat(true);
-                    btn[2][k]->player=green; //set player
-                    btn[2][k]->x=-i+8;
-                    btn[2][k]->y=j+8;
-                    isfill[-i+8][j+8]=green+1;
-                    k++;
-                }
-            }
-        }
-        if(playernum==6){
-            flag = pink;
-            //记录棋手
-            nowplayer = new QLabel(this);
-            nowplayer->setFont(QFont("Agency FB",24));
-            nowplayer->setGeometry(275,0,300,50);
-            nowplayer->setText("Player:PINK");
-            nowplayer->setStyleSheet("color:#DB7093;");
-            k=0;
-            for(int j=5;j<=8;j++){
-                for(int i=j-4;i<=4;i++){
-                    btn[0][k]=new CheckerButton(this);
-                    btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[0][k]->setIcon(QPixmap(":/image/red.png"));
-                    btn[0][k]->setIconSize(QSize(RR,RR));
-                    btn[0][k]->setFlat(true);
-                    btn[0][k]->player=red; //set player
-                    btn[0][k]->x=i+8;
-                    btn[0][k]->y=-j+8;
-                    isfill[i+8][-j+8]=red+1;
-                    btn[3][k]=new CheckerButton(this);
-                    btn[3][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[3][k]->setIcon(QPixmap(":/image/pink.png"));
-                    btn[3][k]->setIconSize(QSize(RRR,RRR));
-                    btn[3][k]->setFlat(true);
-                    btn[3][k]->player=pink;//set player
-                    btn[3][k]->x=-i+8;
-                    btn[3][k]->y=j+8;
-                    isfill[-i+8][j+8]=pink+1;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=1; i<5; i++){
-                for(int j=-4; j<i-4; j++){
-                    btn[2][k]=new CheckerButton(this);
-                    btn[2][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[2][k]->setIcon(QPixmap(":/image/green.png"));
-                    btn[2][k]->setIconSize(QSize(RRR,RRR));
-                    btn[2][k]->setFlat(true);
-                    btn[2][k]->player=green; //set player
-                    btn[2][k]->x=i+8;
-                    btn[2][k]->y=-j+8;
-                    isfill[i+8][-j+8]=green+1;
-                    btn[5][k]=new CheckerButton(this);
-                    btn[5][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[5][k]->setIcon(QPixmap(":/image/orange.png"));
-                    btn[5][k]->setIconSize(QSize(RRR,RRR));
-                    btn[5][k]->setFlat(true);
-                    btn[5][k]->player=orange; //set player
-                    btn[5][k]->x=-i+8;
-                    btn[5][k]->y=j+8;
-                    isfill[-i+8][j+8]=orange+1;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=5;i<=8;i++){
-                for(int j=i-4;j<=4;j++){
-                    btn[4][k]=new CheckerButton(this);
-                    btn[4][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[4][k]->setIcon(QPixmap(":/image/purple.png"));
-                    btn[4][k]->setIconSize(QSize(RRR,RRR));
-                    btn[4][k]->setFlat(true);
-                    btn[4][k]->player=purple; //set player
-                    btn[4][k]->x=-i+8;
-                    btn[4][k]->y=j+8;
-                    isfill[-i+8][j+8]=purple+1;
-                    btn[1][k]=new CheckerButton(this);
-                    btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
-                    btn[1][k]->setIconSize(QSize(RR,RR));
-                    btn[1][k]->setFlat(true);
-                    btn[1][k]->player=blue; //set player
-                    btn[1][k]->x=i+8;
-                    btn[1][k]->y=-j+8;
-                    isfill[i+8][-j+8]=blue+1;
-                    k++;
-                }
-            }
-        }
+        initializeChecker(QString("data2"));//这一处最后应该是需要删掉的
 
         //建立连接：按下棋子后记录被选中者
         for(int t=0;t<10;t++){
@@ -631,6 +460,7 @@ void ClientWindow::receive(NetworkData data){
             }
             myPos = *(seq.at(pls.indexOf(myName)).toLatin1().data());
             //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
+            initializeChecker(data.data2);//画棋子
         }
         break;
         case OPCODE::START_TURN_OP://我的回合开始
@@ -819,3 +649,175 @@ void ClientWindow::isfinish(){
     }
 }
 
+void ClientWindow::initializeChecker(QString data){
+    //初始化棋子 2player
+    int k=0;
+    if(playernum==2){
+        flag = blue;//12点的蓝方先手
+        //记录棋手
+        nowplayer = new QLabel(this);
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player: BLUE");
+        nowplayer->setStyleSheet("color:blue;");
+    for(int j=5;j<=8;j++){
+        for(int i=j-4;i<=4;i++){
+            btn[0][k]=new CheckerButton(this);
+            btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+            btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+            btn[0][k]->setIconSize(QSize(RR,RR));
+            btn[0][k]->setFlat(true);
+            btn[0][k]->player=red; //set player
+            btn[0][k]->x=i+8;
+            btn[0][k]->y=-j+8;
+            isfill[i+8][-j+8]=red+1;
+            btn[1][k]=new CheckerButton(this);
+            btn[1][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+            btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+            btn[1][k]->setIconSize(QSize(RR,RR));
+            btn[1][k]->setFlat(true);
+            btn[1][k]->player=blue;//set player
+            btn[1][k]->x=-i+8;
+            btn[1][k]->y=j+8;
+            isfill[-i+8][j+8]=blue+1;
+            k++;
+        }
+    }
+    }
+    if(playernum==3){
+        flag = blue;
+        //记录棋手
+        nowplayer = new QLabel(this);
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player: BLUE");
+        nowplayer->setStyleSheet("color:blue;");
+        k=0;
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                btn[0][k]=new CheckerButton(this);
+                btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+                btn[0][k]->setIconSize(QSize(RR,RR));
+                btn[0][k]->setFlat(true);
+                btn[0][k]->player=red; //set player
+                btn[0][k]->x=i+8;
+                btn[0][k]->y=-j+8;
+                isfill[i+8][-j+8]=red+1;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                btn[1][k]=new CheckerButton(this);
+                btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+                btn[1][k]->setIconSize(QSize(RR,RR));
+                btn[1][k]->setFlat(true);
+                btn[1][k]->player=blue; //set player
+                btn[1][k]->x=i+8;
+                btn[1][k]->y=-j+8;
+                isfill[i+8][-j+8]=blue+1;
+                k++;
+            }
+        }
+
+        k=0;
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                btn[2][k]=new CheckerButton(this);
+                btn[2][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[2][k]->setIcon(QPixmap(":/image/green.png"));
+                btn[2][k]->setIconSize(QSize(RRR,RRR));
+                btn[2][k]->setFlat(true);
+                btn[2][k]->player=green; //set player
+                btn[2][k]->x=-i+8;
+                btn[2][k]->y=j+8;
+                isfill[-i+8][j+8]=green+1;
+                k++;
+            }
+        }
+    }
+    if(playernum==6){
+        flag = pink;
+        //记录棋手
+        nowplayer = new QLabel(this);
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player:PINK");
+        nowplayer->setStyleSheet("color:#DB7093;");
+        k=0;
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                btn[0][k]=new CheckerButton(this);
+                btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+                btn[0][k]->setIconSize(QSize(RR,RR));
+                btn[0][k]->setFlat(true);
+                btn[0][k]->player=red; //set player
+                btn[0][k]->x=i+8;
+                btn[0][k]->y=-j+8;
+                isfill[i+8][-j+8]=red+1;
+                btn[3][k]=new CheckerButton(this);
+                btn[3][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[3][k]->setIcon(QPixmap(":/image/pink.png"));
+                btn[3][k]->setIconSize(QSize(RRR,RRR));
+                btn[3][k]->setFlat(true);
+                btn[3][k]->player=pink;//set player
+                btn[3][k]->x=-i+8;
+                btn[3][k]->y=j+8;
+                isfill[-i+8][j+8]=pink+1;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                btn[2][k]=new CheckerButton(this);
+                btn[2][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[2][k]->setIcon(QPixmap(":/image/green.png"));
+                btn[2][k]->setIconSize(QSize(RRR,RRR));
+                btn[2][k]->setFlat(true);
+                btn[2][k]->player=green; //set player
+                btn[2][k]->x=i+8;
+                btn[2][k]->y=-j+8;
+                isfill[i+8][-j+8]=green+1;
+                btn[5][k]=new CheckerButton(this);
+                btn[5][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[5][k]->setIcon(QPixmap(":/image/orange.png"));
+                btn[5][k]->setIconSize(QSize(RRR,RRR));
+                btn[5][k]->setFlat(true);
+                btn[5][k]->player=orange; //set player
+                btn[5][k]->x=-i+8;
+                btn[5][k]->y=j+8;
+                isfill[-i+8][j+8]=orange+1;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                btn[4][k]=new CheckerButton(this);
+                btn[4][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[4][k]->setIcon(QPixmap(":/image/purple.png"));
+                btn[4][k]->setIconSize(QSize(RRR,RRR));
+                btn[4][k]->setFlat(true);
+                btn[4][k]->player=purple; //set player
+                btn[4][k]->x=-i+8;
+                btn[4][k]->y=j+8;
+                isfill[-i+8][j+8]=purple+1;
+                btn[1][k]=new CheckerButton(this);
+                btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+                btn[1][k]->setIconSize(QSize(RR,RR));
+                btn[1][k]->setFlat(true);
+                btn[1][k]->player=blue; //set player
+                btn[1][k]->x=i+8;
+                btn[1][k]->y=-j+8;
+                isfill[i+8][-j+8]=blue+1;
+                k++;
+            }
+        }
+    }
+}
