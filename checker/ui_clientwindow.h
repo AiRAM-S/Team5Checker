@@ -15,7 +15,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
-#include <QyWidgets/QPushButton>
+#include <QtWidgets/QPushButton>
 
 QT_BEGIN_NAMESPACE
 

@@ -2,7 +2,7 @@
 #define CLIENTWINDOW_H
 
 #include <QMainWindow>
-#include<QPushButton>
+#include <QPushButton>
 #include "checkerbutton.h"
 #include "mydialog.h"
 #include"mydialog1.h"

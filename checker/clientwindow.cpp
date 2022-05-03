@@ -676,6 +676,7 @@ void ClientWindow::receive(NetworkData data){
         iswin=true;
     break;
     case OPCODE::END_GAME_OP://游戏结束
+    {
         //弹排名界面
         rank->ranktable->setRowCount(data.data1.length());
         rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
@@ -696,11 +697,12 @@ void ClientWindow::receive(NetworkData data){
         }
         //断开连接
         socket->bye();
+        break;
     }
-    break;
     case OPCODE::ERROR_OP://错误
         //迷惑。
-
+        break;
+    }
 }
 
 void ClientWindow::timerEvent(QTimerEvent *event){
