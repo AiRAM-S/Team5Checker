@@ -25,8 +25,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Widget_t {
-    const uint offsetsAndSize[10];
-    char stringdata0[54];
+    const uint offsetsAndSize[14];
+    char stringdata0[70];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_Widget_t, stringdata0) + ofs), len 
@@ -35,12 +35,14 @@ static const qt_meta_stringdata_Widget_t qt_meta_stringdata_Widget = {
 QT_MOC_LITERAL(0, 6), // "Widget"
 QT_MOC_LITERAL(7, 19), // "shouldSwitchChanged"
 QT_MOC_LITERAL(27, 0), // ""
-QT_MOC_LITERAL(28, 12), // "cbuttonpress"
-QT_MOC_LITERAL(41, 12) // "changeplayer"
+QT_MOC_LITERAL(28, 6), // "finish"
+QT_MOC_LITERAL(35, 8), // "gameover"
+QT_MOC_LITERAL(44, 12), // "cbuttonpress"
+QT_MOC_LITERAL(57, 12) // "changeplayer"
 
     },
-    "Widget\0shouldSwitchChanged\0\0cbuttonpress\0"
-    "changeplayer"
+    "Widget\0shouldSwitchChanged\0\0finish\0"
+    "gameover\0cbuttonpress\0changeplayer"
 };
 #undef QT_MOC_LITERAL
 
@@ -50,21 +52,25 @@ static const uint qt_meta_data_Widget[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   32,    2, 0x06,    1 /* Public */,
+       1,    0,   44,    2, 0x06,    1 /* Public */,
+       3,    1,   45,    2, 0x06,    2 /* Public */,
+       4,    0,   48,    2, 0x06,    4 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       3,    0,   33,    2, 0x0a,    2 /* Public */,
-       4,    0,   34,    2, 0x0a,    3 /* Public */,
+       5,    0,   49,    2, 0x0a,    5 /* Public */,
+       6,    0,   50,    2, 0x0a,    6 /* Public */,
 
  // signals: parameters
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void,
 
  // slots: parameters
@@ -81,8 +87,10 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         (void)_t;
         switch (_id) {
         case 0: _t->shouldSwitchChanged(); break;
-        case 1: _t->cbuttonpress(); break;
-        case 2: _t->changeplayer(); break;
+        case 1: _t->finish((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 2: _t->gameover(); break;
+        case 3: _t->cbuttonpress(); break;
+        case 4: _t->changeplayer(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -94,8 +102,21 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
                 return;
             }
         }
+        {
+            using _t = void (Widget::*)(int );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Widget::finish)) {
+                *result = 1;
+                return;
+            }
+        }
+        {
+            using _t = void (Widget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Widget::gameover)) {
+                *result = 2;
+                return;
+            }
+        }
     }
-    (void)_a;
 }
 
 const QMetaObject Widget::staticMetaObject = { {
@@ -105,7 +126,7 @@ const QMetaObject Widget::staticMetaObject = { {
     qt_static_metacall,
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_Widget_t
-, QtPrivate::TypeAndForceComplete<Widget, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<Widget, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 , QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 
 
@@ -133,13 +154,13 @@ int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 5;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 5)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 5;
     }
     return _id;
 }
@@ -148,6 +169,19 @@ int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 void Widget::shouldSwitchChanged()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+}
+
+// SIGNAL 1
+void Widget::finish(int _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void Widget::gameover()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

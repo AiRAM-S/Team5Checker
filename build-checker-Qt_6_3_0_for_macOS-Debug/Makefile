@@ -326,6 +326,7 @@ DIST          = ../../Qt/6.3.0/macos/mkspecs/features/spec_pre.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/qt_config.prf \
 		../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.conf \
 		../../Qt/6.3.0/macos/mkspecs/features/spec_post.prf \
+		../checker/.qmake.stash \
 		../../Qt/6.3.0/macos/mkspecs/features/exclusive_builds.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/mac/sdk.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/toolchain.prf \
@@ -378,7 +379,7 @@ TARGET        = checker.app/Contents/MacOS/checker
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 12.3
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qmake.stash
 EXPORT_VALID_ARCHS = x86_64 arm64
 EXPORT_DEFAULT_ARCHS = x86_64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -635,6 +636,7 @@ Makefile: ../checker/checker.pro ../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.c
 		../../Qt/6.3.0/macos/mkspecs/features/qt_config.prf \
 		../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.conf \
 		../../Qt/6.3.0/macos/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../Qt/6.3.0/macos/mkspecs/features/exclusive_builds.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/mac/sdk.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/toolchain.prf \
@@ -911,6 +913,7 @@ Makefile: ../checker/checker.pro ../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.c
 ../../Qt/6.3.0/macos/mkspecs/features/qt_config.prf:
 ../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.conf:
 ../../Qt/6.3.0/macos/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../Qt/6.3.0/macos/mkspecs/features/exclusive_builds.prf:
 ../../Qt/6.3.0/macos/mkspecs/features/mac/sdk.prf:
 ../../Qt/6.3.0/macos/mkspecs/features/toolchain.prf:
@@ -987,6 +990,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r checker.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -1032,6 +1036,33 @@ moc_checkerbutton.cpp: ../checker/checkerbutton.h \
 moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../checker/checkerbutton.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../checker/mydialog.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLineEdit \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMessageBox \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QMouseEvent \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qevent.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPoint \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpoint.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QComboBox \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qcombobox.h \
+		../checker/mydialog1.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
 		../checker/networksocket.h \
 		../checker/networkdata.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QtCore \
@@ -1152,13 +1183,11 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpauseanimation.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qplugin.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpluginloader.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpoint.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpointer.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qprocess.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qprocessordetection.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpromise.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qproperty.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyprivate.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qqueue.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrandom.h \
@@ -2024,6 +2053,33 @@ checkerbutton.o: ../checker/checkerbutton.cpp ../checker/checkerbutton.h \
 clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../checker/checkerbutton.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QWidget \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../checker/mydialog.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QApplication \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QDialog \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLineEdit \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMessageBox \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QMouseEvent \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qevent.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPoint \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpoint.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QComboBox \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qcombobox.h \
+		../checker/mydialog1.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
 		../checker/networksocket.h \
 		../checker/networkdata.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QtCore \
@@ -2144,13 +2200,11 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpauseanimation.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qplugin.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpluginloader.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpoint.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpointer.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qprocess.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qprocessordetection.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpromise.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qproperty.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyprivate.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qqueue.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrandom.h \
@@ -2224,8 +2278,12 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qxmlstream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qtcoreversion.h \
 		../checker/ui_clientwindow.h \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMessageBox \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmessagebox.h
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QPainter \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qpainter.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPointF \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QFont \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qfont.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o clientwindow.o ../checker/clientwindow.cpp
 
 main.o: ../checker/main.cpp ../checker/widget.h \

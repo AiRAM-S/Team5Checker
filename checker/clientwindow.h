@@ -37,7 +37,7 @@ public:
 
     bool canJump(int x,int y);//排查是否可以进行下一次跳跃
     void shouldSwitcht2f();
-
+    void isfinish();//棋子是否走完
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *event);
@@ -48,7 +48,7 @@ private:
     void DrawCheckerboard();
     void InitCheckerboard();
     QPointF loc[17][17];//棋盘每个位置的坐标
-    bool isfill[17][17];//棋盘每个位置是否有棋子
+    int isfill[17][17];//棋盘每个位置是否有棋子
     CheckerButton* btn[6][10]; //六方棋子
     int playernum; //棋手个数
     int flag;  //判断下棋方
@@ -72,7 +72,10 @@ private:
     QLabel* nowplayer;
     QPushButton* end;
     bool shouldSwitch;
+    bool isover[6];
+    int overnum=0;
     mydialog1 *z;
+    int totalstep=0;
 
     //stage2用到的
     char myPos;//记录该玩家所处位置（ABCDEF)
@@ -89,6 +92,8 @@ private:
 
 signals:
     void shouldSwitchChanged();
+    void finish(int);
+    void gameover();
 public slots:
     void changeplayer();
     void receive(NetworkData);
