@@ -10,6 +10,8 @@ CONFIG += c++17
 
 SOURCES += \
     checkerbutton.cpp \
+    chooseclient.cpp \
+    chooseservice.cpp \
     clientwindow.cpp \
     main.cpp \
     mydialog.cpp \
@@ -19,10 +21,13 @@ SOURCES += \
     networksocket.cpp \
     rank.cpp \
     room.cpp \
+    wait.cpp \
     widget.cpp
 
 HEADERS += \
     checkerbutton.h \
+    chooseclient.h \
+    chooseservice.h \
     clientwindow.h \
     mydialog.h \
     mydialog1.h \
@@ -31,11 +36,13 @@ HEADERS += \
     networksocket.h \
     rank.h \
     room.h \
+    wait.h \
     widget.h
 
 FORMS += \
     clientwindow.ui \
     mydialog.ui \
+    wait.ui \
     rank.ui \
     widget.ui
 

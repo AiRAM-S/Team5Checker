@@ -37,13 +37,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     join = new QPushButton("START");
     quit = new QPushButton("EXIT");
 
-    /*login->setStyleSheet("background-color:rgb(255,255,255");   设计窗口外观
-    login->setStyleSheet("color:green");
-    login->setStyleSheet("font:bold 20px");*/
     join->setStyleSheet("QPushButton {border: 0px solid #dadbde;border-radius: 5px;background-color: rgb(255,255,255);color:green;font:bold 25px;}");
-    /*quit->setStyleSheet("background-color:rgb(255,255,255");
-    quit->setStyleSheet("color:black");
-    quit->setStyleSheet("font:bold 20px");*/
     quit->setStyleSheet("QPushButton {border: 0px solid #dadbde;border-radius: 5px;background-color:  rgb(255,255,255);color:black;font:bold 25px;}");
 
     QVBoxLayout *vbox = new QVBoxLayout;
@@ -55,7 +49,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));  //不加入游戏
     connect(join, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
-        if(setplayer->currentIndex()!=-1){
+        if(setplayer->currentIndex()!=-1&&settype->currentIndex()!=-1){
             joinSuccessed = true;
             hide();
         }
@@ -67,5 +61,13 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     setplayer->addItem("2");
     setplayer->addItem("3");
     setplayer->addItem("6");
-    setplayer->setGeometry(180,350,125,30);
+    setplayer->setGeometry(180,340,125,30);
+
+    settype=new QComboBox(this);
+    settype->setPlaceholderText(QStringLiteral("请选择..."));
+    settype->setCurrentIndex(-1);
+    settype->addItem("Client");
+    settype->addItem("Server");
+    settype->setGeometry(180,370,125,30);
+
 }

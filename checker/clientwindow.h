@@ -13,6 +13,7 @@
 #include<QTimerEvent>
 #include "rank.h"
 #include "networksocket.h"
+#include"wait.h"
 
 namespace Ui {
 class ClientWindow;
@@ -75,6 +76,7 @@ private:
     bool isover[6];
     int overnum=0;
     mydialog1 *z;
+    wait *d;
     int totalstep=0;
 
     //stage2用到的
@@ -90,7 +92,6 @@ private:
     bool iswin;//是否胜利，不知道有没有用先写着
     Rank* rank;
     void initializeChecker(QString);//根据服务端发来的信号，画棋子
-
 
 signals:
     void shouldSwitchChanged();

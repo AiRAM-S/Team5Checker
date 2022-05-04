@@ -34,7 +34,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui(new Ui::ClientWindow)
 {
     ui->setupUi(this);
-
     //初始化socket
     socket = new NetworkSocket(new QTcpSocket(),this);
 
@@ -48,9 +47,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
     socket->hello(ip,port);
 
-
-    //开始界面 设置玩家人数 需改成进入房间时获取
+    //开始界面 设置玩家人数 
     myDialog *d = new myDialog;
+
     d->exec();
     int ifstart=d->Join();
     QString str=d->setplayer->currentText();
