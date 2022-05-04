@@ -23,8 +23,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ClientWindow_t {
-    const uint offsetsAndSize[16];
-    char stringdata0[84];
+    const uint offsetsAndSize[18];
+    char stringdata0[96];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_ClientWindow_t, stringdata0) + ofs), len 
@@ -37,12 +37,13 @@ QT_MOC_LITERAL(34, 6), // "finish"
 QT_MOC_LITERAL(41, 8), // "gameover"
 QT_MOC_LITERAL(50, 12), // "cbuttonpress"
 QT_MOC_LITERAL(63, 12), // "changeplayer"
-QT_MOC_LITERAL(76, 7) // "receive"
+QT_MOC_LITERAL(76, 7), // "receive"
+QT_MOC_LITERAL(84, 11) // "NetworkData"
 
     },
     "ClientWindow\0shouldSwitchChanged\0\0"
     "finish\0gameover\0cbuttonpress\0changeplayer\0"
-    "receive"
+    "receive\0NetworkData"
 };
 #undef QT_MOC_LITERAL
 
@@ -67,7 +68,7 @@ static const uint qt_meta_data_ClientWindow[] = {
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
        5,    0,   55,    2, 0x0a,    5 /* Public */,
        6,    0,   56,    2, 0x0a,    6 /* Public */,
-       7,    0,   57,    2, 0x0a,    7 /* Public */,
+       7,    1,   57,    2, 0x0a,    7 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -77,7 +78,7 @@ static const uint qt_meta_data_ClientWindow[] = {
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 8,    2,
 
        0        // eod
 };
@@ -93,7 +94,7 @@ void ClientWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 2: _t->gameover(); break;
         case 3: _t->cbuttonpress(); break;
         case 4: _t->changeplayer(); break;
-        case 5: _t->receive(); break;
+        case 5: _t->receive((*reinterpret_cast< std::add_pointer_t<NetworkData>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -130,7 +131,7 @@ const QMetaObject ClientWindow::staticMetaObject = { {
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_ClientWindow_t
 , QtPrivate::TypeAndForceComplete<ClientWindow, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
-, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<NetworkData, std::false_type>
 
 
 >,
