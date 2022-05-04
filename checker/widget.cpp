@@ -32,7 +32,7 @@ Widget::Widget(QWidget *parent)
 
     //初始化server
     server = new NetworkServer(this);
-    server->listen(QHostAddress("10.46.156.60"),9999);
+    connect(this->server, &NetworkServer::receive, this, &Widget::receiveData);
 
     //开始界面 设置玩家人数
     myDialog *d = new myDialog;
@@ -657,3 +657,110 @@ Widget::Widget(QWidget *parent)
         win->show();
     }*/
 
+    void Widget::receiveData(QTcpSocket *client, NetworkData data){
+        switch(data.op){
+        case OPCODE::JOIN_ROOM_OP:{
+            bool newRoom=false;
+            bool nameConflict=false;
+            bool canEnter=false;
+            int objRoom = -1;
+            if(roomList.empty()){
+                newRoom = true;
+            }
+            else{
+                for(int i=0;i<roomList.length();i++){
+                    if(roomList[i].getID()==data.data1.toInt()){
+                        newRoom = false;
+                        for(int j=0;j<roomList.at(i).getPlnum();j++){
+                            if(roomList[i].getPl().at(j).getID()==data.data2){
+                               nameConflict = true;
+                               canEnter=false;
+                               break;
+                            }
+                        }
+                        if(!nameConflict){
+                            canEnter = true;
+                            objRoom = i;
+                        }
+                        break;
+                    }
+                }
+                if(!(nameConflict||canEnter))
+                    newRoom=true;
+            }
+            if(newRoom)
+            {
+                Room newRoom(data.data1.toInt());
+                newRoom.addPl(data.data2,client);
+                roomList.append(newRoom);
+                //发送开房信号
+                server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,QString(""),QString("")));
+            }
+            if(nameConflict){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
+            }
+            if(canEnter&&objRoom>=0){
+                if(roomList[objRoom].ifON())
+                    //如果目标房间游戏开始，则不允许加入
+                    server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
+                else{
+                    roomList[objRoom].addPl(data.data2,client);
+                    //发送加入成功信号
+                    QString prevPl;
+                    QString prevState;
+                    for(int t=0;t<roomList[objRoom].getPlnum()-1;t++){
+                        prevPl.append(roomList[objRoom].getPl().at(t).getID()).append(" ");
+                        if(roomList[objRoom].getPl().at(t).ifReady())
+                            prevState.append("1");
+                        else prevState.append("0");
+                        server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
+                    }
+                    server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
+                }
+            }
+        }
+        break;
+        case OPCODE::LEAVE_ROOM_OP:{
+            int objRoom = data.data1.toInt();
+            QString outPl = data.data2;
+            for(int i=0;i<roomList.length();i++){
+                if(roomList[i].getID()==objRoom){
+                    int plnum=roomList[i].getPlnum();
+                    for(int j=0;j<plnum;j++){
+                        if(roomList[i].getPl()[j].getID()==outPl){
+                            roomList[i].getPl().removeAt(j);
+                        }
+                        else{
+                            server->send(roomList[i].getPl()[j].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
+                        }
+                    }
+                }
+            }
+        }
+        break;
+        case OPCODE::MOVE_OP:{
+            //未实现
+        }
+        break;
+        case OPCODE::PLAYER_READY_OP:{
+            int roomNum = roomList.length();
+            bool found=false;
+            for(int i=0;i<roomNum;i++){
+                for(int j=0;j<roomList[i].getPlnum();j++){
+                    if(roomList[i].getPl()[j].getID()==data.data1){
+                        roomList[i].getPl()[j].setReady();
+                        found=true;
+                        break;
+                    }
+                }
+                if(found){
+                    for(int j=0;j<roomList[i].getPlnum();j++){
+                        server->send(roomList[i].getPl()[j].getSocket(),data);
+                    }
+                    break;
+                }
+            }
+        }
+        break;
+        }
+    }

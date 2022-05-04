@@ -6,6 +6,8 @@ debug/mydialog1.o
 debug/networkdata.o
 debug/networkserver.o
 debug/networksocket.o
+debug/rank.o
+debug/room.o
 debug/widget.o
 debug/qrc_image.o
 debug/moc_checkerbutton.o
@@ -14,4 +16,5 @@ debug/moc_mydialog.o
 debug/moc_mydialog1.o
 debug/moc_networkserver.o
 debug/moc_networksocket.o
+debug/moc_rank.o
 debug/moc_widget.o

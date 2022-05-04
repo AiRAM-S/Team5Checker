@@ -117,6 +117,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                        chosen.setY(but.pos().ry());
                        chosenloc[0]=but.x;
                        chosenloc[1]=but.y;
+                       path = QString("%1 %2 ").arg(but.x).arg(but.y);  //记录路径 stage2
                        btnx=but.x;
                        btny=but.y;
                        ischosen=true;
@@ -168,6 +169,7 @@ void ClientWindow::changeplayer(){
         btn[flag][i]->setCheckable(false);
     }
 
+//    Su:我觉得flag的修改可以不用客户端自己来，当客户端接收到服务端的行棋信号时，根据信号内容修改即可
     flag = (flag+1)%playernum;
     while(isover[flag]){
         flag = (flag+1)%playernum;
@@ -283,6 +285,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
             objloc[1] = l%17;
             int mv=islegal();
             if(mv&&isobjset){
+                path.append(QString("%1 %2 ").arg(objloc[0]).arg(objloc[1]));
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
@@ -293,13 +296,6 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                     chosenloc[0]=objloc[0];
                     chosenloc[1]=objloc[1];
                 }
-//                if(shouldSwitch){
-//                   shouldSwitcht2f();
-//                }
-//                else{
-//                   chosenloc[0]=objloc[0];
-//                   chosenloc[1]=objloc[1];
-//                }
             }
         }
     }
@@ -445,7 +441,8 @@ void ClientWindow::receive(NetworkData data){
             players.removeOne(data.data1);
             //这里没有改playerState，我觉得应该影响不大
         break;
-        case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现
+        case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现 我理解是断开连接（Su）
+            this->socket->bye();
         break;
         case OPCODE::PLAYER_READY_OP://有玩家准备就绪
             playerState[players.indexOf(data.data1)] = 1;
