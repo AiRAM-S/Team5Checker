@@ -6,6 +6,9 @@
 #include<QDebug>
 #include<QLabel>
 #include<QFont>
+#include"networkdata.h"
+#include<QMessageBox>
+
 #define I 40 //横向间距
 #define JX 20
 #define JY sqrt(3)*20 //行距
@@ -44,8 +47,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
     socket->hello(ip,port);
 
-    //开始界面 设置玩家人数
-    /*myDialog *d = new myDialog;
+    //开始界面 设置玩家人数 
+    myDialog *d = new myDialog;
+
     d->exec();
     int ifstart=d->Join();
     QString str=d->setplayer->currentText();
@@ -56,10 +60,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
         else
             playernum=6;
     if(!ifstart)
-        exit(0);*/
+        exit(0);
 
-    playernum=6;
-    //这行会报错 说没有QUIT成员 有点奇怪 不知道怎么改
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");
 
@@ -74,177 +76,38 @@ ClientWindow::ClientWindow(QWidget *parent) :
     this->setFixedSize(700,700);
     DrawCheckerboard();
     //初始化部分
+        //初始化秒表
+        clock1 = new QLabel("剩余时间",this);
+        clock1->setFont(QFont("Microsoft YaHei",20));
+        clock1->setGeometry(70,500,300,50);
+        clock1->setStyleSheet("color:brown;");
+        clock1->hide();
+        clock2 = new QLabel("30 s",this);
+        clock2->setFont(QFont("Agency FB",20));
+        clock2->setStyleSheet("color:brown;");
+        clock2->setGeometry(70,530,300,50);
+        clock2->hide();
+
         //初始化isfill
         for(int i1=0;i1<17;i1++){
             for(int i2=0;i2<17;i2++){
-                isfill[i1][i2]=false;
+                isfill[i1][i2]=0;
             }
+        }
+        for(int i=0;i<playernum;i++){
+            isover[i]=false;
         }
         //初始化是否需要更换棋手
         shouldSwitch=false;
-        //先实现1v1
-        //playernum=2;
-        //红方先手
-        flag=red;
-        //记录棋手
-        nowplayer = new QLabel(this);
-        nowplayer->setFont(QFont("Agency FB",24));
-        nowplayer->setGeometry(275,0,300,50);
-        nowplayer->setText("Player:  RED");
-        nowplayer->setStyleSheet("color:red;");
-
+        //初始化是否胜利
+        iswin=false;
         //记录上一步是否为跳子
         haveJumped=false;
+        //初始化游戏结束排名表
+        rank = new Rank(this);
+        rank->show();
 
-        //初始化棋子 2player
-        int k=0;
-        if(playernum==2){
-        for(int j=5;j<=8;j++){
-            for(int i=j-4;i<=4;i++){
-                btn[0][k]=new CheckerButton(this);
-                btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
-                btn[0][k]->setIconSize(QSize(RR,RR));
-                btn[0][k]->setFlat(true);
-                btn[0][k]->player=red; //set player
-                btn[0][k]->x=i+8;
-                btn[0][k]->y=-j+8;
-                isfill[i+8][-j+8]=true;
-                btn[1][k]=new CheckerButton(this);
-                btn[1][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
-                btn[1][k]->setIconSize(QSize(RR,RR));
-                btn[1][k]->setFlat(true);
-                btn[1][k]->player=blue;//set player
-                btn[1][k]->x=-i+8;
-                btn[1][k]->y=j+8;
-                isfill[-i+8][j+8]=true;
-                k++;
-            }
-        }
-        }
-        if(playernum==3){
-            k=0;
-            for(int j=5;j<=8;j++){
-                for(int i=j-4;i<=4;i++){
-                    btn[0][k]=new CheckerButton(this);
-                    btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[0][k]->setIcon(QPixmap(":/image/red.png"));
-                    btn[0][k]->setIconSize(QSize(RR,RR));
-                    btn[0][k]->setFlat(true);
-                    btn[0][k]->player=red; //set player
-                    btn[0][k]->x=i+8;
-                    btn[0][k]->y=-j+8;
-                    isfill[i+8][-j+8]=true;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=1; i<5; i++){
-                for(int j=-4; j<i-4; j++){
-                    btn[1][k]=new CheckerButton(this);
-                    btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
-                    btn[1][k]->setIconSize(QSize(RR,RR));
-                    btn[1][k]->setFlat(true);
-                    btn[1][k]->player=blue; //set player
-                    btn[1][k]->x=i+8;
-                    btn[1][k]->y=-j+8;
-                    isfill[i+8][-j+8]=true;
-                    k++;
-                }
-            }
-
-            k=0;
-            for(int i=5;i<=8;i++){
-                for(int j=i-4;j<=4;j++){
-                    btn[2][k]=new CheckerButton(this);
-                    btn[2][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[2][k]->setIcon(QPixmap(":/image/green.png"));
-                    btn[2][k]->setIconSize(QSize(RRR,RRR));
-                    btn[2][k]->setFlat(true);
-                    btn[2][k]->player=green; //set player
-                    btn[2][k]->x=-i+8;
-                    btn[2][k]->y=j+8;
-                    isfill[-i+8][j+8]=true;
-                    k++;
-                }
-            }
-        }
-        if(playernum==6){
-            k=0;
-            for(int j=5;j<=8;j++){
-                for(int i=j-4;i<=4;i++){
-                    btn[0][k]=new CheckerButton(this);
-                    btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[0][k]->setIcon(QPixmap(":/image/red.png"));
-                    btn[0][k]->setIconSize(QSize(RR,RR));
-                    btn[0][k]->setFlat(true);
-                    btn[0][k]->player=red; //set player
-                    btn[0][k]->x=i+8;
-                    btn[0][k]->y=-j+8;
-                    isfill[i+8][-j+8]=true;
-                    btn[3][k]=new CheckerButton(this);
-                    btn[3][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[3][k]->setIcon(QPixmap(":/image/pink.png"));
-                    btn[3][k]->setIconSize(QSize(RRR,RRR));
-                    btn[3][k]->setFlat(true);
-                    btn[3][k]->player=pink;//set player
-                    btn[3][k]->x=-i+8;
-                    btn[3][k]->y=j+8;
-                    isfill[-i+8][j+8]=true;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=1; i<5; i++){
-                for(int j=-4; j<i-4; j++){
-                    btn[2][k]=new CheckerButton(this);
-                    btn[2][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[2][k]->setIcon(QPixmap(":/image/green.png"));
-                    btn[2][k]->setIconSize(QSize(RRR,RRR));
-                    btn[2][k]->setFlat(true);
-                    btn[2][k]->player=green; //set player
-                    btn[2][k]->x=i+8;
-                    btn[2][k]->y=-j+8;
-                    isfill[i+8][-j+8]=true;
-                    btn[5][k]=new CheckerButton(this);
-                    btn[5][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[5][k]->setIcon(QPixmap(":/image/orange.png"));
-                    btn[5][k]->setIconSize(QSize(RRR,RRR));
-                    btn[5][k]->setFlat(true);
-                    btn[5][k]->player=orange; //set player
-                    btn[5][k]->x=-i+8;
-                    btn[5][k]->y=j+8;
-                    isfill[-i+8][j+8]=true;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=5;i<=8;i++){
-                for(int j=i-4;j<=4;j++){
-                    btn[4][k]=new CheckerButton(this);
-                    btn[4][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[4][k]->setIcon(QPixmap(":/image/purple.png"));
-                    btn[4][k]->setIconSize(QSize(RRR,RRR));
-                    btn[4][k]->setFlat(true);
-                    btn[4][k]->player=purple; //set player
-                    btn[4][k]->x=-i+8;
-                    btn[4][k]->y=j+8;
-                    isfill[-i+8][j+8]=true;
-                    btn[1][k]=new CheckerButton(this);
-                    btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
-                    btn[1][k]->setIconSize(QSize(RR,RR));
-                    btn[1][k]->setFlat(true);
-                    btn[1][k]->player=blue; //set player
-                    btn[1][k]->x=i+8;
-                    btn[1][k]->y=-j+8;
-                    isfill[i+8][-j+8]=true;
-                    k++;
-                }
-            }
-        }
+        initializeChecker(QString("data2"));//这一处最后应该是需要删掉的
 
         //建立连接：按下棋子后记录被选中者
         for(int t=0;t<10;t++){
@@ -255,6 +118,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                        chosen.setY(but.pos().ry());
                        chosenloc[0]=but.x;
                        chosenloc[1]=but.y;
+                       path = QString("%1 %2 ").arg(but.x).arg(but.y);  //记录路径 stage2
                        btnx=but.x;
                        btny=but.y;
                        ischosen=true;
@@ -305,11 +169,19 @@ void ClientWindow::changeplayer(){
     for(int i=0;i<10;i++){
         btn[flag][i]->setCheckable(false);
     }
-    for(int j=0;j<10;j++){
-        btn[(flag+1)%playernum][j]->setCheckable(true);
-    }
+
+//    Su:我觉得flag的修改可以不用客户端自己来，当客户端接收到服务端的行棋信号时，根据信号内容修改即可
     flag = (flag+1)%playernum;
-    //if(flag==red)
+    while(isover[flag]){
+        flag = (flag+1)%playernum;
+    }
+    for(int j=0;j<10;j++){
+        btn[flag][j]->setCheckable(true);
+    }
+  
+    NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
+    socket->send(mv);//发送move信号
+
     switch(flag){
     case red:
         nowplayer->setText("Player:  RED");
@@ -342,6 +214,7 @@ void ClientWindow::changeplayer(){
     checked=NULL;
     jumped=NULL;
     step=0;
+    path = QString("");
 }
 
 void ClientWindow::paintEvent(QPaintEvent *)
@@ -413,6 +286,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
             objloc[1] = l%17;
             int mv=islegal();
             if(mv&&isobjset){
+                path.append(QString("%1 %2 ").arg(objloc[0]).arg(objloc[1]));
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
@@ -423,13 +297,6 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                     chosenloc[0]=objloc[0];
                     chosenloc[1]=objloc[1];
                 }
-//                if(shouldSwitch){
-//                   shouldSwitcht2f();
-//                }
-//                else{
-//                   chosenloc[0]=objloc[0];
-//                   chosenloc[1]=objloc[1];
-//                }
             }
         }
     }
@@ -442,7 +309,7 @@ int ClientWindow::islegal(){
         return 0;
     }
     //判断目标点是否为空位
-    if(isfill[objloc[0]][objloc[1]]==true){
+    if(isfill[objloc[0]][objloc[1]]){
         test->setText("object is filled");
         return 0;
     }
@@ -520,10 +387,21 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     anim->start(QPropertyAnimation::KeepWhenStopped);
     btn->x=objloc[0];
     btn->y=objloc[1];
-    isfill[objloc[0]][objloc[1]]=true;
-    isfill[chosenloc[0]][chosenloc[1]]=false;
+    isfill[objloc[0]][objloc[1]]=btn->player+1;
+    isfill[chosenloc[0]][chosenloc[1]]=0;
     ischange=false;
     step++;
+
+    if(step==1){
+        path = QString(QString::number(chosenloc[0]).append(" ").append(QString::number(chosenloc[1])));
+    }
+    path.append(" ").append(QString::number(objloc[0]).append(" ").append(QString::number(objloc[1])));
+
+    totalstep++;
+    if(totalstep>60*playernum){
+        isfinish();
+    }
+
 }
 
 bool ClientWindow::canJump(int x,int y){//不能跳回原位
@@ -548,6 +426,419 @@ ClientWindow::~ClientWindow()
     delete ui;
 }
 
-void ClientWindow::receive(){
-    //实现receive槽函数
+static int timeLeft=30;
+
+void ClientWindow::receive(NetworkData data){
+    switch(data.op){
+        case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
+            players = data.data1.split(" ");//载入已有玩家姓名
+            for(int i=0;i<data.data2.length();i++){
+                playerState[i]=QString(data.data2.at(i)).toInt();
+            }//设置已有玩家状态
+            players.append(myName);
+            playerState[data.data2.length()] = 0;
+        break;
+        case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
+            players.removeOne(data.data1);
+            //这里没有改playerState，我觉得应该影响不大
+        break;
+        case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现 我理解是断开连接（Su）
+            this->socket->bye();
+        break;
+        case OPCODE::PLAYER_READY_OP://有玩家准备就绪
+            playerState[players.indexOf(data.data1)] = 1;
+        break;
+        case OPCODE::START_GAME_OP://开始游戏 实现了一半
+           {
+            QStringList pls = data.data1.split(" ");
+            QStringList seq = data.data2.split(" ");
+            playernum=data.data2.length();
+            for(int i=0;i<playernum;i++){
+                players.replace(seq.at(i).toInt()-65,pls.at(i));
+            }
+            myPos = *(seq.at(pls.indexOf(myName)).toLatin1().data());
+            //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
+            initializeChecker(data.data2);//画棋子
+        }
+        break;
+        case OPCODE::START_TURN_OP://我的回合开始
+            timeLeft=30;
+            id=startTimer(1000);
+            clock1->show();
+            clock2->show();
+        break;
+        case OPCODE::MOVE_OP://其他玩家移动棋子
+            {
+                if(data.data2=="-1"){
+                    //移除该玩家所有棋子
+                    char outpl = data.data1.toLatin1()[0];
+                    for(int i=0;i<10;i++){
+                        btn[outpl-65][i]->hide();
+                    }
+                }
+                else{
+                    QStringList checkerpath = data.data2.split(" ");
+                    int stepnum = checkerpath.length()/2-1;
+                    int origin[2];
+                    origin[0]= checkerpath.at(0).toInt();
+                    origin[1]= checkerpath.at(1).toInt();
+                    char plnow = data.data1.toLatin1()[0];
+                    for(int i=0;i<10;i++){
+                        if(btn[plnow-65][i]->x==origin[0]
+                           &&btn[plnow-65][i]->y==origin[1]){
+                            for(int j=1;j<=stepnum;j++){
+                                int aimloc[2];
+                                aimloc[0]= checkerpath.at(2*j).toInt();
+                                aimloc[1]=checkerpath.at(2*j+1).toInt();
+                                QPointF aim;
+                                aim.setX(loc[aimloc[0]][aimloc[1]].rx()-RR/4);
+                                aim.setY(loc[aimloc[0]][aimloc[1]].ry()-RR/4);
+                                CheckerMove(btn[plnow-65][i],aim);
+                            }
+                        }
+                    }
+                }
+                nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
+            }
+        break;
+    case OPCODE::END_TURN_OP://胜利反馈
+        iswin=true;
+    break;
+    case OPCODE::END_GAME_OP://游戏结束
+    {
+        //弹排名界面
+        rank->ranktable->setRowCount(data.data1.length());
+        rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+        QStringList header;
+        for(int i=0;i<data.data1.length();i++){
+            if(i==0)
+                header << "1st";
+            else if(i==1)
+                header << "2nd";
+            else{
+                header << QString("%1th").arg(i);
+            }
+        }
+        rank->ranktable->setVerticalHeaderLabels(header);
+        for(int i=0;i<data.data1.length();i++){
+            char plnow=data.data1.toLatin1()[i];
+            rank->ranktable->setItem(i,0,new QTableWidgetItem(players[plnow-65]));
+        }
+        //断开连接
+        socket->bye(); 
+    }
+    break;
+    case OPCODE::ERROR_OP://错误
+    {
+        if(data.data1=="INVALID_JOIN")
+            QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
+        else if(data.data1=="INVALID_MOVE")
+            QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");
+        else if(data.data1=="INVALID_REQ")
+            QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
+        else if(data.data1=="NOT_IN_ROOM")
+            QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
+        else if(data.data1=="OUTTURN_MOVE")
+            QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
+        else if(data.data1=="ROOM_IS_RUNNING")
+            QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
+        else if(data.data1=="ROOM_NOT_RUNNING")
+            QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");
+        else{
+            if(data.data2.isEmpty()){
+                QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
+            }
+            else{
+                QMessageBox::information(this,QString("error"),data.data2,"OK");
+            }
+        }
+    }
+    }
+}
+
+void ClientWindow::timerEvent(QTimerEvent *event){
+    timeLeft--;
+    if(timeLeft<0){
+        this->killTimer(id);//停止计时
+    }
+    else{
+       clock2->setText(QString("%1 s").arg(timeLeft));
+    }
+}
+
+void ClientWindow::isfinish(){
+    bool flg[6];
+    for(int i=0;i<6;i++){
+        flg[i]=true;
+    }
+    if(playernum==2){
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                if(!flg[0]&&!flg[1]){
+                    break;
+                }
+                if(isfill[i+8][-j+8]!=blue+1) flg[1]=false;
+                if(isfill[-i+8][j+8]!=red+1) flg[0]=false;
+            }
+            if(!flg[0]&&!flg[1]){
+                break;
+            }
+        }
+    }
+    if(playernum==3){
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                if(!flg[0]){
+                    break;
+                }
+                if(isfill[-i+8][j+8]!=red+1) flg[0]=false;
+            }
+            if(!flg[0]){
+                break;
+            }
+        }
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                if(!flg[1]){
+                    break;
+                }
+                if(isfill[-i+8][j+8]!=blue+1) flg[1]=false;
+            }
+            if(!flg[1]){
+                break;
+            }
+        }
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                if(!flg[2]){
+                    break;
+                }
+                if(isfill[i+8][-j+8]!=3) flg[2]=false;
+            }
+            if(!flg[2]){
+                break;
+            }
+        }
+    }
+    if(playernum==6){
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                if(!flg[0]&&!flg[3]){
+                    break;
+                }
+                if(isfill[i+8][-j+8]!=4) flg[3]=false;
+                if(isfill[-i+8][j+8]!=1) flg[0]=false;
+            }
+            if(!flg[0]&&!flg[3]){
+                break;
+            }
+        }
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                if(!flg[2]&&!flg[5]){
+                    break;
+                }
+                if(isfill[-i+8][j+8]!=3) flg[2]=false;
+                if(isfill[i+8][-j+8]!=6) flg[5]=false;
+            }
+            if(!flg[2]&&!flg[5]){
+                break;
+            }
+        }
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                if(!flg[1]&&!flg[4]){
+                    break;
+                }
+                if(isfill[i+8][-j+8]!=5) flg[4]=false;
+                if(isfill[-i+8][j+8]!=2) flg[1]=false;
+            }
+            if(!flg[1]&&!flg[4]){
+                break;
+            }
+        }
+    }
+    for(int i=0;i<playernum;i++){
+        if(flg[i]){
+            emit finish(i);//发出某一方结束信号
+            isover[i]=true;
+            overnum++;
+        }
+    }
+    if(overnum==playernum){
+        emit gameover();//游戏结束信号
+    }
+}
+
+void ClientWindow::initializeChecker(QString data){
+    //初始化棋子 2player
+    int k=0;
+    if(playernum==2){
+        flag = blue;//12点的蓝方先手
+        //记录棋手
+        nowplayer = new QLabel(this);
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player: BLUE");
+        nowplayer->setStyleSheet("color:blue;");
+    for(int j=5;j<=8;j++){
+        for(int i=j-4;i<=4;i++){
+            btn[0][k]=new CheckerButton(this);
+            btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+            btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+            btn[0][k]->setIconSize(QSize(RR,RR));
+            btn[0][k]->setFlat(true);
+            btn[0][k]->player=red; //set player
+            btn[0][k]->x=i+8;
+            btn[0][k]->y=-j+8;
+            isfill[i+8][-j+8]=red+1;
+            btn[1][k]=new CheckerButton(this);
+            btn[1][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+            btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+            btn[1][k]->setIconSize(QSize(RR,RR));
+            btn[1][k]->setFlat(true);
+            btn[1][k]->player=blue;//set player
+            btn[1][k]->x=-i+8;
+            btn[1][k]->y=j+8;
+            isfill[-i+8][j+8]=blue+1;
+            k++;
+        }
+    }
+    }
+    if(playernum==3){
+        flag = blue;
+        //记录棋手
+        nowplayer = new QLabel(this);
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player: BLUE");
+        nowplayer->setStyleSheet("color:blue;");
+        k=0;
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                btn[0][k]=new CheckerButton(this);
+                btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+                btn[0][k]->setIconSize(QSize(RR,RR));
+                btn[0][k]->setFlat(true);
+                btn[0][k]->player=red; //set player
+                btn[0][k]->x=i+8;
+                btn[0][k]->y=-j+8;
+                isfill[i+8][-j+8]=red+1;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                btn[1][k]=new CheckerButton(this);
+                btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+                btn[1][k]->setIconSize(QSize(RR,RR));
+                btn[1][k]->setFlat(true);
+                btn[1][k]->player=blue; //set player
+                btn[1][k]->x=i+8;
+                btn[1][k]->y=-j+8;
+                isfill[i+8][-j+8]=blue+1;
+                k++;
+            }
+        }
+
+        k=0;
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                btn[2][k]=new CheckerButton(this);
+                btn[2][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[2][k]->setIcon(QPixmap(":/image/green.png"));
+                btn[2][k]->setIconSize(QSize(RRR,RRR));
+                btn[2][k]->setFlat(true);
+                btn[2][k]->player=green; //set player
+                btn[2][k]->x=-i+8;
+                btn[2][k]->y=j+8;
+                isfill[-i+8][j+8]=green+1;
+                k++;
+            }
+        }
+    }
+    if(playernum==6){
+        flag = pink;
+        //记录棋手
+        nowplayer = new QLabel(this);
+        nowplayer->setFont(QFont("Agency FB",24));
+        nowplayer->setGeometry(275,0,300,50);
+        nowplayer->setText("Player:PINK");
+        nowplayer->setStyleSheet("color:#DB7093;");
+        k=0;
+        for(int j=5;j<=8;j++){
+            for(int i=j-4;i<=4;i++){
+                btn[0][k]=new CheckerButton(this);
+                btn[0][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[0][k]->setIcon(QPixmap(":/image/red.png"));
+                btn[0][k]->setIconSize(QSize(RR,RR));
+                btn[0][k]->setFlat(true);
+                btn[0][k]->player=red; //set player
+                btn[0][k]->x=i+8;
+                btn[0][k]->y=-j+8;
+                isfill[i+8][-j+8]=red+1;
+                btn[3][k]=new CheckerButton(this);
+                btn[3][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[3][k]->setIcon(QPixmap(":/image/pink.png"));
+                btn[3][k]->setIconSize(QSize(RRR,RRR));
+                btn[3][k]->setFlat(true);
+                btn[3][k]->player=pink;//set player
+                btn[3][k]->x=-i+8;
+                btn[3][k]->y=j+8;
+                isfill[-i+8][j+8]=pink+1;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=1; i<5; i++){
+            for(int j=-4; j<i-4; j++){
+                btn[2][k]=new CheckerButton(this);
+                btn[2][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[2][k]->setIcon(QPixmap(":/image/green.png"));
+                btn[2][k]->setIconSize(QSize(RRR,RRR));
+                btn[2][k]->setFlat(true);
+                btn[2][k]->player=green; //set player
+                btn[2][k]->x=i+8;
+                btn[2][k]->y=-j+8;
+                isfill[i+8][-j+8]=green+1;
+                btn[5][k]=new CheckerButton(this);
+                btn[5][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[5][k]->setIcon(QPixmap(":/image/orange.png"));
+                btn[5][k]->setIconSize(QSize(RRR,RRR));
+                btn[5][k]->setFlat(true);
+                btn[5][k]->player=orange; //set player
+                btn[5][k]->x=-i+8;
+                btn[5][k]->y=j+8;
+                isfill[-i+8][j+8]=orange+1;
+                k++;
+            }
+        }
+        k=0;
+        for(int i=5;i<=8;i++){
+            for(int j=i-4;j<=4;j++){
+                btn[4][k]=new CheckerButton(this);
+                btn[4][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                btn[4][k]->setIcon(QPixmap(":/image/purple.png"));
+                btn[4][k]->setIconSize(QSize(RRR,RRR));
+                btn[4][k]->setFlat(true);
+                btn[4][k]->player=purple; //set player
+                btn[4][k]->x=-i+8;
+                btn[4][k]->y=j+8;
+                isfill[-i+8][j+8]=purple+1;
+                btn[1][k]=new CheckerButton(this);
+                btn[1][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                btn[1][k]->setIcon(QPixmap(":/image/blue.png"));
+                btn[1][k]->setIconSize(QSize(RR,RR));
+                btn[1][k]->setFlat(true);
+                btn[1][k]->player=blue; //set player
+                btn[1][k]->x=i+8;
+                btn[1][k]->y=-j+8;
+                isfill[i+8][-j+8]=blue+1;
+                k++;
+            }
+        }
+    }
 }

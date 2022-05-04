@@ -19,6 +19,8 @@ SOURCES += \
     networkdata.cpp \
     networkserver.cpp \
     networksocket.cpp \
+    rank.cpp \
+    room.cpp \
     wait.cpp \
     widget.cpp
 
@@ -32,6 +34,8 @@ HEADERS += \
     networkdata.h \
     networkserver.h \
     networksocket.h \
+    rank.h \
+    room.h \
     wait.h \
     widget.h
 
@@ -39,6 +43,7 @@ FORMS += \
     clientwindow.ui \
     mydialog.ui \
     wait.ui \
+    rank.ui \
     widget.ui
 
 # Default rules for deployment.
