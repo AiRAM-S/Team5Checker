@@ -91,6 +91,7 @@ private:
     Rank* rank;
     void initializeChecker(QString);//根据服务端发来的信号，画棋子
 
+
 signals:
     void shouldSwitchChanged();
     void finish(int);

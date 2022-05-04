@@ -9,6 +9,7 @@ private:
     QString ID;
     bool isReady;
     QTcpSocket* pSocket;
+    char place;
 public:
     Player(QString _ID,QTcpSocket* _client):ID(_ID),pSocket(_client){
         isReady = false;
