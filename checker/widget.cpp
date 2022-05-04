@@ -702,7 +702,7 @@ Widget::Widget(QWidget *parent)
             if(canEnter&&objRoom>=0){
                 if(roomList[objRoom].ifON())
                     //如果目标房间游戏开始，则不允许加入
-                    server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
+                    server->send(client,NetworkData(OPCODE::ERROR_OP,QString("ROOM_IS_RUNNING"),QString("")));
                 else{
                     roomList[objRoom].addPl(data.data2,client);
                     //发送加入成功信号
@@ -722,24 +722,49 @@ Widget::Widget(QWidget *parent)
         break;
         case OPCODE::LEAVE_ROOM_OP:{
             int objRoom = data.data1.toInt();
+            bool inRoom = false;
+            bool roomFound = false;
             QString outPl = data.data2;
             for(int i=0;i<roomList.length();i++){
                 if(roomList[i].getID()==objRoom){
+                    roomFound = true;
                     int plnum=roomList[i].getPlnum();
+                    int plPos = -1;
                     for(int j=0;j<plnum;j++){
                         if(roomList[i].getPl()[j].getID()==outPl){
                             roomList[i].getPl().removeAt(j);
-                        }
-                        else{
-                            server->send(roomList[i].getPl()[j].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
+                            inRoom = true;
+                            plPos = j;
+                            break;
                         }
                     }
+                    if(inRoom){
+                        for(int t=0;t<plnum;t++){
+                            if(t!=plPos)
+                                server->send(roomList[i].getPl()[plPos].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
+                        }
+                    }
+                    else
+                        server->send(client,NetworkData(OPCODE::ERROR_OP,QString("NOT_IN_ROOM"),QString("")));
                 }
+            }
+            if(!roomFound){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("OTHER_ERROR"),QString("RoomID Not Found")));
             }
         }
         break;
         case OPCODE::MOVE_OP:{
             //未实现
+//            QStringList step = data.data2.split(" ");
+//            int stepNum = step.length()/2-1;
+//            //设置初始点
+//            btnx = step[0].toInt();
+//            btny = step[1].toInt();
+//            if(isfill[btnx][btny])
+//                server->send();
+//            for(int i=0;i<stepNum;i++){
+
+//            }
         }
         break;
         case OPCODE::PLAYER_READY_OP:{
@@ -759,6 +784,9 @@ Widget::Widget(QWidget *parent)
                     }
                     break;
                 }
+            }
+            if(!found){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("NOT_IN_ROOM"),QString("")));
             }
         }
         break;

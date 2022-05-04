@@ -7,6 +7,7 @@
 #include<QLabel>
 #include<QFont>
 #include"networkdata.h"
+#include<QMessageBox>
 
 #define I 40 //横向间距
 #define JX 20
@@ -46,6 +47,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     const QString ip("10.46.156.60");//RUC-WEB
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
     socket->hello(ip,port);
+
 
     //开始界面 设置玩家人数 需改成进入房间时获取
     myDialog *d = new myDialog;
@@ -497,6 +499,7 @@ void ClientWindow::receive(NetworkData data){
                         }
                     }
                 }
+                nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
             }
         break;
     case OPCODE::END_TURN_OP://胜利反馈
@@ -523,12 +526,34 @@ void ClientWindow::receive(NetworkData data){
             rank->ranktable->setItem(i,0,new QTableWidgetItem(players[plnow-65]));
         }
         //断开连接
-        socket->bye();
-        break;
+        socket->bye(); 
     }
+    break;
     case OPCODE::ERROR_OP://错误
-        //迷惑。
-        break;
+    {
+        if(data.data1=="INVALID_JOIN")
+            QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
+        else if(data.data1=="INVALID_MOVE")
+            QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");
+        else if(data.data1=="INVALID_REQ")
+            QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
+        else if(data.data1=="NOT_IN_ROOM")
+            QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
+        else if(data.data1=="OUTTURN_MOVE")
+            QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
+        else if(data.data1=="ROOM_IS_RUNNING")
+            QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
+        else if(data.data1=="ROOM_NOT_RUNNING")
+            QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");
+        else{
+            if(data.data2.isEmpty()){
+                QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
+            }
+            else{
+                QMessageBox::information(this,QString("error"),data.data2,"OK");
+            }
+        }
+    }
     }
 }
 
