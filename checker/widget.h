@@ -12,6 +12,8 @@
 #include<QPropertyAnimation>
 #include"networkserver.h"
 #include"networksocket.h"
+#include"networkdata.h"
+#include"room.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -75,8 +77,12 @@ private:
     mydialog1 *z;
     int totalstep=0;
 
-    NetworkServer* server;//监听
-    NetworkSocket* conn;//通信
+    //stage2相关
+    NetworkServer* server;//监听,其中的clients队列应指向每一个客户端，进行通信；
+    QList<Room> roomList;//所有房间，每个room类里包括：房间号（roomID)
+                         //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player），
+                         //玩家类，内含玩家socket，玩家ID，玩家状态
+
 signals:
     void shouldSwitchChanged();
     //终局判断，信号和槽函数未实现连接
@@ -84,7 +90,8 @@ signals:
     void gameover();//游戏结束信号
 public slots:
     void changeplayer();
-  //  void someoneover(int i);
+//  void someoneover(int i);
+    void receiveData(QTcpSocket* client, NetworkData data);//服务端接受到客户端信号时的解析函数
 
 
 };

@@ -18,6 +18,7 @@ SOURCES += \
     networkserver.cpp \
     networksocket.cpp \
     rank.cpp \
+    room.cpp \
     widget.cpp
 
 HEADERS += \
@@ -29,6 +30,7 @@ HEADERS += \
     networkserver.h \
     networksocket.h \
     rank.h \
+    room.h \
     widget.h
 
 FORMS += \
