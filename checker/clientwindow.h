@@ -11,6 +11,7 @@
 #include <QDialog>
 #include<QPropertyAnimation>
 #include "networksocket.h"
+#include"wait.h"
 
 namespace Ui {
 class ClientWindow;
@@ -71,6 +72,7 @@ private:
     QPushButton* end;
     bool shouldSwitch;
     mydialog1 *z;
+    wait *d;
 
 signals:
     void shouldSwitchChanged();

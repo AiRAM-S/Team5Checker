@@ -31,7 +31,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui(new Ui::ClientWindow)
 {
     ui->setupUi(this);
-
     //初始化socket
     socket = new NetworkSocket(new QTcpSocket(),this);
 
@@ -46,7 +45,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     socket->hello(ip,port);
 
     //开始界面 设置玩家人数
-    myDialog *d = new myDialog;
+    /*myDialog *d = new myDialog;
     d->exec();
     int ifstart=d->Join();
     QString str=d->setplayer->currentText();
@@ -57,8 +56,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
         else
             playernum=6;
     if(!ifstart)
-        exit(0);
+        exit(0);*/
 
+    playernum=6;
     //这行会报错 说没有QUIT成员 有点奇怪 不知道怎么改
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");

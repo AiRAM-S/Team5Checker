@@ -29,13 +29,12 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
-
     //初始化server
     server = new NetworkServer(this);
     server->listen(QHostAddress("10.46.156.60"),9999);
 
     //开始界面 设置玩家人数
-    myDialog *d = new myDialog;
+    /*myDialog *d=new myDialog;
     d->exec();
     int ifstart=d->Join();
     QString str=d->setplayer->currentText();
@@ -46,8 +45,8 @@ Widget::Widget(QWidget *parent)
         else
             playernum=6;
     if(!ifstart)
-        exit(0);
-
+        exit(0);*/
+    playernum=6;
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Server");
 
