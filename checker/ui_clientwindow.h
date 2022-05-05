@@ -15,6 +15,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QPushButton>
 
 QT_BEGIN_NAMESPACE
 
@@ -24,12 +25,12 @@ public:
     QMenuBar *menubar;
     QWidget *centralwidget;
     QStatusBar *statusbar;
+    QPushButton *QUIT;
 
     void setupUi(QMainWindow *ClientWindow)
     {
         if (ClientWindow->objectName().isEmpty())
             ClientWindow->setObjectName(QString::fromUtf8("ClientWindow"));
-        ClientWindow->resize(800, 600);
         menubar = new QMenuBar(ClientWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         ClientWindow->setMenuBar(menubar);
@@ -39,6 +40,16 @@ public:
         statusbar = new QStatusBar(ClientWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         ClientWindow->setStatusBar(statusbar);
+        QUIT = new QPushButton(ClientWindow);
+        QUIT->setObjectName(QString::fromUtf8("QUIT"));
+        QUIT->setText("QUIT");
+        QUIT->setGeometry(QRect(600, 50, 60, 30));
+        QFont font;
+        font.setPointSize(11);
+        font.setBold(true);
+        QUIT->setFont(font);
+        QUIT->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);\n"
+                                              "background-color: rgb(255, 255, 255);"));
 
         retranslateUi(ClientWindow);
 

@@ -34,7 +34,7 @@ public:
         font.setBold(true);
         QUIT->setFont(font);
         QUIT->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);\n"
-"background-color: rgb(255, 255, 255);"));
+                                              "background-color: rgb(255, 255, 255);"));
 
         retranslateUi(Widget);
 

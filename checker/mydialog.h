@@ -16,6 +16,7 @@
 class myDialog:public QDialog
 {
     Q_OBJECT
+
 public:
     myDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
 
@@ -30,6 +31,8 @@ public:
        return p;
     };
     QComboBox *setplayer;
+    QComboBox *settype;
+
 protected:
     void mpe(QMouseEvent *mo);
 
