@@ -38,7 +38,7 @@ public:
 
     bool canJump(int x,int y);//排查是否可以进行下一次跳跃
     void shouldSwitcht2f();
-    void isfinish();
+    bool isfinish(int x);
     CheckerButton* int2btn(int x,int y);
 protected:
     void paintEvent(QPaintEvent *);
