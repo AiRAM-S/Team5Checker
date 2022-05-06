@@ -31,11 +31,11 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     //初始化server
     server = new NetworkServer(this);
-    connect(this->server, &NetworkServer::receive, this, &Widget::receiveData);
-    server->listen(QHostAddress("10.46.156.60"),9999);
+    connect(server, &NetworkServer::receive, this, &Widget::receiveData);
+    server->listen(QHostAddress("127.0.0.1"),9999);
 
     //开始界面 设置玩家人数
-    /*myDialog *d=new myDialog;
+   /* myDialog *d=new myDialog;
     d->exec();
     int ifstart=d->Join();
     QString str=d->setplayer->currentText();
@@ -189,7 +189,7 @@ Widget::Widget(QWidget *parent)
                     btn[3][k]=new CheckerButton(this);
                     btn[3][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
                     btn[3][k]->setIcon(QPixmap(":/image/pink.png"));
-                    btn[3][k]->setIconSize(QSize(RRR,RRR));
+                    btn[3][k]->setIconSize(QSize(RRR+1,RRR+1));
                     btn[3][k]->setFlat(true);
                     btn[3][k]->player=pink;//set player
                     btn[3][k]->x=-i+8;
@@ -213,7 +213,7 @@ Widget::Widget(QWidget *parent)
                     btn[5][k]=new CheckerButton(this);
                     btn[5][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
                     btn[5][k]->setIcon(QPixmap(":/image/orange.png"));
-                    btn[5][k]->setIconSize(QSize(RRR,RRR));
+                    btn[5][k]->setIconSize(QSize(RRR+1,RRR+1));
                     btn[5][k]->setFlat(true);
                     btn[5][k]->player=orange; //set player
                     btn[5][k]->x=-i+8;
@@ -251,7 +251,10 @@ Widget::Widget(QWidget *parent)
         //建立连接：按下棋子后记录被选中者
         for(int t=0;t<10;t++){
             for(int j=0;j<playernum;j++){
-                connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
+
+                    btn[j][t]->setCheckable(false);
+
+               /* connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
                     if(flag==but.player&&step==0){
                        chosen.setX(but.pos().rx());
                        chosen.setY(but.pos().ry());
@@ -267,7 +270,7 @@ Widget::Widget(QWidget *parent)
                    else{
                        //返回警告
                    }
-                });
+                });*/
             }
         }
 
@@ -280,7 +283,7 @@ Widget::Widget(QWidget *parent)
         end->setText("回合结束");
         end->setGeometry(293,640,100,50);
         //实现更换执棋方功能
-        connect(end,&QPushButton::clicked,this,[=](){
+        /*connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
                 shouldSwitch=true;
                 shouldSwitcht2f();
@@ -291,7 +294,7 @@ Widget::Widget(QWidget *parent)
             else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
                 nobai->show();
             }
-        });
+        });*/
 
         connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
 
@@ -305,15 +308,10 @@ Widget::Widget(QWidget *parent)
     }
 
     void Widget::changeplayer(){
-        for(int i=0;i<10;i++){
-            btn[flag][i]->setCheckable(false);
-        }
+
         flag = (flag+1)%playernum;
         while(isover[flag]){
             flag = (flag+1)%playernum;
-        }
-        for(int j=0;j<10;j++){
-            btn[flag][j]->setCheckable(true);
         }
         //if(flag==red)
         switch(flag){
@@ -527,7 +525,7 @@ Widget::Widget(QWidget *parent)
         QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
         anim->setDuration(300);
         anim->setStartValue(btn->pos());
-        anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
+        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2));
         anim->start(QPropertyAnimation::KeepWhenStopped);
         btn->x=objloc[0];
         btn->y=objloc[1];
@@ -657,7 +655,21 @@ Widget::Widget(QWidget *parent)
         win->show();
     }*/
 
+    CheckerButton* Widget::int2btn(int btnx,int btny){
+        int flag=0;
+        for(int i=0;i<playernum;i++){
+            for(int j=0;j<10;j++){
+                if(btn[i][j]->x==btnx&&btn[i][j]->y==btny){
+                    return btn[i][j];
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag) break;
+        }
+    }
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
+
         switch(data.op){
         case OPCODE::JOIN_ROOM_OP:{
             bool newRoom=false;
@@ -754,22 +766,37 @@ Widget::Widget(QWidget *parent)
         }
         break;
         case OPCODE::MOVE_OP:{
-            //未实现 Su
-//            QStringList step = data.data2.split(" ");
-//            int stepNum = step.length()/2-1;
-//            //设置初始点
-//            btnx = step[0].toInt();
-//            btny = step[1].toInt();
-//            for(int i=0;i<10;i++){
+            //未实现
+            qDebug()<<"receive success";
+            QStringList step = data.data2.split(" ");//可能有负号
+           int stepNum = step.length();
+            //设置初始点
+            btnx = step[0].toInt()+8;
+            btny = step[1].toInt()+8;
+           for(int i=2;i<stepNum;i++){
+                 if(i%2==0){
+                   objloc[0]=step[i].toInt()+8;
+               }
+               else{
+                   objloc[1]=step[i].toInt()+8;
+               }
+               if(i%2){
+                   if(isfill[btnx][btny]){
+                      CheckerButton*b=int2btn(btnx,btny);
+                       ischosen=true;
+                       chosenloc[0]=btnx;
+                       chosenloc[1]=btny;
+                       if(islegal()){
+                    CheckerMove(b,loc[objloc[0]][objloc[1]]);
 
-//            }
-//            if(!isfill[btnx][btny])
-//                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_MOVE"),QString("invalid choose")));
-//            else{
-//                for(int i=0;i<stepNum;i++){
-//                       CheckerMove();
-//                }
-//            }
+                       }
+                       else{
+                           //发送错误信号
+
+                       }
+                   }
+               }
+            }
         }
         break;
         case OPCODE::PLAYER_READY_OP:{
@@ -795,6 +822,10 @@ Widget::Widget(QWidget *parent)
             }
         }
         break;
+        case OPCODE::END_TURN_OP:{
+            //
+            break;
+        }
         }
 
     }

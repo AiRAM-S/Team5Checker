@@ -23,6 +23,7 @@ private:
     QPushButton *YES;
     QLineEdit *IPS;
     QLineEdit *PORTS;
+    Widget* w;
 };
 
 #endif // CHOOSESERVICE_H
