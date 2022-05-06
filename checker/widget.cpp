@@ -32,6 +32,7 @@ Widget::Widget(QWidget *parent)
     //初始化server
     server = new NetworkServer(this);
     connect(this->server, &NetworkServer::receive, this, &Widget::receiveData);
+    server->listen(QHostAddress("10.46.156.60"),9999);
 
     //开始界面 设置玩家人数
     /*myDialog *d=new myDialog;
@@ -753,16 +754,21 @@ Widget::Widget(QWidget *parent)
         }
         break;
         case OPCODE::MOVE_OP:{
-            //未实现
+            //未实现 Su
 //            QStringList step = data.data2.split(" ");
 //            int stepNum = step.length()/2-1;
 //            //设置初始点
 //            btnx = step[0].toInt();
 //            btny = step[1].toInt();
-//            if(isfill[btnx][btny])
-//                server->send();
-//            for(int i=0;i<stepNum;i++){
+//            for(int i=0;i<10;i++){
 
+//            }
+//            if(!isfill[btnx][btny])
+//                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_MOVE"),QString("invalid choose")));
+//            else{
+//                for(int i=0;i<stepNum;i++){
+//                       CheckerMove();
+//                }
 //            }
         }
         break;
@@ -790,4 +796,5 @@ Widget::Widget(QWidget *parent)
         }
         break;
         }
+
     }

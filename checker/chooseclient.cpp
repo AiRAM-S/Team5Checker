@@ -55,10 +55,10 @@ chooseclient::chooseclient(QWidget *parent) :
         wait *d=new wait;
         d->setWindowTitle("waiting");
         d->show();
-        int ifs=d->Join();
-        if(!ifs)
-            exit(0);
-                    hide();
+//        int ifs=d->Join();
+//        if(!ifs)
+//            exit(0);
+//                    hide();
             });
 
 }
