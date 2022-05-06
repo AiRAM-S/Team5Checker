@@ -34,7 +34,6 @@ Widget::Widget(QWidget *parent)
     connect(server, &NetworkServer::receive, this, &Widget::receiveData);
     server->listen(QHostAddress("127.0.0.1"),9999);
 
-
     //开始界面 设置玩家人数
    /* myDialog *d=new myDialog;
     d->exec();
@@ -828,4 +827,5 @@ Widget::Widget(QWidget *parent)
             break;
         }
         }
+
     }

@@ -34,6 +34,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui(new Ui::ClientWindow)
 {
     ui->setupUi(this);
+
+
+
     //初始化socket
     socket = new NetworkSocket(new QTcpSocket(),this);
 
@@ -43,9 +46,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
     });
 
     //建立连接
-    const QString ip("127.0.0.1");//RUC-WEB
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
-    socket->hello(ip,port);
+    socket->hello("127.0.0.1",port);//ip传了本地的ip
 
     //开始界面 设置玩家人数 
    /* myDialog *d = new myDialog;
@@ -142,6 +144,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         end = new QPushButton(this);
         end->setText("回合结束");
         end->setGeometry(293,640,100,50);
+
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player

@@ -51,6 +51,7 @@ chooseservice::chooseservice(QWidget *parent) :
         w->show();
                     close();
             });
+    show();
 }
 
 chooseservice::~chooseservice()

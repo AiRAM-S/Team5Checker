@@ -1,5 +1,6 @@
 #ifndef ROOM_H
 #define ROOM_H
+
 #include<QStringList>
 #include<QString>
 #include<QTcpSocket>
@@ -53,6 +54,7 @@ public:
     int getPlnum() const{
         return playerNumber;
     }
+
 };
 
 #endif // ROOM_H
