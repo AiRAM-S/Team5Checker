@@ -19,7 +19,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_wait
+class Ui_Wait
 {
 public:
     QLineEdit *ID;
@@ -38,17 +38,17 @@ public:
     QRadioButton *btn5;
     QRadioButton *btn6;
 
-    void setupUi(QWidget *wait)
+    void setupUi(QWidget *Wait)
     {
-        if (wait->objectName().isEmpty())
-            wait->setObjectName(QString::fromUtf8("wait"));
-        wait->resize(581, 345);
+        if (Wait->objectName().isEmpty())
+            Wait->setObjectName(QString::fromUtf8("Wait"));
+        Wait->resize(581, 345);
         QFont font;
         font.setPointSize(9);
         font.setBold(false);
-        wait->setFont(font);
-        wait->setStyleSheet(QString::fromUtf8("background-color: rgb(170, 255, 255);"));
-        ID = new QLineEdit(wait);
+        Wait->setFont(font);
+        Wait->setStyleSheet(QString::fromUtf8("background-color: rgb(170, 255, 255);"));
+        ID = new QLineEdit(Wait);
         ID->setObjectName(QString::fromUtf8("ID"));
         ID->setGeometry(QRect(40, 50, 281, 31));
         QFont font1;
@@ -56,7 +56,7 @@ public:
         font1.setBold(false);
         ID->setFont(font1);
         ID->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
-        YES = new QPushButton(wait);
+        YES = new QPushButton(Wait);
         YES->setObjectName(QString::fromUtf8("YES"));
         YES->setGeometry(QRect(340, 50, 80, 31));
         QFont font2;
@@ -65,12 +65,12 @@ public:
         YES->setFont(font2);
         YES->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);\n"
 "background-color: rgb(255, 255, 255);"));
-        EXIT = new QPushButton(wait);
+        EXIT = new QPushButton(Wait);
         EXIT->setObjectName(QString::fromUtf8("EXIT"));
         EXIT->setGeometry(QRect(450, 50, 80, 31));
         EXIT->setFont(font2);
         EXIT->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
-        A = new QLabel(wait);
+        A = new QLabel(Wait);
         A->setObjectName(QString::fromUtf8("A"));
         A->setGeometry(QRect(90, 105, 54, 31));
         QFont font3;
@@ -78,32 +78,32 @@ public:
         font3.setBold(true);
         A->setFont(font3);
         A->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        B = new QLabel(wait);
+        B = new QLabel(Wait);
         B->setObjectName(QString::fromUtf8("B"));
         B->setGeometry(QRect(90, 160, 54, 31));
         B->setFont(font3);
         B->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        C = new QLabel(wait);
+        C = new QLabel(Wait);
         C->setObjectName(QString::fromUtf8("C"));
         C->setGeometry(QRect(90, 210, 54, 31));
         C->setFont(font3);
         C->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        D = new QLabel(wait);
+        D = new QLabel(Wait);
         D->setObjectName(QString::fromUtf8("D"));
         D->setGeometry(QRect(320, 100, 54, 31));
         D->setFont(font3);
         D->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        E = new QLabel(wait);
+        E = new QLabel(Wait);
         E->setObjectName(QString::fromUtf8("E"));
         E->setGeometry(QRect(320, 160, 54, 31));
         E->setFont(font3);
         E->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        F = new QLabel(wait);
+        F = new QLabel(Wait);
         F->setObjectName(QString::fromUtf8("F"));
         F->setGeometry(QRect(320, 210, 54, 31));
         F->setFont(font3);
         F->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        btn1 = new QRadioButton(wait);
+        btn1 = new QRadioButton(Wait);
         btn1->setObjectName(QString::fromUtf8("btn1"));
         btn1->setGeometry(QRect(140, 110, 121, 22));
         QFont font4;
@@ -111,56 +111,56 @@ public:
         font4.setBold(true);
         btn1->setFont(font4);
         btn1->setStyleSheet(QString::fromUtf8(""));
-        btn2 = new QRadioButton(wait);
+        btn2 = new QRadioButton(Wait);
         btn2->setObjectName(QString::fromUtf8("btn2"));
         btn2->setGeometry(QRect(140, 160, 121, 22));
         btn2->setFont(font4);
-        btn3 = new QRadioButton(wait);
+        btn3 = new QRadioButton(Wait);
         btn3->setObjectName(QString::fromUtf8("btn3"));
         btn3->setGeometry(QRect(140, 210, 121, 22));
         btn3->setFont(font4);
-        btn4 = new QRadioButton(wait);
+        btn4 = new QRadioButton(Wait);
         btn4->setObjectName(QString::fromUtf8("btn4"));
         btn4->setGeometry(QRect(370, 110, 121, 22));
         btn4->setFont(font4);
-        btn5 = new QRadioButton(wait);
+        btn5 = new QRadioButton(Wait);
         btn5->setObjectName(QString::fromUtf8("btn5"));
         btn5->setGeometry(QRect(370, 160, 121, 22));
         btn5->setFont(font4);
-        btn6 = new QRadioButton(wait);
+        btn6 = new QRadioButton(Wait);
         btn6->setObjectName(QString::fromUtf8("btn6"));
         btn6->setGeometry(QRect(370, 210, 121, 22));
         btn6->setFont(font4);
 
-        retranslateUi(wait);
+        retranslateUi(Wait);
 
-        QMetaObject::connectSlotsByName(wait);
+        QMetaObject::connectSlotsByName(Wait);
     } // setupUi
 
-    void retranslateUi(QWidget *wait)
+    void retranslateUi(QWidget *Wait)
     {
-        wait->setWindowTitle(QCoreApplication::translate("wait", "Form", nullptr));
-        ID->setText(QCoreApplication::translate("wait", "\350\257\267\350\276\223\345\205\245\344\275\240\347\232\204\347\224\250\346\210\267\345\220\215...", nullptr));
-        YES->setText(QCoreApplication::translate("wait", "\347\241\256 \350\256\244", nullptr));
-        EXIT->setText(QCoreApplication::translate("wait", "\351\200\200 \345\207\272", nullptr));
-        A->setText(QCoreApplication::translate("wait", "A", nullptr));
-        B->setText(QCoreApplication::translate("wait", "B", nullptr));
-        C->setText(QCoreApplication::translate("wait", "C", nullptr));
-        D->setText(QCoreApplication::translate("wait", "D", nullptr));
-        E->setText(QCoreApplication::translate("wait", "E", nullptr));
-        F->setText(QCoreApplication::translate("wait", "F", nullptr));
-        btn1->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
-        btn2->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
-        btn3->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
-        btn4->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
-        btn5->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
-        btn6->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+        Wait->setWindowTitle(QCoreApplication::translate("Wait", "Form", nullptr));
+        ID->setText(QCoreApplication::translate("Wait", "\350\257\267\350\276\223\345\205\245\344\275\240\347\232\204\347\224\250\346\210\267\345\220\215...", nullptr));
+        YES->setText(QCoreApplication::translate("Wait", "\347\241\256 \350\256\244", nullptr));
+        EXIT->setText(QCoreApplication::translate("Wait", "\351\200\200 \345\207\272", nullptr));
+        A->setText(QCoreApplication::translate("Wait", "A", nullptr));
+        B->setText(QCoreApplication::translate("Wait", "B", nullptr));
+        C->setText(QCoreApplication::translate("Wait", "C", nullptr));
+        D->setText(QCoreApplication::translate("Wait", "D", nullptr));
+        E->setText(QCoreApplication::translate("Wait", "E", nullptr));
+        F->setText(QCoreApplication::translate("Wait", "F", nullptr));
+        btn1->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+        btn2->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+        btn3->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+        btn4->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+        btn5->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+        btn6->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class wait: public Ui_wait {};
+    class Wait: public Ui_Wait {};
 } // namespace Ui
 
 QT_END_NAMESPACE
