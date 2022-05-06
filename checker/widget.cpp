@@ -447,12 +447,12 @@ Widget::Widget(QWidget *parent)
     int Widget::islegal(){
         //判断是否已经有选中棋子
         if(!ischosen){
-            test->setText("no chosen checker");
+            qDebug() << "no chosen checker";
             return 0;
         }
         //判断目标点是否为空位
         if(isfill[objloc[0]][objloc[1]]){
-            test->setText("object is filled");
+            qDebug() << "object is filled";
             return 0;
         }
         //判断是否平动
@@ -472,7 +472,7 @@ Widget::Widget(QWidget *parent)
 
         //判断连跳
         if(haveJumped&&jumped!=checked){
-            test->setText("jump checker changed");
+            qDebug() << "连跳换子";
             return 0;
         }
         //判断是否为跳跃
@@ -498,7 +498,7 @@ Widget::Widget(QWidget *parent)
             }
         }
         //排查是否可以进行下一次跳跃
-        test->setText("undefined move");
+        qDebug() << "undefined move";
         return 0;
     }
 
@@ -669,7 +669,6 @@ Widget::Widget(QWidget *parent)
         }
     }
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
-
         switch(data.op){
         case OPCODE::JOIN_ROOM_OP:{
             bool newRoom=false;
@@ -768,35 +767,46 @@ Widget::Widget(QWidget *parent)
         case OPCODE::MOVE_OP:{
             //未实现
             qDebug()<<"receive success";
+            qDebug() << "path is " << data.data2;
             QStringList step = data.data2.split(" ");//可能有负号
            int stepNum = step.length();
             //设置初始点
             btnx = step[0].toInt()+8;
             btny = step[1].toInt()+8;
+            chosenloc[0] = btnx;
+            chosenloc[1] = btny;
            for(int i=2;i<stepNum;i++){
-                 if(i%2==0){
+               if(i%2==0){
                    objloc[0]=step[i].toInt()+8;
                }
                else{
                    objloc[1]=step[i].toInt()+8;
                }
                if(i%2){
-                   if(isfill[btnx][btny]){
-                      CheckerButton*b=int2btn(btnx,btny);
+                   //test
+                   qDebug() << "going to move " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
+                   //test end
+                   if(isfill[chosenloc[0]][chosenloc[1]]){
+                       CheckerButton*b=int2btn(chosenloc[0],chosenloc[1]);
                        ischosen=true;
-                       chosenloc[0]=btnx;
-                       chosenloc[1]=btny;
+//                       chosenloc[0] = btnx;
+//                       chosenloc[1] = btny;
                        if(islegal()){
-                    CheckerMove(b,loc[objloc[0]][objloc[1]]);
-
+                        CheckerMove(b,loc[objloc[0]][objloc[1]]);
+                        //test
+                        qDebug() << "make a move from " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
+                        //test end
+                        chosenloc[0] = objloc[0];
+                        chosenloc[1] = objloc[1];
                        }
                        else{
                            //发送错误信号
-
+                            server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_MOVE"),QString("move is illegal")));
                        }
                    }
                }
             }
+            changeplayer();
         }
         break;
         case OPCODE::PLAYER_READY_OP:{

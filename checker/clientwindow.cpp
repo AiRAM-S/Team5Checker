@@ -47,7 +47,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
     //建立连接
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
+
     socket->hello("127.0.0.1",port);//ip传了本地的ip
+
 
     //开始界面 设置玩家人数 
    /* myDialog *d = new myDialog;
@@ -108,7 +110,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         haveJumped=false;
         //初始化游戏结束排名表
         rank = new Rank(this);
-        rank->show();
+        rank->hide();
 
         initializeChecker(QString("data2"));//这一处最后应该是需要删掉的
 
@@ -121,7 +123,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                        chosen.setY(but.pos().ry());
                        chosenloc[0]=but.x;
                        chosenloc[1]=but.y;
-                       path = QString("%1 %2 ").arg(but.x).arg(but.y);  //记录路径 stage2
+
                        btnx=but.x;
                        btny=but.y;
                        ischosen=true;
@@ -290,7 +292,6 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
             objloc[1] = l%17;
             int mv=islegal();
             if(mv&&isobjset){
-                path.append(QString("%1 %2 ").arg(objloc[0]).arg(objloc[1]));
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
@@ -329,7 +330,7 @@ int ClientWindow::islegal(){
     if(flatmove&&haveJumped==false){
         ischosen=false;
         shouldSwitch=true;//阻止下一步
-        test->setText("flatmove made");
+        qDebug() << "flat move made";
         return 1;
     }
 
@@ -397,11 +398,18 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     ischange=false;
     step++;
 
+    //test
+        qDebug() << "chosen is" << chosenloc[0]-8 << "," << chosenloc[1]-8;
+        qDebug() << "test:obj is " << objloc[0]-8 << "," << objloc[1]-8;
+    //test end
     if(step==1){
+        path = "";
         path = QString(QString::number(chosenloc[0]-8).append(" ").append(QString::number(chosenloc[1]-8)));
     }
     path.append(" ").append(QString::number(objloc[0]-8).append(" ").append(QString::number(objloc[1]-8)));
-
+    //test
+    qDebug() << "path now is " << path;
+    //test end
     totalstep++;
     if(totalstep>60*playernum){
         isfinish();

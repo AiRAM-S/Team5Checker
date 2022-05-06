@@ -80,8 +80,8 @@ private:
 
     //stage2相关
     NetworkServer* server;//监听,其中的clients队列应指向每一个客户端，进行通信；
-    QList<Room> roomList;//所有房间，每个room类里包括：房间号（roomID)
-                         //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player），
+    QList<Room> roomList;//房间，每个room类里包括：房间号（roomID)
+                         //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player）
                          //玩家类，内含玩家socket，玩家ID，玩家状态
 
 signals:
