@@ -18,11 +18,15 @@ int main(int argc, char *argv[])
         {
             chooseclient *e=new chooseclient;
             e->show();
+            chooseservice *v=new chooseservice;
+            v->show();
         }
         else if(str=="Server")
         {
             chooseservice *v=new chooseservice;
             v->show();
+            chooseclient *e=new chooseclient;
+            e->show();
         }
     return a.exec();
 }
