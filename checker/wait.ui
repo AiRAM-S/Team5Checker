@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>wait</class>
- <widget class="QWidget" name="wait">
+ <class>Wait</class>
+ <widget class="QWidget" name="Wait">
   <property name="geometry">
    <rect>
     <x>0</x>

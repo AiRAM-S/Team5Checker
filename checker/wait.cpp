@@ -4,13 +4,13 @@
 #include<QRadioButton>
 #include"clientwindow.h"
 
-void wait::qqq()
+void Wait::qqq()
 {
     QApplication::exit();
 }
-wait::wait(QWidget *parent) :
+Wait::Wait(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::wait)
+    ui(new Ui::Wait)
 {
     ui->setupUi(this);
 
@@ -77,7 +77,7 @@ wait::wait(QWidget *parent) :
     });
 }
 
-wait::~wait()
+Wait::~Wait()
 {
     delete ui;
 }

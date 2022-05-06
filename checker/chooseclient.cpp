@@ -52,11 +52,11 @@ chooseclient::chooseclient(QWidget *parent) :
 
     connect(YES,&QPushButton::clicked,[&]()
             {
-        wait *d=new wait;
+        Wait *d=new Wait;
         d->setWindowTitle("waiting");
         d->show();
         int ifs=d->Join();
-        if(!ifs)
+        if(ifs)
             exit(0);
                     hide();
             });

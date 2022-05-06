@@ -23,7 +23,7 @@ class Ui_ClientWindow
 {
 public:
     QWidget *centralwidget;
-    QPushButton *QUIT;
+    QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -31,16 +31,24 @@ public:
     {
         if (ClientWindow->objectName().isEmpty())
             ClientWindow->setObjectName(QString::fromUtf8("ClientWindow"));
-        ClientWindow->resize(800, 600);
+        ClientWindow->resize(823, 437);
+        QFont font;
+        font.setPointSize(11);
+        font.setBold(true);
+        ClientWindow->setFont(font);
+        ClientWindow->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);"));
         centralwidget = new QWidget(ClientWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        QUIT = new QPushButton(centralwidget);
-        QUIT->setObjectName(QString::fromUtf8("QUIT"));
-        QUIT->setGeometry(QRect(20, 80, 80, 18));
+        pushButton = new QPushButton(centralwidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(670, 43, 80, 31));
+        pushButton->setFont(font);
+        pushButton->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);\n"
+"background-color: rgb(255, 255, 255);"));
         ClientWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(ClientWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 17));
+        menubar->setGeometry(QRect(0, 0, 823, 21));
         ClientWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(ClientWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -54,7 +62,7 @@ public:
     void retranslateUi(QMainWindow *ClientWindow)
     {
         ClientWindow->setWindowTitle(QCoreApplication::translate("ClientWindow", "MainWindow", nullptr));
-        QUIT->setText(QCoreApplication::translate("ClientWindow", "QUIT", nullptr));
+        pushButton->setText(QCoreApplication::translate("ClientWindow", "QUIT", nullptr));
     } // retranslateUi
 
 };

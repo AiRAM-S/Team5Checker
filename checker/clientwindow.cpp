@@ -43,12 +43,12 @@ ClientWindow::ClientWindow(QWidget *parent) :
     });
 
     //建立连接
-    const QString ip("10.46.156.60");//RUC-WEB
+    const QString ip("127.0.0.1");//RUC-WEB
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
     socket->hello(ip,port);
 
     //开始界面 设置玩家人数 
-    myDialog *d = new myDialog;
+   /* myDialog *d = new myDialog;
 
     d->exec();
     int ifstart=d->Join();
@@ -60,7 +60,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
         else
             playernum=6;
     if(!ifstart)
-        exit(0);
+        exit(0);*/
+    playernum=6;
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");
@@ -291,6 +292,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                 isobjset=false;
                 if(mv==1){
                     shouldSwitcht2f();
+
                 }
                 else if(mv==2){
                     jumped=checked;
@@ -393,15 +395,14 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     step++;
 
     if(step==1){
-        path = QString(QString::number(chosenloc[0]).append(" ").append(QString::number(chosenloc[1])));
+        path = QString(QString::number(chosenloc[0]-8).append(" ").append(QString::number(chosenloc[1]-8)));
     }
-    path.append(" ").append(QString::number(objloc[0]).append(" ").append(QString::number(objloc[1])));
+    path.append(" ").append(QString::number(objloc[0]-8).append(" ").append(QString::number(objloc[1]-8)));
 
     totalstep++;
     if(totalstep>60*playernum){
         isfinish();
     }
-
 }
 
 bool ClientWindow::canJump(int x,int y){//不能跳回原位

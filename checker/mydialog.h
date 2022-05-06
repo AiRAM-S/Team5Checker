@@ -49,6 +49,8 @@ private:
 
     QPoint p;
 
+
+
 //signals:
 //    void plnum(QString);
 };

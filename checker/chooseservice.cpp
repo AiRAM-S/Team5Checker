@@ -1,4 +1,5 @@
 #include "chooseservice.h"
+#include "widget.h"
 
 #include<QApplication>
 #include<QPushButton>
