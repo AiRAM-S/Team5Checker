@@ -7,7 +7,6 @@
 #include<QLabel>
 #include<QFont>
 #include"networkdata.h"
-#include<QMessageBox>
 
 #define I 40 //横向间距
 #define JX 20
