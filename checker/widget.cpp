@@ -448,12 +448,12 @@ Widget::Widget(QWidget *parent)
     int Widget::islegal(){
         //判断是否已经有选中棋子
         if(!ischosen){
-            test->setText("no chosen checker");
+            qDebug() << "no chosen checker";
             return 0;
         }
         //判断目标点是否为空位
         if(isfill[objloc[0]][objloc[1]]){
-            test->setText("object is filled");
+            qDebug() << "object is filled";
             return 0;
         }
         //判断是否平动
@@ -473,7 +473,7 @@ Widget::Widget(QWidget *parent)
 
         //判断连跳
         if(haveJumped&&jumped!=checked){
-            test->setText("jump checker changed");
+            qDebug() << "连跳换子";
             return 0;
         }
         //判断是否为跳跃
@@ -499,7 +499,7 @@ Widget::Widget(QWidget *parent)
             }
         }
         //排查是否可以进行下一次跳跃
-        test->setText("undefined move");
+        qDebug() << "undefined move";
         return 0;
     }
 
@@ -728,7 +728,6 @@ Widget::Widget(QWidget *parent)
         return k;
     }
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
-
         switch(data.op){
         case OPCODE::JOIN_ROOM_OP:{
             bool newRoom=false;
@@ -829,6 +828,7 @@ Widget::Widget(QWidget *parent)
         case OPCODE::MOVE_OP:{
             //未实现
             qDebug()<<"receive success";
+            qDebug() << "path is " << data.data2;
             QStringList step = data.data2.split(" ");//可能有负号
             char pln=data.data1[0].toLatin1();
            int stepNum = step.length();
@@ -838,14 +838,16 @@ Widget::Widget(QWidget *parent)
             chosenloc[0]=btnx;
             chosenloc[1]=btny;
             CheckerButton*b=int2btn(btnx,btny);
+
            for(int i=2;i<stepNum;i++){
-                 if(i%2==0){
+               if(i%2==0){
                    objloc[0]=step[i].toInt()+8;
                }
                else{
                    objloc[1]=step[i].toInt()+8;
                }
                if(i%2){
+
                    if(isfill[chosenloc[0]][chosenloc[1]]){
                        ischosen=true;
                        if(islegal()){
@@ -874,6 +876,7 @@ Widget::Widget(QWidget *parent)
                        }
                    }
            }
+<<<<<<< HEAD
            if(overnum==playernum) {
                for(int i=0;i<playernum;i++){
                    server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
@@ -890,6 +893,12 @@ Widget::Widget(QWidget *parent)
            }
 
         }}
+=======
+           if(overnum==playernum) server->send(client,NetworkData(OPCODE::END_GAME_OP,QString(),QString()));
+           changeplayer();
+
+        }
+>>>>>>> 87bbc4593e3e03feebd80e66788e386633ec30c8
         break;
         case OPCODE::PLAYER_READY_OP:{
             int roomNum = roomList.length();

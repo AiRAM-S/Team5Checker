@@ -22,24 +22,24 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_wait_t {
+struct qt_meta_stringdata_Wait_t {
     const uint offsetsAndSize[6];
     char stringdata0[10];
 };
 #define QT_MOC_LITERAL(ofs, len) \
-    uint(offsetof(qt_meta_stringdata_wait_t, stringdata0) + ofs), len 
-static const qt_meta_stringdata_wait_t qt_meta_stringdata_wait = {
+    uint(offsetof(qt_meta_stringdata_Wait_t, stringdata0) + ofs), len 
+static const qt_meta_stringdata_Wait_t qt_meta_stringdata_Wait = {
     {
-QT_MOC_LITERAL(0, 4), // "wait"
+QT_MOC_LITERAL(0, 4), // "Wait"
 QT_MOC_LITERAL(5, 3), // "qqq"
 QT_MOC_LITERAL(9, 0) // ""
 
     },
-    "wait\0qqq\0"
+    "Wait\0qqq\0"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_wait[] = {
+static const uint qt_meta_data_Wait[] = {
 
  // content:
       10,       // revision
@@ -61,10 +61,10 @@ static const uint qt_meta_data_wait[] = {
        0        // eod
 };
 
-void wait::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void Wait::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        auto *_t = static_cast<wait *>(_o);
+        auto *_t = static_cast<Wait *>(_o);
         (void)_t;
         switch (_id) {
         case 0: _t->qqq(); break;
@@ -74,14 +74,14 @@ void wait::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
     (void)_a;
 }
 
-const QMetaObject wait::staticMetaObject = { {
+const QMetaObject Wait::staticMetaObject = { {
     QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
-    qt_meta_stringdata_wait.offsetsAndSize,
-    qt_meta_data_wait,
+    qt_meta_stringdata_Wait.offsetsAndSize,
+    qt_meta_data_Wait,
     qt_static_metacall,
     nullptr,
-qt_incomplete_metaTypeArray<qt_meta_stringdata_wait_t
-, QtPrivate::TypeAndForceComplete<wait, std::true_type>
+qt_incomplete_metaTypeArray<qt_meta_stringdata_Wait_t
+, QtPrivate::TypeAndForceComplete<Wait, std::true_type>
 , QtPrivate::TypeAndForceComplete<void, std::false_type>
 
 
@@ -90,20 +90,20 @@ qt_incomplete_metaTypeArray<qt_meta_stringdata_wait_t
 } };
 
 
-const QMetaObject *wait::metaObject() const
+const QMetaObject *Wait::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *wait::qt_metacast(const char *_clname)
+void *Wait::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_wait.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_Wait.stringdata0))
         return static_cast<void*>(this);
     return QWidget::qt_metacast(_clname);
 }
 
-int wait::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Wait::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
