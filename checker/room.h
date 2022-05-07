@@ -27,6 +27,12 @@ public:
     void setReady(){
         isReady = true;
     }
+    char getPlace(){
+        return place;
+    }
+    void setPlace(char p){
+        place = p;
+    }
 };
 
 class Room
@@ -36,10 +42,12 @@ private:
     QList<Player> playerList;
     bool gameOn;
     int playerNumber;
+    int readynum;
 public:
     Room(int _id):roomID(_id){
         gameOn = false;
         playerNumber=0;
+        readynum=0;
     }
     void addPl(QString _name,QTcpSocket* _client);
     int getID() const{
@@ -54,7 +62,12 @@ public:
     int getPlnum() const{
         return playerNumber;
     }
-
+    int getReadynum()const{
+        return readynum;
+    }
+    void addReady(){
+        readynum++;
+    }
 };
 
 #endif // ROOM_H
