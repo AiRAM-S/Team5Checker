@@ -63,8 +63,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
     if(!ifstart)
         exit(0);*/
 
-   //socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,QString("0"),QString("w")));
-
     playernum=6;
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
@@ -150,6 +148,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
+
+                socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,QString("0"),QString("w")));
+
                 shouldSwitch=true;
                 shouldSwitcht2f();
                 shouldSwitch=false;

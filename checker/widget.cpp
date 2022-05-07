@@ -766,6 +766,7 @@ Widget::Widget(QWidget *parent)
                 roomList.append(newRoom);
                 //发送开房信号
                 server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,QString(""),QString("")));
+
             }
             if(nameConflict){
                 server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
@@ -787,6 +788,7 @@ Widget::Widget(QWidget *parent)
                         server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
+                   // server->send(client,NetworkData(OPCODE::START_GAME_OP,prevPl,prevState));
                 }
             }
         }
