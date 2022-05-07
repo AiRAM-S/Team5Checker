@@ -13,7 +13,6 @@
 #include<QTimerEvent>
 #include "rank.h"
 #include "networksocket.h"
-#include"wait.h"
 
 namespace Ui {
 class ClientWindow;
@@ -39,6 +38,8 @@ public:
     bool canJump(int x,int y);//排查是否可以进行下一次跳跃
     void shouldSwitcht2f();
     void isfinish();//棋子是否走完
+    int place2num(char);
+
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *event);
@@ -76,7 +77,6 @@ private:
     bool isover[6];
     int overnum=0;
     mydialog1 *z;
-    Wait *d;
     int totalstep=0;
 
     //stage2用到的

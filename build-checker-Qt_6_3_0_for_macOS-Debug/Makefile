@@ -1289,9 +1289,6 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qwineventnotifier.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qxmlstream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qtcoreversion.h \
-		../checker/wait.h \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QRadioButton \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qradiobutton.h \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/clientwindow.h -o moc_clientwindow.cpp
 
@@ -2648,9 +2645,6 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qwineventnotifier.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qxmlstream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qtcoreversion.h \
-		../checker/wait.h \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QRadioButton \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qradiobutton.h \
 		../checker/ui_clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QPainter \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qpainter.h \
@@ -2941,9 +2935,6 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QTableWidget \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QTableWidgetItem \
-		../checker/wait.h \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QRadioButton \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qradiobutton.h \
 		../checker/chooseclient.h \
 		../checker/chooseservice.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QTcpServer
@@ -3661,7 +3652,7 @@ wait.o: ../checker/wait.cpp ../checker/wait.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLineEdit \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
-		ui_wait.h \
+		../checker/ui_wait.h \
 		../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \

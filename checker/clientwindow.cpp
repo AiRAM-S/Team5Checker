@@ -43,7 +43,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
     connect(socket->base(), &QAbstractSocket::disconnected, [=]() {
         QMessageBox::critical(this, tr("Connection lost"), tr("Connection to server has closed"));
     });
-
     //建立连接
     quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
 
@@ -64,7 +63,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
             playernum=6;
     if(!ifstart)
         exit(0);*/
-    playernum=3;
+
+    playernum=6;
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");
@@ -152,6 +152,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
+
+                socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,QString("0"),QString("w")));
+
                 shouldSwitch=true;
                 shouldSwitcht2f();
                 shouldSwitch=false;
@@ -186,6 +189,7 @@ void ClientWindow::changeplayer(){
     while(isover[flag]){
         flag = (flag+1)%playernum;
     }
+    if(place2num(myPos)==flag)
     for(int j=0;j<10;j++){
         btn[flag][j]->setCheckable(true);
     }
@@ -413,7 +417,7 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     //test end
     totalstep++;
     if(totalstep>60*playernum){
-        isfinish();
+        //isfinish();
     }
 }
 
@@ -515,7 +519,9 @@ void ClientWindow::receive(NetworkData data){
             }
         break;
     case OPCODE::END_TURN_OP://胜利反馈
+    {
         iswin=true;
+    }
     break;
     case OPCODE::END_GAME_OP://游戏结束
     {
@@ -578,111 +584,23 @@ void ClientWindow::timerEvent(QTimerEvent *event){
        clock2->setText(QString("%1 s").arg(timeLeft));
     }
 }
-
-/*void ClientWindow::isfinish(){
-    bool flg[6];
-    for(int i=0;i<6;i++){
-        flg[i]=true;
-    }
+int ClientWindow::place2num(char pln){
+    int k=0;
     if(playernum==2){
-        for(int j=5;j<=8;j++){
-            for(int i=j-4;i<=4;i++){
-                if(!flg[0]&&!flg[1]){
-                    break;
-                }
-                if(isfill[i+8][-j+8]!=blue+1) flg[1]=false;
-                if(isfill[-i+8][j+8]!=red+1) flg[0]=false;
-            }
-            if(!flg[0]&&!flg[1]){
-                break;
-            }
-        }
+        if(pln=='A') k=0;
+        else if(pln=='D') k=1;
     }
-    if(playernum==3){
-        for(int j=5;j<=8;j++){
-            for(int i=j-4;i<=4;i++){
-                if(!flg[0]){
-                    break;
-                }
-                if(isfill[-i+8][j+8]!=red+1) flg[0]=false;
-            }
-            if(!flg[0]){
-                break;
-            }
-        }
-        for(int i=1; i<5; i++){
-            for(int j=-4; j<i-4; j++){
-                if(!flg[1]){
-                    break;
-                }
-                if(isfill[-i+8][j+8]!=blue+1) flg[1]=false;
-            }
-            if(!flg[1]){
-                break;
-            }
-        }
-        for(int i=5;i<=8;i++){
-            for(int j=i-4;j<=4;j++){
-                if(!flg[2]){
-                    break;
-                }
-                if(isfill[i+8][-j+8]!=3) flg[2]=false;
-            }
-            if(!flg[2]){
-                break;
-            }
-        }
+    else if(playernum==3){
+        if(pln=='A') k=0;
+        else if(pln=='C') k=1;
+        else if(pln=='E') k=2;
     }
-    if(playernum==6){
-        for(int j=5;j<=8;j++){
-            for(int i=j-4;i<=4;i++){
-                if(!flg[0]&&!flg[3]){
-                    break;
-                }
-                if(isfill[i+8][-j+8]!=4) flg[3]=false;
-                if(isfill[-i+8][j+8]!=1) flg[0]=false;
-            }
-            if(!flg[0]&&!flg[3]){
-                break;
-            }
-        }
-        for(int i=1; i<5; i++){
-            for(int j=-4; j<i-4; j++){
-                if(!flg[2]&&!flg[5]){
-                    break;
-                }
-                if(isfill[-i+8][j+8]!=3) flg[2]=false;
-                if(isfill[i+8][-j+8]!=6) flg[5]=false;
-            }
-            if(!flg[2]&&!flg[5]){
-                break;
-            }
-        }
-        for(int i=5;i<=8;i++){
-            for(int j=i-4;j<=4;j++){
-                if(!flg[1]&&!flg[4]){
-                    break;
-                }
-                if(isfill[i+8][-j+8]!=5) flg[4]=false;
-                if(isfill[-i+8][j+8]!=2) flg[1]=false;
-            }
-            if(!flg[1]&&!flg[4]){
-                break;
-            }
-        }
+    else if(playernum==6){
+        k=pln-'A';
     }
-    for(int i=0;i<playernum;i++){
-        if(flg[i]){
-            emit finish(i);//发出某一方结束信号
-            isover[i]=true;
-            overnum++;
-        }
-    }
-    if(overnum==playernum){
-        emit gameover();//游戏结束信号
-    }
+    return k;
 }
-*/
+
 void ClientWindow::initializeChecker(QString data){
     //初始化棋子 2player
     //wzr：我觉得不用根据data改棋子位置，把玩家和区域对应起来应该就行

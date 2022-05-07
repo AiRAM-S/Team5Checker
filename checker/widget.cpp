@@ -677,9 +677,8 @@ Widget::Widget(QWidget *parent)
             }
             break;
         }}
-            int y;//ABCDEF到red,blue的转换
             if(flg){//未完成
-                isover[y]=true;
+                isover[place2num(x)]=true;
                 overnum++;
             }
     }
@@ -706,7 +705,7 @@ Widget::Widget(QWidget *parent)
             w->setText("Congratulations ORANGE");
             break;
         }
-        win->show();
+        w->show();
     }*/
 
     CheckerButton* Widget::int2btn(int btnx,int btny){
@@ -721,6 +720,22 @@ Widget::Widget(QWidget *parent)
             }
             if(flag) break;
         }
+    }
+    int Widget::place2num(char pln){
+        int k=0;
+        if(playernum==2){
+            if(pln=='A') k=0;
+            else if(pln=='D') k=1;
+        }
+        else if(playernum==3){
+            if(pln=='A') k=0;
+            else if(pln=='C') k=1;
+            else if(pln=='E') k=2;
+        }
+        else if(playernum==6){
+            k=pln-'A';
+        }
+        return k;
     }
    static int timeleft = 30;
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
@@ -761,6 +776,7 @@ Widget::Widget(QWidget *parent)
                 roomList.append(newRoom);
                 //发送开房信号
                 server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,QString(""),QString("")));
+
             }
             if(nameConflict){
                 server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
@@ -782,6 +798,7 @@ Widget::Widget(QWidget *parent)
                         server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
+                   // server->send(client,NetworkData(OPCODE::START_GAME_OP,prevPl,prevState));
                 }
             }
         }
@@ -824,7 +841,7 @@ Widget::Widget(QWidget *parent)
             qDebug()<<"receive success";
             qDebug() << "path is " << data.data2;
             QStringList step = data.data2.split(" ");//可能有负号
-            int pln=data.data1[0].toLatin1();
+            char pln=data.data1[0].toLatin1();
            int stepNum = step.length();
             //设置初始点
             btnx = step[0].toInt()+8;
@@ -845,6 +862,14 @@ Widget::Widget(QWidget *parent)
                    if(isfill[chosenloc[0]][chosenloc[1]]){
                        ischosen=true;
                        if(islegal()){
+
+                    CheckerMove(b,loc[objloc[0]][objloc[1]]);
+                    chosenloc[0]=objloc[0];
+                    chosenloc[1]=objloc[1];
+                    for(int i=0;i<playernum;i++){
+                        server->send(roomList[0].getPl()[i].getSocket(),data);
+                       }
+
                         this->killTimer(id);
                         CheckerMove(b,loc[objloc[0]][objloc[1]]);
                         //test
@@ -855,6 +880,7 @@ Widget::Widget(QWidget *parent)
                         timeleft = 30;
                         clock2->setText("30 s");
                         id = startTimer(1000);
+
                        }
                        else{
                            //发送错误信号
@@ -865,12 +891,31 @@ Widget::Widget(QWidget *parent)
                }
             }
            if(totalstep>70*playernum){
-               if(isfinish(pln)) server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
+               if(isfinish(pln)) {
+                   server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
+                   for(int i=0;i<playernum;i++){
+                       if(pln==roomList[0].getPl()[i].getPlace()){
+                           ranklist.append(roomList[0].getPl()[i].getID()).append(" ");
+                           break;
+                       }
+                   }
            }
-           if(overnum==playernum) server->send(client,NetworkData(OPCODE::END_GAME_OP,QString(),QString()));
-           changeplayer();
+           if(overnum==playernum) {
+               for(int i=0;i<playernum;i++){
+                   server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
+               }
+           }
+           else {
+               changeplayer();
+               for(int i=0;i<playernum;i++){
+                   if(flag==place2num(roomList[0].getPl()[i].getPlace())){
+                       server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(),QString()));
+                   }
+               }
 
-        }
+           }
+
+        }}
         break;
         case OPCODE::PLAYER_READY_OP:{
             int roomNum = roomList.length();
