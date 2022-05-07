@@ -89,14 +89,15 @@ chooseclient::chooseclient(QWidget *parent) :
         {
             port=PORTS->text();
             id=IDS->text();
-        wait *d=new wait;
+
+        Wait *d=new Wait;
         d->setWindowTitle("waiting");
         d->show();
         int ifs=d->Join();
         if(!ifs)
            exit(0);
                     hide();
-            }
+        }
     });
 
 }

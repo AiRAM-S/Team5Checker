@@ -44,9 +44,10 @@ ClientWindow::ClientWindow(QWidget *parent) :
         QMessageBox::critical(this, tr("Connection lost"), tr("Connection to server has closed"));
     });
     //建立连接
-    quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
 
-    socket->hello("127.0.0.1",port);//ip传了本地的ip
+    quint16 objPort = Port.toInt();
+    socket->hello("127.0.0.1",objPort);//ip传了本地的ip
+    socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,RoomID,this->PlName));//请求加入房间
 
 
     //开始界面 设置玩家人数 
@@ -111,7 +112,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
         rank = new Rank(this);
         if(overnum==playernum)
         rank->show();
-
         rank->hide();
 
 
@@ -389,6 +389,8 @@ int ClientWindow::pixel2int(QPointF pixel){
 }
 
 void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
+    if(iswin)
+        return;//赢了就不让动 su
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
     anim->setDuration(300);
     anim->setStartValue(btn->pos());
@@ -445,17 +447,25 @@ static int timeLeft=30;
 
 void ClientWindow::receive(NetworkData data){
     switch(data.op){
+        case OPCODE::JOIN_ROOM_OP://有新玩家加入
+        {
+        players.append(data.data1);
+        playerState.append(0);
+        }
+        break;
         case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
             players = data.data1.split(" ");//载入已有玩家姓名
             for(int i=0;i<data.data2.length();i++){
-                playerState[i]=QString(data.data2.at(i)).toInt();
+                playerState.append(QString(data.data2.at(i)).toInt());
             }//设置已有玩家状态
-            players.append(myName);
-            playerState[data.data2.length()] = 0;
+            players.append(PlName);
+            playerState.append(0);
         break;
         case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
-            players.removeOne(data.data1);
-            //这里没有改playerState，我觉得应该影响不大
+        {    int Index = players.indexOf(data.data1);
+            players.removeAt(Index);
+            playerState.removeAt(Index);
+        }
         break;
         case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现 我理解是断开连接（Su）
             this->socket->bye();
@@ -471,7 +481,7 @@ void ClientWindow::receive(NetworkData data){
             for(int i=0;i<playernum;i++){
                 players.replace(seq.at(i).toInt()-65,pls.at(i));
             }
-            myPos = *(seq.at(pls.indexOf(myName)).toLatin1().data());
+            myPos = *(seq.at(pls.indexOf(PlName)).toLatin1().data());
             //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
             initializeChecker(data.data2);//画棋子
         }
@@ -481,6 +491,8 @@ void ClientWindow::receive(NetworkData data){
             id=startTimer(1000);
             clock1->show();
             clock2->show();
+            flag = myPos-65;
+            nowplayer->setText(QString("Player:%1").arg(PlName));
         break;
         case OPCODE::MOVE_OP://其他玩家移动棋子
             {
@@ -492,6 +504,8 @@ void ClientWindow::receive(NetworkData data){
                     }
                 }
                 else{
+                    flag = data.data1.toInt()-65;
+                    nowplayer->setText(QString("Player:%1").arg(players[data.data1.toInt()-65]));
                     QStringList checkerpath = data.data2.split(" ");
                     int stepnum = checkerpath.length()/2-1;
                     int origin[2];
@@ -538,8 +552,10 @@ void ClientWindow::receive(NetworkData data){
         }
         rank->ranktable->setVerticalHeaderLabels(header);
         for(int i=0;i<data.data1.length();i++){
-            char plnow=data.data1.toLatin1()[i];
-            rank->ranktable->setItem(i,0,new QTableWidgetItem(players[plnow-65]));
+            if(i%2==0){
+                char plnow=data.data1.toLatin1()[i];
+                rank->ranktable->setItem(i/2,0,new QTableWidgetItem(players[plnow-65]));
+            }
         }
         //断开连接
         socket->bye(); 

@@ -537,7 +537,6 @@ Widget::Widget(QWidget *parent)
         anim->setStartValue(loc[chosenloc[0]][chosenloc[1]]);
         anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2));
         anim->start(QPropertyAnimation::KeepWhenStopped);
-
         btn->x=objloc[0];
         btn->y=objloc[1];
         isfill[objloc[0]][objloc[1]]=btn->player+1;
@@ -687,7 +686,7 @@ Widget::Widget(QWidget *parent)
 //            for(int i=0;i<playernum;i++){
 //                server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP),)
 //            }
-        }
+//        }
 
     }
         return flg;
@@ -866,29 +865,25 @@ Widget::Widget(QWidget *parent)
                    objloc[1]=step[i].toInt()+8;
                }
                if(i%2){
-
                    if(isfill[chosenloc[0]][chosenloc[1]]){
                        ischosen=true;
                        if(islegal()){
-
-                    CheckerMove(b,loc[objloc[0]][objloc[1]]);
-                    chosenloc[0]=objloc[0];
-                    chosenloc[1]=objloc[1];
-                    for(int i=0;i<playernum;i++){
-                        server->send(roomList[0].getPl()[i].getSocket(),data);
-                       }
-
-                        this->killTimer(id);
-                        CheckerMove(b,loc[objloc[0]][objloc[1]]);
-                        //test
-                        qDebug() << "make a move from " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
-                        //test end
-                        chosenloc[0] = objloc[0];
-                        chosenloc[1] = objloc[1];
-                        timeleft = 30;
-                        clock2->setText("30 s");
-                        id = startTimer(1000);
-
+                            CheckerMove(b,loc[objloc[0]][objloc[1]]);
+                            chosenloc[0]=objloc[0];
+                            chosenloc[1]=objloc[1];
+                            for(int i=0;i<playernum;i++){
+                                //转发move op
+                                server->send(roomList[0].getPl()[i].getSocket(),data);
+                               }
+                            this->killTimer(id);
+                            CheckerMove(b,loc[objloc[0]][objloc[1]]);
+                            //test
+                            qDebug() << "make a move from " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
+                            //test end
+                            chosenloc[0] = objloc[0];
+                            chosenloc[1] = objloc[1];
+                            timeleft = 30;
+                            clock2->setText("30 s");
                        }
                        else{
                            //发送错误信号
@@ -918,6 +913,7 @@ Widget::Widget(QWidget *parent)
                for(int i=0;i<playernum;i++){
                    if(flag==place2num(roomList[0].getPl()[i].getPlace())){
                        server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(),QString()));
+                       id = startTimer(1000);
                    }
                }
 
