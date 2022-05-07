@@ -681,6 +681,14 @@ Widget::Widget(QWidget *parent)
                 isover[place2num(x)]=true;
                 overnum++;
             }
+        }
+        if(overnum==playernum){
+            //游戏结束信号
+//            for(int i=0;i<playernum;i++){
+//                server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP),)
+//            }
+        }
+
     }
         return flg;
 }
@@ -929,8 +937,43 @@ Widget::Widget(QWidget *parent)
                     }
                 }
                 if(found){
+                    roomList[i].addReady();
+                    //转发某玩家就绪信息
                     for(int j=0;j<roomList[i].getPlnum();j++){
                         server->send(roomList[i].getPl()[j].getSocket(),data);
+                    }
+                    //检查是否可以开始游戏
+                    if((roomList[i].getPlnum()==roomList[i].getReadynum())&&(roomList[i].getReadynum()==2||roomList[i].getReadynum()==3||roomList[i].getReadynum()==6)){
+                        QString plName;
+                        QString seq;
+                        if(roomList[i].getReadynum()==2){
+                            seq = "A D";
+                            plName = roomList[i].getPl()[0].getID().append(" ").append(roomList[i].getPl()[1].getID());
+                            roomList[i].getPl()[0].setPlace('A');
+                            roomList[i].getPl()[1].setPlace('D');
+                        }
+                        else if(roomList[i].getReadynum()==3){
+                            seq = "A C E";
+                            plName = roomList[i].getPl()[0].getID();
+                            roomList[i].getPl()[0].setPlace('D');
+                            for(int t=1;t<=2;t++){
+                                plName.append(" ").append(roomList[i].getPl()[t].getID());
+                                QChar place(65+2*t);
+                                roomList[i].getPl()[t].setPlace(place.toLatin1());
+                            }
+                        }
+                        else{
+                            seq = "A B C D E F";
+                            plName = roomList[i].getPl()[0].getID();
+                            roomList[i].getPl()[0].setPlace('A');
+                            for(int t=1;t<6;t++){
+                                plName.append(" ").append(roomList[i].getPl()[t].getID());
+                                QChar place(65+t);
+                                roomList[i].getPl()[t].setPlace(place.toLatin1());
+                        }
+                        for(int j=0;j<roomList[i].getPlnum();j++)
+                            server->send(roomList[i].getPl()[j].getSocket(),NetworkData(OPCODE::START_GAME_OP,plName,seq));
+                    }
                     }
                     break;
                 }
@@ -952,6 +995,11 @@ Widget::Widget(QWidget *parent)
         if(timeleft<0){
             this->killTimer(id);//停止计时
             //向其他玩家发送超时判负信号
+            char outPl = flag+65;
+            for(int i=0;i<roomList[0].getPlnum();i++){
+                if(roomList[0].getPl()[i].getID()!=QChar(flag+65))
+                    server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(outPl),QString("-1")));
+            }
         }
         else{
            clock2->setText(QString("%1 s").arg(timeleft));
