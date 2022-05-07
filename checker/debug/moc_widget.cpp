@@ -26,7 +26,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Widget_t {
     const uint offsetsAndSize[24];
-    char stringdata0[118];
+    char stringdata0[122];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_Widget_t, stringdata0) + ofs), len 
@@ -35,18 +35,18 @@ static const qt_meta_stringdata_Widget_t qt_meta_stringdata_Widget = {
 QT_MOC_LITERAL(0, 6), // "Widget"
 QT_MOC_LITERAL(7, 19), // "shouldSwitchChanged"
 QT_MOC_LITERAL(27, 0), // ""
-QT_MOC_LITERAL(28, 6), // "finish"
-QT_MOC_LITERAL(35, 8), // "gameover"
-QT_MOC_LITERAL(44, 12), // "cbuttonpress"
-QT_MOC_LITERAL(57, 12), // "changeplayer"
-QT_MOC_LITERAL(70, 11), // "receiveData"
-QT_MOC_LITERAL(82, 11), // "QTcpSocket*"
-QT_MOC_LITERAL(94, 6), // "client"
-QT_MOC_LITERAL(101, 11), // "NetworkData"
-QT_MOC_LITERAL(113, 4) // "data"
+QT_MOC_LITERAL(28, 10), // "someonewin"
+QT_MOC_LITERAL(39, 8), // "gameover"
+QT_MOC_LITERAL(48, 12), // "cbuttonpress"
+QT_MOC_LITERAL(61, 12), // "changeplayer"
+QT_MOC_LITERAL(74, 11), // "receiveData"
+QT_MOC_LITERAL(86, 11), // "QTcpSocket*"
+QT_MOC_LITERAL(98, 6), // "client"
+QT_MOC_LITERAL(105, 11), // "NetworkData"
+QT_MOC_LITERAL(117, 4) // "data"
 
     },
-    "Widget\0shouldSwitchChanged\0\0finish\0"
+    "Widget\0shouldSwitchChanged\0\0someonewin\0"
     "gameover\0cbuttonpress\0changeplayer\0"
     "receiveData\0QTcpSocket*\0client\0"
     "NetworkData\0data"
@@ -78,7 +78,7 @@ static const uint qt_meta_data_Widget[] = {
 
  // signals: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    2,
+    QMetaType::Void, QMetaType::QString,    2,
     QMetaType::Void,
 
  // slots: parameters
@@ -96,7 +96,7 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         (void)_t;
         switch (_id) {
         case 0: _t->shouldSwitchChanged(); break;
-        case 1: _t->finish((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: _t->someonewin((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: _t->gameover(); break;
         case 3: _t->cbuttonpress(); break;
         case 4: _t->changeplayer(); break;
@@ -124,8 +124,8 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
             }
         }
         {
-            using _t = void (Widget::*)(int );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Widget::finish)) {
+            using _t = void (Widget::*)(QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Widget::someonewin)) {
                 *result = 1;
                 return;
             }
@@ -147,7 +147,7 @@ const QMetaObject Widget::staticMetaObject = { {
     qt_static_metacall,
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_Widget_t
-, QtPrivate::TypeAndForceComplete<Widget, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<Widget, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QString, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 , QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QTcpSocket *, std::false_type>, QtPrivate::TypeAndForceComplete<NetworkData, std::false_type>
 
 
@@ -193,7 +193,7 @@ void Widget::shouldSwitchChanged()
 }
 
 // SIGNAL 1
-void Widget::finish(int _t1)
+void Widget::someonewin(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
