@@ -154,8 +154,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
         connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
 
-                socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,QString("0"),QString("w")));
-
                 shouldSwitch=true;
                 shouldSwitcht2f();
                 shouldSwitch=false;
