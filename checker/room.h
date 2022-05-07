@@ -33,6 +33,7 @@ public:
     void setPlace(char p){
         place = p;
     }
+
 };
 
 class Room

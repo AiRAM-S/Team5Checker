@@ -139,6 +139,24 @@ public:
 
     void retranslateUi(QWidget *Wait)
     {
+<<<<<<< HEAD
+        Wait->setWindowTitle(QCoreApplication::translate("wait", "Form", nullptr));
+        ID->setText(QCoreApplication::translate("wait", "\350\257\267\350\276\223\345\205\245\344\275\240\347\232\204\347\224\250\346\210\267\345\220\215...", nullptr));
+        YES->setText(QCoreApplication::translate("wait", "\347\241\256 \350\256\244", nullptr));
+        EXIT->setText(QCoreApplication::translate("wait", "\351\200\200 \345\207\272", nullptr));
+        A->setText(QCoreApplication::translate("wait", "A", nullptr));
+        B->setText(QCoreApplication::translate("wait", "B", nullptr));
+        C->setText(QCoreApplication::translate("wait", "C", nullptr));
+        D->setText(QCoreApplication::translate("wait", "D", nullptr));
+        E->setText(QCoreApplication::translate("wait", "E", nullptr));
+        F->setText(QCoreApplication::translate("wait", "F", nullptr));
+        btn1->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+        btn2->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+        btn3->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+        btn4->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+        btn5->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+        btn6->setText(QCoreApplication::translate("wait", "GET READY", nullptr));
+=======
         Wait->setWindowTitle(QCoreApplication::translate("Wait", "Form", nullptr));
         ID->setText(QCoreApplication::translate("Wait", "\350\257\267\350\276\223\345\205\245\344\275\240\347\232\204\347\224\250\346\210\267\345\220\215...", nullptr));
         YES->setText(QCoreApplication::translate("Wait", "\347\241\256 \350\256\244", nullptr));
@@ -155,6 +173,7 @@ public:
         btn4->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
         btn5->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
         btn6->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+>>>>>>> 87bbc4593e3e03feebd80e66788e386633ec30c8
     } // retranslateUi
 
 };
