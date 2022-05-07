@@ -33,6 +33,15 @@ Widget::Widget(QWidget *parent)
     server = new NetworkServer(this);
     connect(server, &NetworkServer::receive, this, &Widget::receiveData);
     server->listen(QHostAddress("127.0.0.1"),9999);
+    //初始化秒表
+    clock1 = new QLabel("剩余时间",this);
+    clock1->setFont(QFont("Microsoft YaHei",20));
+    clock1->setGeometry(70,500,300,50);
+    clock1->setStyleSheet("color:brown;");
+    clock2 = new QLabel("30 s",this);
+    clock2->setFont(QFont("Agency FB",20));
+    clock2->setStyleSheet("color:brown;");
+    clock2->setGeometry(70,530,300,50);
 
     //开始界面 设置玩家人数
    /* myDialog *d=new myDialog;
@@ -525,9 +534,10 @@ Widget::Widget(QWidget *parent)
     void Widget::CheckerMove(CheckerButton*btn,QPointF p){
         QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
         anim->setDuration(300);
-        anim->setStartValue(btn->pos());
-        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2.5));
+        anim->setStartValue(loc[chosenloc[0]][chosenloc[1]]);
+        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2));
         anim->start(QPropertyAnimation::KeepWhenStopped);
+
         btn->x=objloc[0];
         btn->y=objloc[1];
         isfill[objloc[0]][objloc[1]]=btn->player+1;
@@ -727,6 +737,7 @@ Widget::Widget(QWidget *parent)
         }
         return k;
     }
+   static int timeleft = 30;
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
         switch(data.op){
         case OPCODE::JOIN_ROOM_OP:{
@@ -851,12 +862,25 @@ Widget::Widget(QWidget *parent)
                    if(isfill[chosenloc[0]][chosenloc[1]]){
                        ischosen=true;
                        if(islegal()){
+
                     CheckerMove(b,loc[objloc[0]][objloc[1]]);
                     chosenloc[0]=objloc[0];
                     chosenloc[1]=objloc[1];
                     for(int i=0;i<playernum;i++){
                         server->send(roomList[0].getPl()[i].getSocket(),data);
                        }
+
+                        this->killTimer(id);
+                        CheckerMove(b,loc[objloc[0]][objloc[1]]);
+                        //test
+                        qDebug() << "make a move from " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
+                        //test end
+                        chosenloc[0] = objloc[0];
+                        chosenloc[1] = objloc[1];
+                        timeleft = 30;
+                        clock2->setText("30 s");
+                        id = startTimer(1000);
+
                        }
                        else{
                            //发送错误信号
@@ -876,7 +900,6 @@ Widget::Widget(QWidget *parent)
                        }
                    }
            }
-<<<<<<< HEAD
            if(overnum==playernum) {
                for(int i=0;i<playernum;i++){
                    server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
@@ -893,12 +916,6 @@ Widget::Widget(QWidget *parent)
            }
 
         }}
-=======
-           if(overnum==playernum) server->send(client,NetworkData(OPCODE::END_GAME_OP,QString(),QString()));
-           changeplayer();
-
-        }
->>>>>>> 87bbc4593e3e03feebd80e66788e386633ec30c8
         break;
         case OPCODE::PLAYER_READY_OP:{
             int roomNum = roomList.length();
@@ -929,4 +946,14 @@ Widget::Widget(QWidget *parent)
         }
         }
 
+    }
+    void Widget::timerEvent(QTimerEvent *event){
+        timeleft--;
+        if(timeleft<0){
+            this->killTimer(id);//停止计时
+            //向其他玩家发送超时判负信号
+        }
+        else{
+           clock2->setText(QString("%1 s").arg(timeleft));
+        }
     }

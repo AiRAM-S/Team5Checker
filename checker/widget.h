@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QDialog>
 #include<QPropertyAnimation>
+#include<QTimerEvent>
 #include"networkserver.h"
 #include"networksocket.h"
 #include"networkdata.h"
@@ -43,6 +44,8 @@ public:
     int place2num(char pln);
 protected:
     void paintEvent(QPaintEvent *);
+    void timerEvent(QTimerEvent *);
+
 
 private:
     Ui::Widget *ui;
@@ -84,7 +87,11 @@ private:
     QList<Room> roomList;//房间，每个room类里包括：房间号（roomID)
                          //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player）
                          //玩家类，内含玩家socket，玩家ID，玩家状态
+
     QString ranklist;
+    int id;//计时器id,负责倒计时
+    QLabel* clock1;//显示倒计时提示
+    QLabel* clock2;//显示时间
 
 signals:
     void shouldSwitchChanged();
