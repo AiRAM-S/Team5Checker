@@ -40,6 +40,7 @@ public:
     void shouldSwitcht2f();
     bool isfinish(int x);
     CheckerButton* int2btn(int x,int y);
+    int place2num(char pln);
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -83,15 +84,16 @@ private:
     QList<Room> roomList;//所有房间，每个room类里包括：房间号（roomID)
                          //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player），
                          //玩家类，内含玩家socket，玩家ID，玩家状态
+    QString ranklist;
 
 signals:
     void shouldSwitchChanged();
     //终局判断，信号和槽函数未实现连接
-    void finish(int);//一方结束游戏信号
+    void someonewin(QString);//一方结束游戏信号
     void gameover();//游戏结束信号
 public slots:
     void changeplayer();
-//  void someoneover(int i);
+  //  void someoneover(int i);
     void receiveData(QTcpSocket* client, NetworkData data);//服务端接受到客户端信号时的解析函数
 
 

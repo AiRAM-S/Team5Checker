@@ -27,6 +27,9 @@ public:
     void setReady(){
         isReady = true;
     }
+    char getPlace() const{
+        return place;
+    }
 };
 
 class Room
