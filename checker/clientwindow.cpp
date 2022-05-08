@@ -478,6 +478,12 @@ void ClientWindow::receive(NetworkData data){
             }//设置已有玩家状态
             players.append(PlName);
             playerState.append(0);
+            for(int i=0;i<6;i++)
+            {
+                 ww.ids[i]->setText(players.at(i));
+                 if(playerState.at(i))
+                     ww.sis[i]->setText("ready");
+            }
         break;
         case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
         {
