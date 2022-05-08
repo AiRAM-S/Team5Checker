@@ -42,8 +42,8 @@ HEADERS += \
 FORMS += \
     clientwindow.ui \
     mydialog.ui \
-    wait.ui \
     rank.ui \
+    wait.ui \
     widget.ui
 
 # Default rules for deployment.

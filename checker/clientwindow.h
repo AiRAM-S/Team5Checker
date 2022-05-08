@@ -13,6 +13,8 @@
 #include<QTimerEvent>
 #include "rank.h"
 #include "networksocket.h"
+#include"mydialog.h"
+#include"chooseclient.h"
 
 namespace Ui {
 class ClientWindow;
@@ -94,6 +96,17 @@ private:
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
+    myDialog dd;
+    chooseclient cc;
+    void passit1(QString a)
+    {
+        Port=a;
+    }
+    void passit2(QString b,QString c)
+    {
+        RoomID=b;
+        PlName=c;
+    }
 
 
 signals:
