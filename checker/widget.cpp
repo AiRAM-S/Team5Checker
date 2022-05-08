@@ -783,7 +783,6 @@ Widget::Widget(QWidget *parent)
                 roomList.append(newRoom);
                 //发送开房信号
                 server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,QString(""),QString("")));
-
             }
             if(nameConflict){
                 server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
@@ -844,7 +843,6 @@ Widget::Widget(QWidget *parent)
         }
         break;
         case OPCODE::MOVE_OP:{
-            //未实现
             qDebug()<<"receive success";
             qDebug() << "path is " << data.data2;
             QStringList step = data.data2.split(" ");//可能有负号
@@ -856,7 +854,7 @@ Widget::Widget(QWidget *parent)
             chosenloc[0]=btnx;
             chosenloc[1]=btny;
             CheckerButton*b=int2btn(btnx,btny);
-
+            bool legalmove = true;
            for(int i=2;i<stepNum;i++){
                if(i%2==0){
                    objloc[0]=step[i].toInt()+8;
@@ -869,30 +867,35 @@ Widget::Widget(QWidget *parent)
                        ischosen=true;
                        if(islegal()){
                             CheckerMove(b,loc[objloc[0]][objloc[1]]);
-                            chosenloc[0]=objloc[0];
-                            chosenloc[1]=objloc[1];
-                            for(int i=0;i<playernum;i++){
-                                //转发move op
-                                server->send(roomList[0].getPl()[i].getSocket(),data);
-                               }
-                            this->killTimer(id);
-                            CheckerMove(b,loc[objloc[0]][objloc[1]]);
                             //test
                             qDebug() << "make a move from " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
                             //test end
-                            chosenloc[0] = objloc[0];
-                            chosenloc[1] = objloc[1];
-                            timeleft = 30;
-                            clock2->setText("30 s");
+                            chosenloc[0]=objloc[0];
+                            chosenloc[1]=objloc[1];
                        }
                        else{
+                           legalmove = false;
                            //发送错误信号
                            server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_MOVE"),QString("move is illegal")));
-
+                           //棋子移回去
+                           CheckerMove(b,loc[btnx][btny]);
+                           break;
                        }
                    }
                }
             }
+           if(legalmove){
+               for(int i=0;i<playernum;i++){
+                   //转发move op
+                   server->send(roomList[0].getPl()[i].getSocket(),data);
+                  }
+               this->killTimer(id);
+               timeleft = 30;
+               clock2->setText("30 s");
+           }
+           else{
+               break;
+           }
            if(totalstep>70*playernum){
                if(isfinish(pln)) {
                    server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
@@ -967,8 +970,10 @@ Widget::Widget(QWidget *parent)
                                 QChar place(65+t);
                                 roomList[i].getPl()[t].setPlace(place.toLatin1());
                         }
+                        roomList[i].gameBegin();//游戏开始
                         for(int j=0;j<roomList[i].getPlnum();j++)
                             server->send(roomList[i].getPl()[j].getSocket(),NetworkData(OPCODE::START_GAME_OP,plName,seq));
+
                     }
                     }
                     break;

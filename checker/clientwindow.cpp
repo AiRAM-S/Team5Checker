@@ -152,12 +152,13 @@ ClientWindow::ClientWindow(QWidget *parent) :
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
-
-                shouldSwitch=true;
-                shouldSwitcht2f();
-                shouldSwitch=false;
-                ischange=true;
-                qDebug() << "player changed";
+//                shouldSwitch=true;
+//                shouldSwitcht2f();
+//                shouldSwitch=false;
+//                ischange=true;
+//                qDebug() << "player changed";
+                NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
+                socket->send(mv);//发送move信号
             }
             else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
                 nobai->show();
@@ -175,10 +176,6 @@ void ClientWindow::shouldSwitcht2f(){
 }
 
 void ClientWindow::changeplayer(){
-
-    NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
-    socket->send(mv);//发送move信号
-
     for(int i=0;i<10;i++){
         btn[flag][i]->setCheckable(false);
     }
@@ -223,7 +220,7 @@ void ClientWindow::changeplayer(){
     checked=NULL;
     jumped=NULL;
     step=0;
-    path = QString("");
+    path = "";
 }
 
 void ClientWindow::paintEvent(QPaintEvent *)
@@ -298,8 +295,9 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
-                    shouldSwitcht2f();
-
+                    //shouldSwitcht2f();
+                    NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
+                    socket->send(mv);//发送move信号
                 }
                 else if(mv==2){
                     jumped=checked;
@@ -393,7 +391,7 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
         return;//赢了就不让动 su
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
     anim->setDuration(300);
-    anim->setStartValue(btn->pos());
+    anim->setStartValue(loc[btn->x][btn->y]);
     anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
     anim->start(QPropertyAnimation::KeepWhenStopped);
     btn->x=objloc[0];
@@ -477,11 +475,11 @@ void ClientWindow::receive(NetworkData data){
            {
             QStringList pls = data.data1.split(" ");
             QStringList seq = data.data2.split(" ");
-            playernum=data.data2.length();
+            playernum=data.data2.length();            
             for(int i=0;i<playernum;i++){
-                players.replace(seq.at(i).toInt()-65,pls.at(i));
+                players.replace(place2num(seq[i].toUtf8().at(0)),pls[i]);
             }
-            myPos = *(seq.at(pls.indexOf(PlName)).toLatin1().data());
+            myPos = seq.at(pls.indexOf(PlName)).toLatin1()[0];
             //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
             initializeChecker(data.data2);//画棋子
         }
@@ -496,25 +494,30 @@ void ClientWindow::receive(NetworkData data){
         break;
         case OPCODE::MOVE_OP://其他玩家移动棋子
             {
+                nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
+                if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
+                    changeplayer();
+                    break;
+                }
+                int nowPlpos;//该玩家的ABCDEF对应在btn里的序号
+                nowPlpos = place2num(data.data1.toUtf8().at(0));
                 if(data.data2=="-1"){
                     //移除该玩家所有棋子
-                    char outpl = data.data1.toLatin1()[0];
                     for(int i=0;i<10;i++){
-                        btn[outpl-65][i]->hide();
+                        btn[nowPlpos][i]->hide();
                     }
                 }
                 else{
                     flag = data.data1.toInt()-65;
-                    nowplayer->setText(QString("Player:%1").arg(players[data.data1.toInt()-65]));
+                    nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
                     QStringList checkerpath = data.data2.split(" ");
                     int stepnum = checkerpath.length()/2-1;
                     int origin[2];
                     origin[0]= checkerpath.at(0).toInt();
                     origin[1]= checkerpath.at(1).toInt();
-                    char plnow = data.data1.toLatin1()[0];
                     for(int i=0;i<10;i++){
-                        if(btn[plnow-65][i]->x==origin[0]
-                           &&btn[plnow-65][i]->y==origin[1]){
+                        if(btn[nowPlpos][i]->x==origin[0]
+                           &&btn[nowPlpos][i]->y==origin[1]){
                             for(int j=1;j<=stepnum;j++){
                                 int aimloc[2];
                                 aimloc[0]= checkerpath.at(2*j).toInt();
@@ -522,12 +525,11 @@ void ClientWindow::receive(NetworkData data){
                                 QPointF aim;
                                 aim.setX(loc[aimloc[0]][aimloc[1]].rx()-RR/4);
                                 aim.setY(loc[aimloc[0]][aimloc[1]].ry()-RR/4);
-                                CheckerMove(btn[plnow-65][i],aim);
+                                CheckerMove(btn[nowPlpos][i],aim);
                             }
                         }
                     }
                 }
-                nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
             }
         break;
     case OPCODE::END_TURN_OP://胜利反馈
@@ -565,18 +567,31 @@ void ClientWindow::receive(NetworkData data){
     {
         if(data.data1=="INVALID_JOIN")
             QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
-        else if(data.data1=="INVALID_MOVE")
-            QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");
+        else if(data.data1=="INVALID_MOVE"){
+            //把棋子移回去
+            CheckerMove(checked,loc[btnx][btny]);
+            isfill[btnx][btny] = 1;
+            isfill[objloc[0]][objloc[1]]=0;
+            QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");}
         else if(data.data1=="INVALID_REQ")
             QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
         else if(data.data1=="NOT_IN_ROOM")
             QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
-        else if(data.data1=="OUTTURN_MOVE")
+        else if(data.data1=="OUTTURN_MOVE"){
+            //把棋子移回去
+            CheckerMove(checked,loc[btnx][btny]);
+            isfill[btnx][btny] = 1;
+            isfill[objloc[0]][objloc[1]]=0;
             QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
+            }
         else if(data.data1=="ROOM_IS_RUNNING")
             QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
-        else if(data.data1=="ROOM_NOT_RUNNING")
-            QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");
+        else if(data.data1=="ROOM_NOT_RUNNING"){
+            //把棋子移回去
+            CheckerMove(checked,loc[btnx][btny]);
+            isfill[btnx][btny] = 1;
+            isfill[objloc[0]][objloc[1]]=0;
+            QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");}
         else{
             if(data.data2.isEmpty()){
                 QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
