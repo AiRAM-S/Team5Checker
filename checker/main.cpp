@@ -14,15 +14,17 @@ int main(int argc, char *argv[])
     if(!ifsta)
         return a.exec();
     QString str=h.settype->currentText();
-        if(str=="Client")
-        {
+//        if(str=="Client")
+//        {
             chooseclient *e=new chooseclient;
             e->show();
-        }
-        else if(str=="Server")
-        {
+            chooseclient *e2= new chooseclient;
+            e2->show();
+//      }
+  //      else if(str=="Server")
+    //    {
             chooseservice *v=new chooseservice;
             v->show();
-        }
+      //  }
     return a.exec();
 }
