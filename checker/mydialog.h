@@ -12,6 +12,9 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QComboBox>
+#include <QDebug>
+#include<QValidator>
+#include<QString>
 
 class myDialog:public QDialog
 {
@@ -32,6 +35,7 @@ public:
     };
     QComboBox *setplayer;
     QComboBox *settype;
+    QString port;
 
 protected:
     void mpe(QMouseEvent *mo);
@@ -39,6 +43,7 @@ protected:
 private:
     QLabel *ch_logo;
     QLabel *checker;
+    QLabel *PORT;
     QPushButton *join;  //加入游戏
     QPushButton *an;
     QPushButton *quit;  //退出游戏
@@ -48,6 +53,7 @@ private:
     bool joinSuccessed;
 
     QPoint p;
+    QLineEdit *PORTS;
 
 
 

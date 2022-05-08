@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QDialog>
 #include<QPropertyAnimation>
+#include<QTimerEvent>
 #include"networkserver.h"
 #include"networksocket.h"
 #include"networkdata.h"
@@ -40,8 +41,11 @@ public:
     void shouldSwitcht2f();
     bool isfinish(int x);
     CheckerButton* int2btn(int x,int y);
+    int place2num(char pln);
 protected:
     void paintEvent(QPaintEvent *);
+    void timerEvent(QTimerEvent *);
+
 
 private:
     Ui::Widget *ui;
@@ -84,14 +88,19 @@ private:
                          //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player）
                          //玩家类，内含玩家socket，玩家ID，玩家状态
 
+    QString ranklist;
+    int id;//计时器id,负责倒计时
+    QLabel* clock1;//显示倒计时提示
+    QLabel* clock2;//显示时间
+
 signals:
     void shouldSwitchChanged();
     //终局判断，信号和槽函数未实现连接
-    void finish(int);//一方结束游戏信号
+    void someonewin(QString);//一方结束游戏信号
     void gameover();//游戏结束信号
 public slots:
     void changeplayer();
-//  void someoneover(int i);
+  //  void someoneover(int i);
     void receiveData(QTcpSocket* client, NetworkData data);//服务端接受到客户端信号时的解析函数
 
 

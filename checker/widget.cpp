@@ -33,6 +33,15 @@ Widget::Widget(QWidget *parent)
     server = new NetworkServer(this);
     connect(server, &NetworkServer::receive, this, &Widget::receiveData);
     server->listen(QHostAddress("127.0.0.1"),9999);
+    //初始化秒表
+    clock1 = new QLabel("剩余时间",this);
+    clock1->setFont(QFont("Microsoft YaHei",20));
+    clock1->setGeometry(70,500,300,50);
+    clock1->setStyleSheet("color:brown;");
+    clock2 = new QLabel("30 s",this);
+    clock2->setFont(QFont("Agency FB",20));
+    clock2->setStyleSheet("color:brown;");
+    clock2->setGeometry(70,530,300,50);
 
     //开始界面 设置玩家人数
    /* myDialog *d=new myDialog;
@@ -525,8 +534,8 @@ Widget::Widget(QWidget *parent)
     void Widget::CheckerMove(CheckerButton*btn,QPointF p){
         QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
         anim->setDuration(300);
-        anim->setStartValue(btn->pos());
-        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2.5));
+        anim->setStartValue(loc[chosenloc[0]][chosenloc[1]]);
+        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2));
         anim->start(QPropertyAnimation::KeepWhenStopped);
         btn->x=objloc[0];
         btn->y=objloc[1];
@@ -667,11 +676,18 @@ Widget::Widget(QWidget *parent)
             }
             break;
         }}
-            int y;//ABCDEF到red,blue的转换
             if(flg){//未完成
-                isover[y]=true;
+                isover[place2num(x)]=true;
                 overnum++;
             }
+        }
+        if(overnum==playernum){
+            //游戏结束信号
+//            for(int i=0;i<playernum;i++){
+//                server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP),)
+//            }
+//        }
+
     }
         return flg;
 }
@@ -696,7 +712,7 @@ Widget::Widget(QWidget *parent)
             w->setText("Congratulations ORANGE");
             break;
         }
-        win->show();
+        w->show();
     }*/
 
     CheckerButton* Widget::int2btn(int btnx,int btny){
@@ -712,6 +728,23 @@ Widget::Widget(QWidget *parent)
             if(flag) break;
         }
     }
+    int Widget::place2num(char pln){
+        int k=0;
+        if(playernum==2){
+            if(pln=='A') k=0;
+            else if(pln=='D') k=1;
+        }
+        else if(playernum==3){
+            if(pln=='A') k=0;
+            else if(pln=='C') k=1;
+            else if(pln=='E') k=2;
+        }
+        else if(playernum==6){
+            k=pln-'A';
+        }
+        return k;
+    }
+   static int timeleft = 30;
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
         switch(data.op){
         case OPCODE::JOIN_ROOM_OP:{
@@ -771,6 +804,7 @@ Widget::Widget(QWidget *parent)
                         server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
+                   // server->send(client,NetworkData(OPCODE::START_GAME_OP,prevPl,prevState));
                 }
             }
         }
@@ -809,11 +843,10 @@ Widget::Widget(QWidget *parent)
         }
         break;
         case OPCODE::MOVE_OP:{
-            //未实现
             qDebug()<<"receive success";
             qDebug() << "path is " << data.data2;
             QStringList step = data.data2.split(" ");//可能有负号
-            int pln=data.data1[0].toLatin1();
+            char pln=data.data1[0].toLatin1();
            int stepNum = step.length();
             //设置初始点
             btnx = step[0].toInt()+8;
@@ -821,7 +854,7 @@ Widget::Widget(QWidget *parent)
             chosenloc[0]=btnx;
             chosenloc[1]=btny;
             CheckerButton*b=int2btn(btnx,btny);
-
+            bool legalmove = true;
            for(int i=2;i<stepNum;i++){
                if(i%2==0){
                    objloc[0]=step[i].toInt()+8;
@@ -830,29 +863,66 @@ Widget::Widget(QWidget *parent)
                    objloc[1]=step[i].toInt()+8;
                }
                if(i%2){
-
                    if(isfill[chosenloc[0]][chosenloc[1]]){
                        ischosen=true;
                        if(islegal()){
-                    CheckerMove(b,loc[objloc[0]][objloc[1]]);
-                    chosenloc[0]=objloc[0];
-                    chosenloc[1]=objloc[1];
+                            CheckerMove(b,loc[objloc[0]][objloc[1]]);
+                            //test
+                            qDebug() << "make a move from " << chosenloc[0]-8 << "," << chosenloc[1]-8 << " to " << objloc[0]-8 << "," << objloc[1]-8;
+                            //test end
+                            chosenloc[0]=objloc[0];
+                            chosenloc[1]=objloc[1];
                        }
                        else{
+                           legalmove = false;
                            //发送错误信号
                            server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_MOVE"),QString("move is illegal")));
-
+                           //棋子移回去
+                           CheckerMove(b,loc[btnx][btny]);
+                           break;
                        }
                    }
                }
             }
-           if(totalstep>70*playernum){
-               if(isfinish(pln)) server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
+           if(legalmove){
+               for(int i=0;i<playernum;i++){
+                   //转发move op
+                   server->send(roomList[0].getPl()[i].getSocket(),data);
+                  }
+               this->killTimer(id);
+               timeleft = 30;
+               clock2->setText("30 s");
            }
-           if(overnum==playernum) server->send(client,NetworkData(OPCODE::END_GAME_OP,QString(),QString()));
-           changeplayer();
+           else{
+               break;
+           }
+           if(totalstep>70*playernum){
+               if(isfinish(pln)) {
+                   server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
+                   for(int i=0;i<playernum;i++){
+                       if(pln==roomList[0].getPl()[i].getPlace()){
+                           ranklist.append(roomList[0].getPl()[i].getID()).append(" ");
+                           break;
+                       }
+                   }
+           }
+           if(overnum==playernum) {
+               for(int i=0;i<playernum;i++){
+                   server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
+               }
+           }
+           else {
+               changeplayer();
+               for(int i=0;i<playernum;i++){
+                   if(flag==place2num(roomList[0].getPl()[i].getPlace())){
+                       server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(),QString()));
+                       id = startTimer(1000);
+                   }
+               }
 
-        }
+           }
+
+        }}
         break;
         case OPCODE::PLAYER_READY_OP:{
             int roomNum = roomList.length();
@@ -866,8 +936,45 @@ Widget::Widget(QWidget *parent)
                     }
                 }
                 if(found){
+                    roomList[i].addReady();
+                    //转发某玩家就绪信息
                     for(int j=0;j<roomList[i].getPlnum();j++){
                         server->send(roomList[i].getPl()[j].getSocket(),data);
+                    }
+                    //检查是否可以开始游戏
+                    if((roomList[i].getPlnum()==roomList[i].getReadynum())&&(roomList[i].getReadynum()==2||roomList[i].getReadynum()==3||roomList[i].getReadynum()==6)){
+                        QString plName;
+                        QString seq;
+                        if(roomList[i].getReadynum()==2){
+                            seq = "A D";
+                            plName = roomList[i].getPl()[0].getID().append(" ").append(roomList[i].getPl()[1].getID());
+                            roomList[i].getPl()[0].setPlace('A');
+                            roomList[i].getPl()[1].setPlace('D');
+                        }
+                        else if(roomList[i].getReadynum()==3){
+                            seq = "A C E";
+                            plName = roomList[i].getPl()[0].getID();
+                            roomList[i].getPl()[0].setPlace('D');
+                            for(int t=1;t<=2;t++){
+                                plName.append(" ").append(roomList[i].getPl()[t].getID());
+                                QChar place(65+2*t);
+                                roomList[i].getPl()[t].setPlace(place.toLatin1());
+                            }
+                        }
+                        else{
+                            seq = "A B C D E F";
+                            plName = roomList[i].getPl()[0].getID();
+                            roomList[i].getPl()[0].setPlace('A');
+                            for(int t=1;t<6;t++){
+                                plName.append(" ").append(roomList[i].getPl()[t].getID());
+                                QChar place(65+t);
+                                roomList[i].getPl()[t].setPlace(place.toLatin1());
+                        }
+                        roomList[i].gameBegin();//游戏开始
+                        for(int j=0;j<roomList[i].getPlnum();j++)
+                            server->send(roomList[i].getPl()[j].getSocket(),NetworkData(OPCODE::START_GAME_OP,plName,seq));
+
+                    }
                     }
                     break;
                 }
@@ -883,4 +990,19 @@ Widget::Widget(QWidget *parent)
         }
         }
 
+    }
+    void Widget::timerEvent(QTimerEvent *event){
+        timeleft--;
+        if(timeleft<0){
+            this->killTimer(id);//停止计时
+            //向其他玩家发送超时判负信号
+            char outPl = flag+65;
+            for(int i=0;i<roomList[0].getPlnum();i++){
+                if(roomList[0].getPl()[i].getID()!=QChar(flag+65))
+                    server->send(roomList[0].getPl()[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(outPl),QString("-1")));
+            }
+        }
+        else{
+           clock2->setText(QString("%1 s").arg(timeleft));
+        }
     }

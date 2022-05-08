@@ -13,7 +13,8 @@
 #include<QTimerEvent>
 #include "rank.h"
 #include "networksocket.h"
-#include"wait.h"
+#include"mydialog.h"
+#include"chooseclient.h"
 
 namespace Ui {
 class ClientWindow;
@@ -39,6 +40,8 @@ public:
     bool canJump(int x,int y);//排查是否可以进行下一次跳跃
     void shouldSwitcht2f();
     void isfinish();//棋子是否走完
+    int place2num(char);
+
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *event);
@@ -76,23 +79,34 @@ private:
     bool isover[6];
     int overnum=0;
     mydialog1 *z;
-    Wait *d;
     int totalstep=0;
 
     //stage2用到的
     char myPos;//记录该玩家所处位置（ABCDEF)
     NetworkSocket* socket;
-    QString myName;
     QString path;
     QStringList players;
-    int playerState[6];
+    QList<int> playerState;
     int id;//计时器id,负责倒计时
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间
     bool iswin;//是否胜利，不知道有没有用先写着
     Rank* rank;
     void initializeChecker(QString);//根据服务端发来的信号，画棋子
-
+    QString RoomID;//该客户端所处房间号
+    QString PlName;//玩家姓名
+    QString Port;//端口号
+    myDialog dd;
+    chooseclient cc;
+    void passit1(QString a)
+    {
+        Port=a;
+    }
+    void passit2(QString b,QString c)
+    {
+        RoomID=b;
+        PlName=c;
+    }
 
 signals:
     void shouldSwitchChanged();
