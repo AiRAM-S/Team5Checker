@@ -29,13 +29,18 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    //初始化等待界面和过渡界面
+    ChooseServer = new chooseservice;
+    ServerWait = new serverwait;
     //初始化server
     server = new NetworkServer(this);
     connect(server, &NetworkServer::receive, this, &Widget::receiveData);
-    server->listen(QHostAddress::Any,9999);
-    //test
-    qDebug() << "begin to listen";
-    //test end
+    connect(this->d.getJoin(),&QPushButton::clicked,this,[=](){
+       server->listen(QHostAddress::Any,d.getPort().toInt());
+       //test
+       qDebug() << "begin to listen";
+       //test end
+    });
     //初始化秒表
     clock1 = new QLabel("剩余时间",this);
     clock1->setFont(QFont("Microsoft YaHei",20));
@@ -46,7 +51,6 @@ Widget::Widget(QWidget *parent)
     clock2->setStyleSheet("color:brown;");
     clock2->setGeometry(70,530,300,50);
 
-    Port=d.port;
     //开始界面 设置玩家人数
    /* myDialog *d=new myDialog;
     d->exec();
@@ -793,6 +797,9 @@ Widget::Widget(QWidget *parent)
                 //test
                 qDebug() << "server send JOIN_ROOM_REPLY_OP";
                 //test end
+                ChooseServer->hide();//关闭等待页面
+                ServerWait->setPlayerName(0,data.data2);//添加玩家
+                ServerWait->show();
             }
             if(nameConflict){
                 server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_JOIN"),QString("")));
@@ -822,6 +829,9 @@ Widget::Widget(QWidget *parent)
                         //test
                         qDebug() << "server send JOIN_ROOM_OP";
                         //test end
+                        ChooseServer->hide();//关闭等待页面
+                        ServerWait->setPlayerName(roomList[objRoom].getPlnum()-1,data.data2);//添加玩家
+                        ServerWait->show();
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
                     //test
@@ -860,6 +870,8 @@ Widget::Widget(QWidget *parent)
                                 //test
                                 qDebug() << "server send LEAVE_ROOM_OP";
                                 //test end
+                                ServerWait->setPlayerReady(plPos,false);//清空该玩家姓名
+                                ServerWait->setPlayerName(plPos,"");
                         }
                     }
                     else
@@ -983,11 +995,13 @@ Widget::Widget(QWidget *parent)
             //test end
             int roomNum = roomList.length();
             bool found=false;
+            int PlayerIndex;
             for(int i=0;i<roomNum;i++){
                 for(int j=0;j<roomList[i].getPlnum();j++){
                     if(roomList[i].getPl()[j].getID()==data.data1){
                         roomList[i].getPl()[j].setReady();
                         found=true;
+                        PlayerIndex=j;
                         break;
                     }
                 }
@@ -1000,6 +1014,8 @@ Widget::Widget(QWidget *parent)
                         qDebug() << "server send PLAYER_READY_OP";
                         //test end
                     }
+                    //更新页面信息
+                    ServerWait->setPlayerReady(PlayerIndex,true);
                     //检查是否可以开始游戏
                     if((roomList[i].getPlnum()==roomList[i].getReadynum())&&(roomList[i].getReadynum()==2||roomList[i].getReadynum()==3||roomList[i].getReadynum()==6)){
                         QString plName;
@@ -1035,8 +1051,10 @@ Widget::Widget(QWidget *parent)
                         //test
                         qDebug() << "server send START_GAME_OP";
                         //test end
-                            timeleft=30;
-                            id = startTimer(1000);
+                        ServerWait->hide();//关闭等待界面
+                        this->show();//打开棋盘
+                        timeleft=30;
+                        id = startTimer(1000);
                     }
                     }
                     break;
@@ -1047,10 +1065,6 @@ Widget::Widget(QWidget *parent)
             }
         }
         break;
-        case OPCODE::END_TURN_OP:{
-            //
-            break;
-        }
         }
 
     }

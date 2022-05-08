@@ -42,6 +42,13 @@ public:
     void shouldSwitcht2f();
     void isfinish();//棋子是否走完
     int place2num(char);
+    void setPort(QString p){
+        Port = p;
+        return;
+    }
+    NetworkSocket* getSocket(){
+        return socket;
+    }
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -97,8 +104,10 @@ private:
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
-    myDialog dd;
+public:
+    //myDialog dd;
     chooseclient cc;
+private:
     void passit1(QString a)
     {
         Port=a;
