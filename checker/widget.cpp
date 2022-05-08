@@ -43,6 +43,7 @@ Widget::Widget(QWidget *parent)
     clock2->setStyleSheet("color:brown;");
     clock2->setGeometry(70,530,300,50);
 
+    Port=d.port;
     //开始界面 设置玩家人数
    /* myDialog *d=new myDialog;
     d->exec();

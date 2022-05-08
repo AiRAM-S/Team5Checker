@@ -79,6 +79,7 @@ private:
     QLabel* nowplayer;
     QPushButton* end;
     bool shouldSwitch;
+    myDialog d;
     mydialog1 *z;
     int totalstep=0;
 
@@ -92,6 +93,7 @@ private:
     int id;//计时器id,负责倒计时
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间
+    QString Port;//端口号
 
 signals:
     void shouldSwitchChanged();
