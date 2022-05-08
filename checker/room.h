@@ -69,6 +69,9 @@ public:
     void addReady(){
         readynum++;
     }
+    void gameBegin(){
+        gameOn=true;
+    }
 };
 
 #endif // ROOM_H
