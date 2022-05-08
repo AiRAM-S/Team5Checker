@@ -27,7 +27,7 @@ public:
 private slots:
    void qqq();
 
-private:
+public:
     Ui::Wait *ui;
     bool ifsuccessed;
 };

@@ -36,30 +36,18 @@ ClientWindow::ClientWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    passit1(dd.port);
+    //passit1(dd.port);
     passit2(cc.room,cc.id);
 
 
     //初始化socket
     socket = new NetworkSocket(new QTcpSocket(),this);
-
     connect(socket, &NetworkSocket::receive, this, &ClientWindow::receive);
     connect(socket->base(), &QAbstractSocket::disconnected, [=]() {
         QMessageBox::critical(this, tr("Connection lost"), tr("Connection to server has closed"));
     });
-    //建立连接
 
-    //quint16 objPort = Port.toInt();
-//    quint16 objPort = 9999;
-//    socket->hello("127.0.0.1",objPort);//ip传了本地的ip
-//    socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,RoomID,this->PlName));//请求加入房间
-    connect(this->dd.getJoin(),&QPushButton::clicked,this,[=](){
-        this->Port = dd.getPort();
-        socket->hello("127.0.0.1",Port.toInt());
-        //test
-        qDebug() << "client send hello";
-        //test end
-    });
+    //页面2：输入roomid和用户名 发送加入房间信号
     connect(this->cc.getYES(),&QPushButton::clicked,this,[=](){
        this->RoomID = cc.getRoomID();
        this->PlName = cc.getName();
@@ -68,6 +56,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         qDebug() << PlName << " send JOIN_ROOM_OP of " << RoomID;
         //test end
     });
+
 
 
     //开始界面 设置玩家人数
@@ -497,6 +486,8 @@ void ClientWindow::receive(NetworkData data){
                  if(playerState.at(i))
                      ww.sis[i]->setText("ready");
             }
+            cc.hide();
+            ww.show();
         break;
         case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
         {

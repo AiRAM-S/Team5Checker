@@ -10,6 +10,7 @@ debug/networkserver.o
 debug/networksocket.o
 debug/rank.o
 debug/room.o
+debug/serverwait.o
 debug/wait.o
 debug/widget.o
 debug/qrc_image.o
@@ -20,5 +21,6 @@ debug/moc_mydialog1.o
 debug/moc_networkserver.o
 debug/moc_networksocket.o
 debug/moc_rank.o
+debug/moc_serverwait.o
 debug/moc_wait.o
 debug/moc_widget.o

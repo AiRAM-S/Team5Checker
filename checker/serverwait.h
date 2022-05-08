@@ -16,6 +16,9 @@ class serverwait : public QWidget
 public:
     explicit serverwait(QWidget *parent = nullptr);
     ~serverwait();
+    void setPlayerName(int i,QString name);
+    void setPlayerReady(int ,bool);
+
 
 private:
     Ui::serverwait *ui;
