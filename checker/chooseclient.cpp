@@ -85,19 +85,20 @@ chooseclient::chooseclient(QWidget *parent) :
             {
         ip=IPS->text();
         ip=ip.mid(0,6);
-        if(ip=="10.46."||ip=="10.47.")
-        {
-            port=PORTS->text();
-            id=IDS->text();
+//        if(ip=="10.46."||ip=="10.47.")
+//        {
+//            port=PORTS->text();
+//            id=IDS->text();
 
         Wait *d=new Wait;
         d->setWindowTitle("waiting");
         d->show();
-        int ifs=d->Join();
-        if(!ifs)
-           exit(0);
-                    hide();
-        }
+//        int ifs=d->Join();
+//        if(!ifs)
+//           exit(0);
+//                    hide();
+//        }
+
     });
 
 }
