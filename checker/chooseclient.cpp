@@ -88,18 +88,18 @@ chooseclient::chooseclient(QWidget *parent) :
         ip=ip.mid(0,6);
         room=ROOMS->text();
         id=IDS->text();
-        if(ip=="10.46."||ip=="10.47.")
-        {
+        //if(ip=="10.46."||ip=="10.47.")
+        //{
             id=IDS->text();
             room=ROOMS->text();
         Wait *d=new Wait;
         d->setWindowTitle("waiting");
         d->show();
-        //        int ifs=d->Join();
-        //        if(!ifs)
-        //           exit(0);
-        //                    hide();
-        }
+//        int ifs=d->Join();
+//        if(!ifs)
+//           exit(0);
+//                    hide();
+//        }
 
     });
 

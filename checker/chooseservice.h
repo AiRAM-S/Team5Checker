@@ -4,7 +4,6 @@
 #include <QWidget>
 #include<QTcpServer>
 #include<QTcpSocket>
-#include"widget.h"
 class QPushButton;
 class QLabel;
 class QLineEdit;
@@ -23,7 +22,6 @@ private:
     QPushButton *YES;
     QLineEdit *IPS;
     QLineEdit *PORTS;
-    Widget* w;
 };
 
 #endif // CHOOSESERVICE_H

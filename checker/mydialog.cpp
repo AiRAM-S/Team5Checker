@@ -1,5 +1,6 @@
 //.cpp
 #include"mydialog.h"
+#include"widget.h"
 #include<QPushButton>
 
 myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
@@ -11,7 +12,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     pix->setScaledContents(true);
     pix->setPixmap(QPixmap(":/image/map.png"));
     pix->setFixedSize(600, 600);*/
-    an = new QPushButton("");
+    an = new QPushButton(this);
     an->setMinimumSize(450, 500);
     an->setFlat(true);
     an->setIconSize(QSize(600, 600));
