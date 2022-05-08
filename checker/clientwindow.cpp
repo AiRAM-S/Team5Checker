@@ -49,9 +49,12 @@ ClientWindow::ClientWindow(QWidget *parent) :
     });
     //建立连接
 
-    quint16 objPort = Port.toInt();
+    //quint16 objPort = Port.toInt();
+    quint16 objPort = 9999;
     socket->hello("127.0.0.1",objPort);//ip传了本地的ip
-    socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,RoomID,this->PlName));//请求加入房间
+    RoomID = "1234";
+    PlName = "abcd";
+   // socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,RoomID,this->PlName));//请求加入房间
 
 
     //开始界面 设置玩家人数
@@ -133,7 +136,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                        btny=but.y;
                        ischosen=true;
                        checked=&but;
-                       qDebug()<<but.x<<' '<<but.y;
+                     //  qDebug()<<but.x<<' '<<but.y;
                      //  qDebug() << "choose a check";
                    }
                    else{
@@ -162,6 +165,10 @@ ClientWindow::ClientWindow(QWidget *parent) :
 //                qDebug() << "player changed";
                 NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
                 socket->send(mv);//发送move信号
+                //test
+                qDebug() << "client send MOVE_OP ";
+                qDebug() << "path is " << path;
+                //test end
             }
             else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
                 nobai->show();
@@ -301,6 +308,10 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                     //shouldSwitcht2f();
                     NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
                     socket->send(mv);//发送move信号
+                    //test
+                    qDebug() << "client send MOVE_OP";
+                    qDebug() << "path is " << path;
+                    //test end
                 }
                 else if(mv==2){
                     jumped=checked;
@@ -450,11 +461,17 @@ void ClientWindow::receive(NetworkData data){
     switch(data.op){
         case OPCODE::JOIN_ROOM_OP://有新玩家加入
         {
+        //test
+        qDebug() << "client receive JOIN_ROOM_OP";
+        //test end
         players.append(data.data1);
         playerState.append(0);
         }
         break;
         case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
+            //test
+            qDebug() << "client receive JOIN_ROOM_REPLY_OP";
+            //test end
             players = data.data1.split(" ");//载入已有玩家姓名
             for(int i=0;i<data.data2.length();i++){
                 playerState.append(QString(data.data2.at(i)).toInt());
@@ -463,7 +480,11 @@ void ClientWindow::receive(NetworkData data){
             playerState.append(0);
         break;
         case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
-        {    int Index = players.indexOf(data.data1);
+        {
+            //test
+            qDebug() << "client receive LEAVE_ROOM_OP";
+            //test end
+            int Index = players.indexOf(data.data1);
             players.removeAt(Index);
             playerState.removeAt(Index);
         }
@@ -472,10 +493,16 @@ void ClientWindow::receive(NetworkData data){
             this->socket->bye();
         break;
         case OPCODE::PLAYER_READY_OP://有玩家准备就绪
+            //test
+            qDebug() << "client receive PLAYER_READY_OP";
+            //test end
             playerState[players.indexOf(data.data1)] = 1;
         break;
         case OPCODE::START_GAME_OP://开始游戏 实现了一半
            {
+            //test
+            qDebug() << "client receive START_GAME_OP";
+            //test end
             QStringList pls = data.data1.split(" ");
             QStringList seq = data.data2.split(" ");
             playernum=data.data2.length();            
@@ -488,6 +515,9 @@ void ClientWindow::receive(NetworkData data){
         }
         break;
         case OPCODE::START_TURN_OP://我的回合开始
+        //test
+        qDebug() << "client receive START_TURN_OP";
+        //test end
             timeLeft=30;
             id=startTimer(1000);
             clock1->show();
@@ -497,6 +527,11 @@ void ClientWindow::receive(NetworkData data){
         break;
         case OPCODE::MOVE_OP://其他玩家移动棋子
             {
+                //test
+                qDebug() << "client receive JOIN_ROOM_OP";
+                qDebug() << "player is " << data.data1;
+                qDebug() << "path is " << data.data2;
+                //test end
                 nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
                 if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
                     changeplayer();
