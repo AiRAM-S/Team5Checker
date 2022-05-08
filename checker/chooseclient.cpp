@@ -99,7 +99,7 @@ chooseclient::chooseclient(QWidget *parent) :
         if(!ifs)
            exit(0);
                     hide();
-            }
+        }
     });
 
 }

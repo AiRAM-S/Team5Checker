@@ -108,6 +108,7 @@ private:
         PlName=c;
     }
 
+
 signals:
     void shouldSwitchChanged();
     void finish(int);

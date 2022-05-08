@@ -23,7 +23,7 @@ public:
     QString read_ip_address();
 
 private:
-    QTcpSocket* client;
+    //QTcpSocket* client;
     QLabel *IP;
     //QLabel *PORT;
     QLabel *ID;
