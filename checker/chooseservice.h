@@ -15,8 +15,8 @@ public:
     ~chooseservice();
 
 private:
-    QTcpServer* service; //监听
-    QTcpSocket* commun;   //通信
+//    QTcpServer* service; //监听
+//    QTcpSocket* commun;   //通信
     QLabel *IP;
     QLabel *PORT;
     QPushButton *YES;

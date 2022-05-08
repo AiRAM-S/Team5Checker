@@ -9,6 +9,7 @@
 #include"networkdata.h"
 #include"chooseclient.h"
 
+
 #define I 40 //横向间距
 #define JX 20
 #define JY sqrt(3)*20 //行距
@@ -47,9 +48,13 @@ ClientWindow::ClientWindow(QWidget *parent) :
         QMessageBox::critical(this, tr("Connection lost"), tr("Connection to server has closed"));
     });
     //建立连接
-    quint16 port = 9999;//这个port我没搞太懂，，随便写了一个9999
 
-    socket->hello("127.0.0.1",port);//ip传了本地的ip
+    //quint16 objPort = Port.toInt();
+    quint16 objPort = 9999;
+    socket->hello("127.0.0.1",objPort);//ip传了本地的ip
+    RoomID = "1234";
+    PlName = "abcd";
+   // socket->send(NetworkData(OPCODE::JOIN_ROOM_OP,RoomID,this->PlName));//请求加入房间
 
 
     //开始界面 设置玩家人数
@@ -113,7 +118,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
         rank = new Rank(this);
         if(overnum==playernum)
         rank->show();
-
         rank->hide();
 
 
@@ -132,7 +136,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                        btny=but.y;
                        ischosen=true;
                        checked=&but;
-                       qDebug()<<but.x<<' '<<but.y;
+                     //  qDebug()<<but.x<<' '<<but.y;
                      //  qDebug() << "choose a check";
                    }
                    else{
@@ -154,12 +158,17 @@ ClientWindow::ClientWindow(QWidget *parent) :
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
             if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
-
-                shouldSwitch=true;
-                shouldSwitcht2f();
-                shouldSwitch=false;
-                ischange=true;
-                qDebug() << "player changed";
+//                shouldSwitch=true;
+//                shouldSwitcht2f();
+//                shouldSwitch=false;
+//                ischange=true;
+//                qDebug() << "player changed";
+                NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
+                socket->send(mv);//发送move信号
+                //test
+                qDebug() << "client send MOVE_OP ";
+                qDebug() << "path is " << path;
+                //test end
             }
             else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
                 nobai->show();
@@ -177,10 +186,6 @@ void ClientWindow::shouldSwitcht2f(){
 }
 
 void ClientWindow::changeplayer(){
-
-    NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
-    socket->send(mv);//发送move信号
-
     for(int i=0;i<10;i++){
         btn[flag][i]->setCheckable(false);
     }
@@ -225,7 +230,7 @@ void ClientWindow::changeplayer(){
     checked=NULL;
     jumped=NULL;
     step=0;
-    path = QString("");
+    path = "";
 }
 
 void ClientWindow::paintEvent(QPaintEvent *)
@@ -300,8 +305,13 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
-                    shouldSwitcht2f();
-
+                    //shouldSwitcht2f();
+                    NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
+                    socket->send(mv);//发送move信号
+                    //test
+                    qDebug() << "client send MOVE_OP";
+                    qDebug() << "path is " << path;
+                    //test end
                 }
                 else if(mv==2){
                     jumped=checked;
@@ -391,9 +401,11 @@ int ClientWindow::pixel2int(QPointF pixel){
 }
 
 void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
+    if(iswin)
+        return;//赢了就不让动 su
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
     anim->setDuration(300);
-    anim->setStartValue(btn->pos());
+    anim->setStartValue(loc[btn->x][btn->y]);
     anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
     anim->start(QPropertyAnimation::KeepWhenStopped);
     btn->x=objloc[0];
@@ -447,178 +459,253 @@ static int timeLeft=30;
 
 void ClientWindow::receive(NetworkData data){
     switch(data.op){
-            case OPCODE::JOIN_ROOM_OP://有新玩家加入
-            {
-            players.append(data.data1);
+        case OPCODE::JOIN_ROOM_OP://有新玩家加入
+        {
+        //test
+        qDebug() << "client receive JOIN_ROOM_OP";
+        //test end
+        players.append(data.data1);
+        playerState.append(0);
+        }
+        break;
+        case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
+            //test
+            qDebug() << "client receive JOIN_ROOM_REPLY_OP";
+            //test end
+            players = data.data1.split(" ");//载入已有玩家姓名
+            for(int i=0;i<data.data2.length();i++){
+                playerState.append(QString(data.data2.at(i)).toInt());
+            }//设置已有玩家状态
+            players.append(PlName);
             playerState.append(0);
+            for(int i=0;i<6;i++)
+            {
+                 ww.ids[i]->setText(players.at(i));
+                 if(playerState.at(i))
+                     ww.sis[i]->setText("ready");
             }
-            break;
-            case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
-                players = data.data1.split(" ");//载入已有玩家姓名
-                for(int i=0;i<data.data2.length();i++){
-                    playerState.append(QString(data.data2.at(i)).toInt());
-                }//设置已有玩家状态
-                players.append(PlName);
-                playerState.append(0);
-                for(int i=0;i<6;i++)
-                {
-                    ww.ids[i]->setText(players.at(i));
-                    if(playerState.at(i))
-                        ww.sis[i]->setText("ready");
+        break;
+        case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
+        {
+            //test
+            qDebug() << "client receive LEAVE_ROOM_OP";
+            //test end
+            int Index = players.indexOf(data.data1);
+            players.removeAt(Index);
+            playerState.removeAt(Index);
+        }
+        break;
+        case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现 我理解是断开连接（Su）
+            this->socket->bye();
+        break;
+        case OPCODE::PLAYER_READY_OP://有玩家准备就绪
+            //test
+            qDebug() << "client receive PLAYER_READY_OP";
+            //test end
+            playerState[players.indexOf(data.data1)] = 1;
+        break;
+        case OPCODE::START_GAME_OP://开始游戏 实现了一半
+           {
+            //test
+            qDebug() << "client receive START_GAME_OP";
+            //test end
+            QStringList pls = data.data1.split(" ");
+            QStringList seq = data.data2.split(" ");
+            playernum=data.data2.length();            
+            for(int i=0;i<playernum;i++){
+                players.replace(place2num(seq[i].toUtf8().at(0)),pls[i]);
+            }
+            myPos = seq.at(pls.indexOf(PlName)).toLatin1()[0];
+            //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
+            initializeChecker(data.data2);//画棋子
+        }
+        break;
+        case OPCODE::START_TURN_OP://我的回合开始
+        //test
+        qDebug() << "client receive START_TURN_OP";
+        //test end
+            timeLeft=30;
+            id=startTimer(1000);
+            clock1->show();
+            clock2->show();
+            flag = myPos-65;
+            nowplayer->setText(QString("Player:%1").arg(PlName));
+        break;
+        case OPCODE::MOVE_OP://其他玩家移动棋子
+            {
+                //test
+                qDebug() << "client receive JOIN_ROOM_OP";
+                qDebug() << "player is " << data.data1;
+                qDebug() << "path is " << data.data2;
+                //test end
+                nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
+                if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
+                    changeplayer();
+                    break;
                 }
-            break;
-            case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
-            {    int Index = players.indexOf(data.data1);
-                players.removeAt(Index);
-                playerState.removeAt(Index);
-            }
-            break;
-            case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现 我理解是断开连接（Su）
-                this->socket->bye();
-            break;
-            case OPCODE::PLAYER_READY_OP://有玩家准备就绪
-                playerState[players.indexOf(data.data1)] = 1;
-            break;
-            case OPCODE::START_GAME_OP://开始游戏 实现了一半
-               {
-                QStringList pls = data.data1.split(" ");
-                QStringList seq = data.data2.split(" ");
-                playernum=data.data2.length();
-                for(int i=0;i<playernum;i++){
-                    players.replace(place2num(seq[i].toUtf8().at(0)),pls[i]);
+                int nowPlpos;//该玩家的ABCDEF对应在btn里的序号
+                nowPlpos = place2num(data.data1.toUtf8().at(0));
+                if(data.data2=="-1"){
+                    //移除该玩家所有棋子
+                    for(int i=0;i<10;i++){
+                        btn[nowPlpos][i]->hide();
+                    }
                 }
-                myPos = seq.at(pls.indexOf(PlName)).toLatin1()[0];
-                //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
-                initializeChecker(data.data2);//画棋子
-            }
-            break;
-            case OPCODE::START_TURN_OP://我的回合开始
-                timeLeft=30;
-                id=startTimer(1000);
-                clock1->show();
-                clock2->show();
-                flag = myPos-65;
-                nowplayer->setText(QString("Player:%1").arg(PlName));
-            break;
-            case OPCODE::MOVE_OP://其他玩家移动棋子
-                {
-                    nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
-                    if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
-                        changeplayer();
-                        break;
-                    }
-                    int nowPlpos;//该玩家的ABCDEF对应在btn里的序号
-                    nowPlpos = place2num(data.data1.toUtf8().at(0));
-                    if(data.data2=="-1"){
-                        //移除该玩家所有棋子
-                        for(int i=0;i<10;i++){
-                            btn[nowPlpos][i]->hide();
-                        }
-                    }
-                    else{
-                        flag = data.data1.toInt()-65;
-                        nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
-                        QStringList checkerpath = data.data2.split(" ");
-                        int stepnum = checkerpath.length()/2-1;
-                        int origin[2];
-                        origin[0]= checkerpath.at(0).toInt();
-                        origin[1]= checkerpath.at(1).toInt();
-                        for(int i=0;i<10;i++){
-                            if(btn[nowPlpos][i]->x==origin[0]
-                               &&btn[nowPlpos][i]->y==origin[1]){
-                                for(int j=1;j<=stepnum;j++){
-                                    int aimloc[2];
-                                    aimloc[0]= checkerpath.at(2*j).toInt();
-                                    aimloc[1]=checkerpath.at(2*j+1).toInt();
-                                    QPointF aim;
-                                    aim.setX(loc[aimloc[0]][aimloc[1]].rx()-RR/4);
-                                    aim.setY(loc[aimloc[0]][aimloc[1]].ry()-RR/4);
-                                    CheckerMove(btn[nowPlpos][i],aim);
-                                }
+                else{
+                    flag = data.data1.toInt()-65;
+                    nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
+                    QStringList checkerpath = data.data2.split(" ");
+                    int stepnum = checkerpath.length()/2-1;
+                    int origin[2];
+                    origin[0]= checkerpath.at(0).toInt();
+                    origin[1]= checkerpath.at(1).toInt();
+                    for(int i=0;i<10;i++){
+                        if(btn[nowPlpos][i]->x==origin[0]
+                           &&btn[nowPlpos][i]->y==origin[1]){
+                            for(int j=1;j<=stepnum;j++){
+                                int aimloc[2];
+                                aimloc[0]= checkerpath.at(2*j).toInt();
+                                aimloc[1]=checkerpath.at(2*j+1).toInt();
+                                QPointF aim;
+                                aim.setX(loc[aimloc[0]][aimloc[1]].rx()-RR/4);
+                                aim.setY(loc[aimloc[0]][aimloc[1]].ry()-RR/4);
+                                CheckerMove(btn[nowPlpos][i],aim);
                             }
                         }
                     }
                 }
-            break;
-        case OPCODE::END_TURN_OP://胜利反馈
-        {
-            iswin=true;
-        }
-        break;
-        case OPCODE::END_GAME_OP://游戏结束
-        {
-            //弹排名界面
-            rank->ranktable->setRowCount(data.data1.length());
-            rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
-            QStringList header;
-            for(int i=0;i<data.data1.length();i++){
-                if(i==0)
-                    header << "1st";
-                else if(i==1)
-                    header << "2nd";
-                else{
-                    header << QString("%1th").arg(i);
-                }
             }
-            rank->ranktable->setVerticalHeaderLabels(header);
-            for(int i=0;i<data.data1.length();i++){
-                if(i%2==0){
-                    char plnow=data.data1.toLatin1()[i];
-                    rank->ranktable->setItem(i/2,0,new QTableWidgetItem(players[plnow-65]));
-                }
-            }
-            //断开连接
-            socket->bye();
-        }
         break;
-        case OPCODE::ERROR_OP://错误
-        {
-            if(data.data1=="INVALID_JOIN")
-                QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
-            else if(data.data1=="INVALID_MOVE"){
-                //把棋子移回去
-                CheckerMove(checked,loc[btnx][btny]);
-                isfill[btnx][btny] = 1;
-                isfill[objloc[0]][objloc[1]]=0;
-                QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");}
-            else if(data.data1=="INVALID_REQ")
-                QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
-            else if(data.data1=="NOT_IN_ROOM")
-                QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
-            else if(data.data1=="OUTTURN_MOVE"){
-                //把棋子移回去
-                CheckerMove(checked,loc[btnx][btny]);
-                isfill[btnx][btny] = 1;
-                isfill[objloc[0]][objloc[1]]=0;
-                QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
-                }
-            else if(data.data1=="ROOM_IS_RUNNING")
-                QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
-            else if(data.data1=="ROOM_NOT_RUNNING"){
-                //把棋子移回去
-                CheckerMove(checked,loc[btnx][btny]);
-                isfill[btnx][btny] = 1;
-                isfill[objloc[0]][objloc[1]]=0;
-                QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");}
+    case OPCODE::END_TURN_OP://胜利反馈
+    {
+        iswin=true;
+    }
+    break;
+    case OPCODE::END_GAME_OP://游戏结束
+    {
+        //弹排名界面
+        rank->ranktable->setRowCount(data.data1.length());
+        rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+        QStringList header;
+        for(int i=0;i<data.data1.length();i++){
+            if(i==0)
+                header << "1st";
+            else if(i==1)
+                header << "2nd";
             else{
-                if(data.data2.isEmpty()){
-                    QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
-                }
-                else{
-                    QMessageBox::information(this,QString("error"),data.data2,"OK");
-                }
+                header << QString("%1th").arg(i);
             }
         }
+        rank->ranktable->setVerticalHeaderLabels(header);
+        for(int i=0;i<data.data1.length();i++){
+            if(i%2==0){
+                char plnow=data.data1.toLatin1()[i];
+                rank->ranktable->setItem(i/2,0,new QTableWidgetItem(players[plnow-65]));
+            }
+        }
+        //断开连接
+        socket->bye(); 
+    }
+    break;
+    case OPCODE::ERROR_OP://错误
+    {
+        if(data.data1=="INVALID_JOIN")
+            QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
+        else if(data.data1=="INVALID_MOVE"){
+            //把棋子移回去
+            CheckerMove(checked,loc[btnx][btny]);
+            isfill[btnx][btny] = 1;
+            isfill[objloc[0]][objloc[1]]=0;
+            QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");}
+        else if(data.data1=="INVALID_REQ")
+            QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
+        else if(data.data1=="NOT_IN_ROOM")
+            QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
+        else if(data.data1=="OUTTURN_MOVE"){
+            //把棋子移回去
+            CheckerMove(checked,loc[btnx][btny]);
+            isfill[btnx][btny] = 1;
+            isfill[objloc[0]][objloc[1]]=0;
+            QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
+            }
+        else if(data.data1=="ROOM_IS_RUNNING")
+            QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
+        else if(data.data1=="ROOM_NOT_RUNNING"){
+            //把棋子移回去
+            CheckerMove(checked,loc[btnx][btny]);
+            isfill[btnx][btny] = 1;
+            isfill[objloc[0]][objloc[1]]=0;
+            QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");}
+        else{
+            if(data.data2.isEmpty()){
+                QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
+            }
+            else{
+                QMessageBox::information(this,QString("error"),data.data2,"OK");
+            }
         }
     }
+    }
+}
 
-    void ClientWindow::timerEvent(QTimerEvent *event){
-        timeLeft--;
-        if(timeLeft<0){
-            this->killTimer(id);//停止计时
-        }
-        else{
-           clock2->setText(QString("%1 s").arg(timeLeft));
+void ClientWindow::timerEvent(QTimerEvent *event){
+    timeLeft--;
+    if(timeLeft<0){
+        this->killTimer(id);//停止计时
+    }
+    else{
+       clock2->setText(QString("%1 s").arg(timeLeft));
+    }
+}
+int ClientWindow::place2num(char pln){
+    int k=0;
+    if(playernum==2){
+        if(pln=='A') k=0;
+        else if(pln=='D') k=1;
+    }
+    else if(playernum==3){
+        if(pln=='A') k=0;
+        else if(pln=='C') k=1;
+        else if(pln=='E') k=2;
+    }
+    else if(playernum==6){
+        k=pln-'A';
+    }
+    return k;
+}
+
+void ClientWindow::initializeChecker(QString data){
+    //初始化棋子 2player
+    //wzr：我觉得不用根据data改棋子位置，把玩家和区域对应起来应该就行
+    int k=0;
+    flag=pink;
+    nowplayer = new QLabel(this);
+    nowplayer->setFont(QFont("Agency FB",24));
+    nowplayer->setGeometry(275,0,300,50);
+    nowplayer->setText("Player: PINK");
+    nowplayer->setStyleSheet("color:#DB7093;");
+    if(playernum==2){
+    for(int j=5;j<=8;j++){
+        for(int i=j-4;i<=4;i++){
+            btn[pink][k]=new CheckerButton(this);
+            btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+            btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
+            btn[pink][k]->setIconSize(QSize(RRR,RRR));
+            btn[pink][k]->setFlat(true);
+            btn[pink][k]->player=pink;//set player
+            btn[pink][k]->x=-i+8;
+            btn[pink][k]->y=j+8;
+            isfill[-i+8][j+8]=pink+1;
+            btn[green][k]=new CheckerButton(this);
+            btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+            btn[green][k]->setIcon(QPixmap(":/image/green.png"));
+            btn[green][k]->setIconSize(QSize(RRR,RRR));
+            btn[green][k]->setFlat(true);
+            btn[green][k]->player=green; //set player
+            btn[green][k]->x=i+8;
+            btn[green][k]->y=-j+8;
+            isfill[i+8][-j+8]=green+1;
+            k++;
         }
     }
     int ClientWindow::place2num(char pln){

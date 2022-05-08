@@ -110,6 +110,7 @@ private:
     }
     Wait ww;
 
+
 signals:
     void shouldSwitchChanged();
     void finish(int);
