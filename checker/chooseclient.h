@@ -6,6 +6,7 @@
 #include<QString>
 #include<QHostAddress>
 #include<QNetworkInterface>
+#include<QLineEdit>
 
 class QPushButton;
 class QLabel;
@@ -21,6 +22,15 @@ public:
     QString id;
     QString room;
     QString read_ip_address();
+    QString getRoomID(){
+        return this->ROOMS->text();
+    }
+    QString getName(){
+        return IDS->text();
+    }
+    QPushButton* getYES(){
+        return YES;
+    }
 
 private:
     //QTcpSocket* client;

@@ -32,7 +32,10 @@ Widget::Widget(QWidget *parent)
     //初始化server
     server = new NetworkServer(this);
     connect(server, &NetworkServer::receive, this, &Widget::receiveData);
-    server->listen(QHostAddress("127.0.0.1"),9999);
+    server->listen(QHostAddress::Any,9999);
+    //test
+    qDebug() << "begin to listen";
+    //test end
     //初始化秒表
     clock1 = new QLabel("剩余时间",this);
     clock1->setFont(QFont("Microsoft YaHei",20));
