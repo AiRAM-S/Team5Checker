@@ -1822,6 +1822,8 @@ moc_widget.cpp: ../checker/widget.h \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QTimerEvent \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../checker/networkserver.h \
 		../checker/networkdata.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QtCore \
@@ -1872,7 +1874,6 @@ moc_widget.cpp: ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontainerinfo.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontiguouscache.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreapplication.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcryptographichash.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatastream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatetime.h \
@@ -2121,6 +2122,12 @@ chooseclient.o: ../checker/chooseclient.cpp ../checker/chooseclient.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QHostAddress \
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qhostaddress.h \
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QApplication \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
@@ -2169,6 +2176,8 @@ chooseservice.o: ../checker/chooseservice.cpp ../checker/chooseservice.h \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QTimerEvent \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../checker/networkserver.h \
 		../checker/networkdata.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QtCore \
@@ -2219,7 +2228,6 @@ chooseservice.o: ../checker/chooseservice.cpp ../checker/chooseservice.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontainerinfo.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontiguouscache.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreapplication.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcryptographichash.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatastream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatetime.h \
@@ -2682,6 +2690,8 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QTimerEvent \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../checker/networkserver.h \
 		../checker/networkdata.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QtCore \
@@ -2732,7 +2742,6 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontainerinfo.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontiguouscache.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreapplication.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcryptographichash.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatastream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatetime.h \
@@ -2930,12 +2939,13 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QTimerEvent \
 		../checker/rank.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QTableWidget \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QTableWidgetItem \
 		../checker/chooseclient.h \
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QHostAddress \
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../checker/chooseservice.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QTcpServer
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../checker/main.cpp
@@ -3907,6 +3917,8 @@ widget.o: ../checker/widget.cpp ../checker/widget.h \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QTimerEvent \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../checker/networkserver.h \
 		../checker/networkdata.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QtCore \
@@ -3957,7 +3969,6 @@ widget.o: ../checker/widget.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontainerinfo.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcontiguouscache.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreapplication.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcoreevent.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qcryptographichash.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatastream.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdatetime.h \
