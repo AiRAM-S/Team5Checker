@@ -6,14 +6,13 @@
 myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     :QDialog(parent, f)
 {
-    setMinimumSize(300, 300);
-    setMaximumSize(500, 500);
+    setFixedSize(550, 550);
     /*pix = new QLabel;
     pix->setScaledContents(true);
     pix->setPixmap(QPixmap(":/image/map.png"));
     pix->setFixedSize(600, 600);*/
     an = new QPushButton(this);
-    an->setMinimumSize(450, 500);
+    an->setMinimumSize(400, 500);
     an->setFlat(true);
     an->setIconSize(QSize(600, 600));
     an->setIcon(QIcon(":/image/background.png"));
@@ -63,14 +62,14 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     setplayer->addItem("2");
     setplayer->addItem("3");
     setplayer->addItem("6");
-    setplayer->setGeometry(180,325,125,30);
+    setplayer->setGeometry(180,325,150,30);
 
     settype=new QComboBox(this);
     settype->setPlaceholderText(QStringLiteral("请选择..."));
     settype->setCurrentIndex(-1);
     settype->addItem("Client");
     settype->addItem("Server");
-    settype->setGeometry(180,355,125,30);
+    settype->setGeometry(180,355,150,30);
 
     PORT=new QLabel(this);
     PORT->move(178,390);
@@ -80,7 +79,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     QValidator *validator=new QIntValidator(1024, 49151, this);
     PORTS=new QLineEdit(this);
     PORTS->move(205,385);
-    PORTS->setText("请输入...");
+    PORTS->setPlaceholderText("请输入...");
     PORTS->setStyleSheet("QLineEdit{color:black;font:11px}");
     PORTS->setValidator(validator);
 

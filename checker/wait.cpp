@@ -12,6 +12,7 @@ Wait::Wait(QWidget *parent) :
     ui(new Ui::Wait)
 {
     ui->setupUi(this);
+    setWindowTitle("client");
 
     rea = ui->YES;
 
@@ -33,6 +34,10 @@ Wait::Wait(QWidget *parent) :
     sis[4]=ui->situ5;
     sis[5]=ui->situ6;
 
+    for(int i=0;i<6;i++){
+        ids[i]->setReadOnly(true);
+    }
+
     connect(ui->EXIT,SIGNAL(clicked(bool)), this, SLOT(qqq()));
     connect(ui->YES, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
@@ -42,6 +47,7 @@ Wait::Wait(QWidget *parent) :
                     c->show();
                     ifsuccessed = true;
                     hide();*/
+
     });
 }
 

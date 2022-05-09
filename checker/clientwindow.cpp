@@ -605,6 +605,12 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_TURN_OP://胜利反馈
     {
         iswin=true;
+        QWidget* win=new QWidget(this);
+        QLabel* wlb=new QLabel("Congratulations!",win);
+        win->setFixedSize(200,100);
+        wlb->setFont(QFont("Microsoft YaHei",20,75));
+        wlb->setGeometry(45,25,200,50);
+        win->show();
     }
     break;
     case OPCODE::END_GAME_OP://游戏结束

@@ -69,12 +69,12 @@ chooseclient::chooseclient(QWidget *parent) :
 
     IDS=new QLineEdit(this);
     IDS->move(130,76);
-    IDS->setText("请输入用户名...");
+    IDS->setPlaceholderText("请输入用户名...");
     IDS->setStyleSheet("QLineEdit{color:black;font:11px}");
 
     ROOMS=new QLineEdit(this);
     ROOMS->move(130,125);
-    ROOMS->setText("请输入房间号...");
+    ROOMS->setPlaceholderText("请输入房间号...");
     ROOMS->setStyleSheet("QLineEdit{color:black;font:11px}");
 
     YES=new QPushButton(this);
