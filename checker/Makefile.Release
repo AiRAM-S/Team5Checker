@@ -2300,6 +2300,9 @@ release/moc_widget.cpp: widget.h \
 		networksocket.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpSocket \
 		room.h \
+		serverwait.h \
+		chooseservice.h \
+		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpServer \
 		release/moc_predefs.h \
 		D:/Qt/6.2.3/mingw_64/bin/moc.exe
 	D:\Qt\6.2.3\mingw_64\bin\moc.exe $(DEFINES) --include C:/Users/AiRAM/Team5Checker/checker/release/moc_predefs.h -ID:/Qt/6.2.3/mingw_64/mkspecs/win32-g++ -IC:/Users/AiRAM/Team5Checker/checker -ID:/Qt/6.2.3/mingw_64/include -ID:/Qt/6.2.3/mingw_64/include/QtWidgets -ID:/Qt/6.2.3/mingw_64/include/QtGui -ID:/Qt/6.2.3/mingw_64/include/QtNetwork -ID:/Qt/6.2.3/mingw_64/include/QtCore -ID:/Qt/Tools/mingw900_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -ID:/Qt/Tools/mingw900_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -ID:/Qt/Tools/mingw900_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -ID:/Qt/Tools/mingw900_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -ID:/Qt/Tools/mingw900_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -ID:/Qt/Tools/mingw900_64/x86_64-w64-mingw32/include widget.h -o release\moc_widget.cpp
@@ -3543,6 +3546,9 @@ release/main.o: main.cpp widget.h \
 		networksocket.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpSocket \
 		room.h \
+		serverwait.h \
+		chooseservice.h \
+		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpServer \
 		clientwindow.h \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/QMainWindow \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qmainwindow.h \
@@ -3556,9 +3562,7 @@ release/main.o: main.cpp widget.h \
 		chooseclient.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QHostAddress \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QNetworkInterface \
-		wait.h \
-		chooseservice.h \
-		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpServer
+		wait.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o main.cpp
 
 release/mydialog.o: mydialog.cpp mydialog.h \
@@ -3926,7 +3930,10 @@ release/mydialog.o: mydialog.cpp mydialog.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qtnetworkversion.h \
 		networksocket.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpSocket \
-		room.h
+		room.h \
+		serverwait.h \
+		chooseservice.h \
+		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpServer
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mydialog.o mydialog.cpp
 
 release/mydialog1.o: mydialog1.cpp mydialog1.h \
@@ -5213,9 +5220,7 @@ release/serverwait.o: serverwait.cpp serverwait.h \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qabstractbutton.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qicon.h \
 		ui_serverwait.h \
-		widget.h \
-		checkerbutton.h \
-		mydialog.h \
+		D:/Qt/6.2.3/mingw_64/include/QtCore/QVariant \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/QApplication \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qapplication.h \
 		D:/Qt/6.2.3/mingw_64/include/QtCore/qcoreapplication.h \
@@ -5236,8 +5241,6 @@ release/serverwait.o: serverwait.cpp serverwait.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qinputmethod.h \
 		D:/Qt/6.2.3/mingw_64/include/QtCore/qlocale.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qguiapplication_platform.h \
-		D:/Qt/6.2.3/mingw_64/include/QtWidgets/QDialog \
-		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qdialog.h \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/QLabel \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qlabel.h \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qframe.h \
@@ -5249,6 +5252,11 @@ release/serverwait.o: serverwait.cpp serverwait.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qtextformat.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qpen.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qtextoption.h \
+		widget.h \
+		checkerbutton.h \
+		mydialog.h \
+		D:/Qt/6.2.3/mingw_64/include/QtWidgets/QDialog \
+		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qdialog.h \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/QVBoxLayout \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qboxlayout.h \
 		D:/Qt/6.2.3/mingw_64/include/QtWidgets/qlayout.h \
@@ -5393,7 +5401,6 @@ release/serverwait.o: serverwait.cpp serverwait.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qnetworkrequest.h \
 		D:/Qt/6.2.3/mingw_64/include/QtCore/QSharedDataPointer \
 		D:/Qt/6.2.3/mingw_64/include/QtCore/QUrl \
-		D:/Qt/6.2.3/mingw_64/include/QtCore/QVariant \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qauthenticator.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qdnslookup.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qdtls.h \
@@ -5439,7 +5446,9 @@ release/serverwait.o: serverwait.cpp serverwait.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qsslkey.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qudpsocket.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/qtnetworkversion.h \
-		networksocket.h
+		networksocket.h \
+		chooseservice.h \
+		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpServer
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\serverwait.o serverwait.cpp
 
 release/wait.o: wait.cpp wait.h \
@@ -5974,6 +5983,9 @@ release/widget.o: widget.cpp widget.h \
 		networksocket.h \
 		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpSocket \
 		room.h \
+		serverwait.h \
+		chooseservice.h \
+		D:/Qt/6.2.3/mingw_64/include/QtNetwork/QTcpServer \
 		ui_widget.h \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/QPainter \
 		D:/Qt/6.2.3/mingw_64/include/QtGui/qpainter.h \

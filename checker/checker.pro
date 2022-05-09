@@ -58,3 +58,7 @@ RESOURCES += \
     image.qrc
 
 RC_ICONS=mapp.ico
+
+SUBDIRS += \
+    test.pro \
+    test.pro
