@@ -10,6 +10,7 @@ release/networkserver.o
 release/networksocket.o
 release/rank.o
 release/room.o
+release/serverwait.o
 release/wait.o
 release/widget.o
 release/qrc_image.o
@@ -20,5 +21,6 @@ release/moc_mydialog1.o
 release/moc_networkserver.o
 release/moc_networksocket.o
 release/moc_rank.o
+release/moc_serverwait.o
 release/moc_wait.o
 release/moc_widget.o

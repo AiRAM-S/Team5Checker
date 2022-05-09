@@ -2,10 +2,8 @@
 #define WAIT_H
 
 #include <QWidget>
-#include<QLabel>
-#include<QRadioButton>
-#include<QPushButton>
 #include<QLineEdit>
+#include<QLabel>
 
 namespace Ui {
 class Wait;
@@ -22,18 +20,16 @@ public:
     {
         return ifsuccessed;
     }
+    //bool isready[6];
+    QLineEdit *ids[6];
+    QLabel *sis[6];
 
 private slots:
    void qqq();
 
-private:
+public:
     Ui::Wait *ui;
-    QLabel *num[6];
-    QRadioButton *ready[6];
-    int isready[6];
-    int peo;
-    bool ifsuccessed=false;
-
+    bool ifsuccessed;
 };
 
 #endif // WAIT_H

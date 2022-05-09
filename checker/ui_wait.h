@@ -14,7 +14,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -22,115 +21,107 @@ QT_BEGIN_NAMESPACE
 class Ui_Wait
 {
 public:
-    QLineEdit *ID;
-    QPushButton *YES;
+    QLabel *ques;
     QPushButton *EXIT;
-    QLabel *A;
-    QLabel *B;
-    QLabel *C;
-    QLabel *D;
-    QLabel *E;
-    QLabel *F;
-    QRadioButton *btn1;
-    QRadioButton *btn2;
-    QRadioButton *btn3;
-    QRadioButton *btn4;
-    QRadioButton *btn5;
-    QRadioButton *btn6;
+    QPushButton *YES;
+    QLineEdit *name1;
+    QLineEdit *name2;
+    QLineEdit *name3;
+    QLineEdit *name4;
+    QLineEdit *name5;
+    QLineEdit *name6;
+    QLabel *situ1;
+    QLabel *situ2;
+    QLabel *situ3;
+    QLabel *situ4;
+    QLabel *situ5;
+    QLabel *situ6;
 
     void setupUi(QWidget *Wait)
     {
         if (Wait->objectName().isEmpty())
             Wait->setObjectName(QString::fromUtf8("Wait"));
         Wait->resize(581, 345);
+        Wait->setStyleSheet(QString::fromUtf8("background-color: rgb(176, 224, 230);"));
+        ques = new QLabel(Wait);
+        ques->setObjectName(QString::fromUtf8("ques"));
+        ques->setGeometry(QRect(60, 40, 221, 41));
         QFont font;
-        font.setPointSize(9);
-        font.setBold(false);
-        Wait->setFont(font);
-        Wait->setStyleSheet(QString::fromUtf8("background-color: rgb(170, 255, 255);"));
-        ID = new QLineEdit(Wait);
-        ID->setObjectName(QString::fromUtf8("ID"));
-        ID->setGeometry(QRect(40, 50, 281, 31));
-        QFont font1;
-        font1.setPointSize(11);
-        font1.setBold(false);
-        ID->setFont(font1);
-        ID->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
-        YES = new QPushButton(Wait);
-        YES->setObjectName(QString::fromUtf8("YES"));
-        YES->setGeometry(QRect(340, 50, 80, 31));
-        QFont font2;
-        font2.setPointSize(11);
-        font2.setBold(true);
-        YES->setFont(font2);
-        YES->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);\n"
-"background-color: rgb(255, 255, 255);"));
+        font.setPointSize(20);
+        font.setBold(true);
+        ques->setFont(font);
         EXIT = new QPushButton(Wait);
         EXIT->setObjectName(QString::fromUtf8("EXIT"));
-        EXIT->setGeometry(QRect(450, 50, 80, 31));
-        EXIT->setFont(font2);
+        EXIT->setGeometry(QRect(440, 50, 80, 31));
+        QFont font1;
+        font1.setPointSize(12);
+        font1.setBold(true);
+        EXIT->setFont(font1);
         EXIT->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
-        A = new QLabel(Wait);
-        A->setObjectName(QString::fromUtf8("A"));
-        A->setGeometry(QRect(90, 105, 54, 31));
+        YES = new QPushButton(Wait);
+        YES->setObjectName(QString::fromUtf8("YES"));
+        YES->setGeometry(QRect(310, 50, 80, 31));
+        YES->setFont(font1);
+        YES->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);\n"
+"background-color: rgb(255, 255, 255);"));
+        name1 = new QLineEdit(Wait);
+        name1->setObjectName(QString::fromUtf8("name1"));
+        name1->setGeometry(QRect(50, 140, 141, 31));
+        QFont font2;
+        font2.setPointSize(10);
+        name1->setFont(font2);
+        name1->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        name2 = new QLineEdit(Wait);
+        name2->setObjectName(QString::fromUtf8("name2"));
+        name2->setGeometry(QRect(50, 200, 141, 31));
+        name2->setFont(font2);
+        name2->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        name3 = new QLineEdit(Wait);
+        name3->setObjectName(QString::fromUtf8("name3"));
+        name3->setGeometry(QRect(50, 260, 141, 31));
+        name3->setFont(font2);
+        name3->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        name4 = new QLineEdit(Wait);
+        name4->setObjectName(QString::fromUtf8("name4"));
+        name4->setGeometry(QRect(300, 140, 151, 31));
+        name4->setFont(font2);
+        name4->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        name5 = new QLineEdit(Wait);
+        name5->setObjectName(QString::fromUtf8("name5"));
+        name5->setGeometry(QRect(300, 200, 151, 31));
+        name5->setFont(font2);
+        name5->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        name6 = new QLineEdit(Wait);
+        name6->setObjectName(QString::fromUtf8("name6"));
+        name6->setGeometry(QRect(300, 260, 151, 31));
+        name6->setFont(font2);
+        name6->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        situ1 = new QLabel(Wait);
+        situ1->setObjectName(QString::fromUtf8("situ1"));
+        situ1->setGeometry(QRect(210, 145, 54, 21));
         QFont font3;
-        font3.setPointSize(26);
-        font3.setBold(true);
-        A->setFont(font3);
-        A->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        B = new QLabel(Wait);
-        B->setObjectName(QString::fromUtf8("B"));
-        B->setGeometry(QRect(90, 160, 54, 31));
-        B->setFont(font3);
-        B->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        C = new QLabel(Wait);
-        C->setObjectName(QString::fromUtf8("C"));
-        C->setGeometry(QRect(90, 210, 54, 31));
-        C->setFont(font3);
-        C->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        D = new QLabel(Wait);
-        D->setObjectName(QString::fromUtf8("D"));
-        D->setGeometry(QRect(320, 100, 54, 31));
-        D->setFont(font3);
-        D->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        E = new QLabel(Wait);
-        E->setObjectName(QString::fromUtf8("E"));
-        E->setGeometry(QRect(320, 160, 54, 31));
-        E->setFont(font3);
-        E->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        F = new QLabel(Wait);
-        F->setObjectName(QString::fromUtf8("F"));
-        F->setGeometry(QRect(320, 210, 54, 31));
-        F->setFont(font3);
-        F->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 255);"));
-        btn1 = new QRadioButton(Wait);
-        btn1->setObjectName(QString::fromUtf8("btn1"));
-        btn1->setGeometry(QRect(140, 110, 121, 22));
-        QFont font4;
-        font4.setPointSize(12);
-        font4.setBold(true);
-        btn1->setFont(font4);
-        btn1->setStyleSheet(QString::fromUtf8(""));
-        btn2 = new QRadioButton(Wait);
-        btn2->setObjectName(QString::fromUtf8("btn2"));
-        btn2->setGeometry(QRect(140, 160, 121, 22));
-        btn2->setFont(font4);
-        btn3 = new QRadioButton(Wait);
-        btn3->setObjectName(QString::fromUtf8("btn3"));
-        btn3->setGeometry(QRect(140, 210, 121, 22));
-        btn3->setFont(font4);
-        btn4 = new QRadioButton(Wait);
-        btn4->setObjectName(QString::fromUtf8("btn4"));
-        btn4->setGeometry(QRect(370, 110, 121, 22));
-        btn4->setFont(font4);
-        btn5 = new QRadioButton(Wait);
-        btn5->setObjectName(QString::fromUtf8("btn5"));
-        btn5->setGeometry(QRect(370, 160, 121, 22));
-        btn5->setFont(font4);
-        btn6 = new QRadioButton(Wait);
-        btn6->setObjectName(QString::fromUtf8("btn6"));
-        btn6->setGeometry(QRect(370, 210, 121, 22));
-        btn6->setFont(font4);
+        font3.setPointSize(11);
+        situ1->setFont(font3);
+        situ2 = new QLabel(Wait);
+        situ2->setObjectName(QString::fromUtf8("situ2"));
+        situ2->setGeometry(QRect(210, 206, 54, 20));
+        situ2->setFont(font3);
+        situ3 = new QLabel(Wait);
+        situ3->setObjectName(QString::fromUtf8("situ3"));
+        situ3->setGeometry(QRect(210, 265, 54, 21));
+        situ3->setFont(font3);
+        situ4 = new QLabel(Wait);
+        situ4->setObjectName(QString::fromUtf8("situ4"));
+        situ4->setGeometry(QRect(470, 146, 54, 20));
+        situ4->setFont(font3);
+        situ5 = new QLabel(Wait);
+        situ5->setObjectName(QString::fromUtf8("situ5"));
+        situ5->setGeometry(QRect(470, 205, 54, 21));
+        situ5->setFont(font3);
+        situ6 = new QLabel(Wait);
+        situ6->setObjectName(QString::fromUtf8("situ6"));
+        situ6->setGeometry(QRect(470, 266, 54, 20));
+        situ6->setFont(font3);
 
         retranslateUi(Wait);
 
@@ -140,21 +131,17 @@ public:
     void retranslateUi(QWidget *Wait)
     {
         Wait->setWindowTitle(QCoreApplication::translate("Wait", "Form", nullptr));
-        ID->setText(QCoreApplication::translate("Wait", "\350\257\267\350\276\223\345\205\245\344\275\240\347\232\204\347\224\250\346\210\267\345\220\215...", nullptr));
-        YES->setText(QCoreApplication::translate("Wait", "\347\241\256 \350\256\244", nullptr));
-        EXIT->setText(QCoreApplication::translate("Wait", "\351\200\200 \345\207\272", nullptr));
-        A->setText(QCoreApplication::translate("Wait", "A", nullptr));
-        B->setText(QCoreApplication::translate("Wait", "B", nullptr));
-        C->setText(QCoreApplication::translate("Wait", "C", nullptr));
-        D->setText(QCoreApplication::translate("Wait", "D", nullptr));
-        E->setText(QCoreApplication::translate("Wait", "E", nullptr));
-        F->setText(QCoreApplication::translate("Wait", "F", nullptr));
-        btn1->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
-        btn2->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
-        btn3->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
-        btn4->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
-        btn5->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
-        btn6->setText(QCoreApplication::translate("Wait", "GET READY", nullptr));
+
+        ques->setText(QCoreApplication::translate("Wait", "Are you ready ?", nullptr));
+        EXIT->setText(QCoreApplication::translate("Wait", "QUIT", nullptr));
+        YES->setText(QCoreApplication::translate("Wait", "READY", nullptr));
+        situ1->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+        situ2->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+        situ3->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+        situ4->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+        situ5->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+        situ6->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+
     } // retranslateUi
 
 };

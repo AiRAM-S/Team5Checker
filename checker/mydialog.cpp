@@ -1,5 +1,6 @@
 //.cpp
 #include"mydialog.h"
+#include"widget.h"
 #include<QPushButton>
 
 myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
@@ -11,7 +12,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     pix->setScaledContents(true);
     pix->setPixmap(QPixmap(":/image/map.png"));
     pix->setFixedSize(600, 600);*/
-    an = new QPushButton("");
+    an = new QPushButton(this);
     an->setMinimumSize(450, 500);
     an->setFlat(true);
     an->setIconSize(QSize(600, 600));
@@ -49,7 +50,8 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));  //不加入游戏
     connect(join, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
-        if(setplayer->currentIndex()!=-1&&settype->currentIndex()!=-1){
+        if(setplayer->currentIndex()!=-1&&settype->currentIndex()!=-1&&PORTS->text()!="请输入..."){
+                    port=PORTS->text();
             joinSuccessed = true;
             hide();
         }
@@ -61,13 +63,25 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     setplayer->addItem("2");
     setplayer->addItem("3");
     setplayer->addItem("6");
-    setplayer->setGeometry(180,340,125,30);
+    setplayer->setGeometry(180,325,125,30);
 
     settype=new QComboBox(this);
     settype->setPlaceholderText(QStringLiteral("请选择..."));
     settype->setCurrentIndex(-1);
     settype->addItem("Client");
     settype->addItem("Server");
-    settype->setGeometry(180,370,125,30);
+    settype->setGeometry(180,355,125,30);
+
+    PORT=new QLabel(this);
+    PORT->move(178,390);
+    PORT->setText("Port");
+    PORT->setStyleSheet("color:white;font:bold 12px;}");
+
+    QValidator *validator=new QIntValidator(1024, 49151, this);
+    PORTS=new QLineEdit(this);
+    PORTS->move(205,385);
+    PORTS->setText("请输入...");
+    PORTS->setStyleSheet("QLineEdit{color:black;font:11px}");
+    PORTS->setValidator(validator);
 
 }
