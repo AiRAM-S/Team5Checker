@@ -825,6 +825,7 @@ Widget::Widget(QWidget *parent)
                         if(roomList[objRoom].getPl().at(t).ifReady())
                             prevState.append("1");
                         else prevState.append("0");
+                        qDebug()<<prevPl;
                         server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                         //test
                         qDebug() << "server send JOIN_ROOM_OP";
@@ -834,6 +835,7 @@ Widget::Widget(QWidget *parent)
                         ServerWait->show();
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
+
                     //test
                     qDebug() << "server send JOIN_ROOM_REPLY_OP";
                     //test end
@@ -895,7 +897,7 @@ Widget::Widget(QWidget *parent)
             //test end
             qDebug()<<"receive success";
             qDebug() << "path is " << data.data2;
-            QStringList step = data.data2.split(" ");//可能有负号
+            QStringList step = data.data2.split(" ");
             char pln=data.data1[0].toLatin1();
            int stepNum = step.length();
             //设置初始点

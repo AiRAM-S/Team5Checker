@@ -470,6 +470,7 @@ void ClientWindow::receive(NetworkData data){
         //test end
         players.append(data.data1);
         playerState.append(0);
+        ww.ids[players.length()-1]->setText(players.at(players.length()-1));
         }
         break;
         case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
@@ -487,6 +488,7 @@ void ClientWindow::receive(NetworkData data){
             else{
                 qDebug() << "enter 2";
                 players = data.data1.split(" ");//载入已有玩家姓名
+                players.removeLast();
                 for(int i=0;i<data.data2.length();i++){
                     playerState.append(QString(data.data2.at(i)).toInt());
                 }
@@ -598,6 +600,12 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_TURN_OP://胜利反馈
     {
         iswin=true;
+        QWidget* win=new QWidget(this);
+        QLabel* wlb=new QLabel("Congratulations!",win);
+        win->setFixedSize(200,100);
+        wlb->setFont(QFont("Microsoft YaHei",20,75));
+        wlb->setGeometry(45,25,200,50);
+        win->show();
     }
     break;
     case OPCODE::END_GAME_OP://游戏结束

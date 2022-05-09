@@ -11,7 +11,13 @@ serverwait::serverwait(QWidget *parent) :
     b=new QPushButton(this);
     b->move(450,50);
     b->setText("ok");
-
+    ui->name1->setReadOnly(true);
+    ui->name2->setReadOnly(true);
+    ui->name3->setReadOnly(true);
+    ui->name4->setReadOnly(true);
+    ui->name5->setReadOnly(true);
+    ui->name6->setReadOnly(true);
+    setWindowTitle("server");
 //    connect(b, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
 //    {
 
