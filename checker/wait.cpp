@@ -13,6 +13,9 @@ Wait::Wait(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("client");
+
+    rea = ui->YES;
+
     for(int i=0;i<6;i++)
     {
         ids[i]=new QLineEdit(this);

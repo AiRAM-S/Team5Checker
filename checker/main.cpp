@@ -46,6 +46,16 @@ int main(int argc, char *argv[])
             //test end
             e->cc.show();
 
+            ClientWindow *e2 = new ClientWindow;
+            qDebug() << "point 1";
+            e2->hide();
+            e2->setPort(port);
+            //建立连接
+            e2->getSocket()->hello("127.0.0.1",port.toInt());
+            //test
+            qDebug() << "client send hello:" << port;
+            //test end
+            e2->cc.show();
         //}
     return a.exec();
 }
