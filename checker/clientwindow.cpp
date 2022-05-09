@@ -73,7 +73,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     if(!ifstart)
         exit(0);*/
 
-    playernum=6;
+    playernum=2;
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     this->setWindowTitle("Client");
@@ -127,7 +127,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
         //建立连接：按下棋子后记录被选中者
         for(int t=0;t<10;t++){
-            for(int j=0;j<playernum;j++){
+            for(int j=0;j<2;j++){
+                qDebug() << "debug:j = " << j;
+                qDebug() << "debug: t = " << t;
                 connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
                     if(flag==but.player&&step==0){
                        chosen.setX(but.pos().rx());
@@ -474,13 +476,26 @@ void ClientWindow::receive(NetworkData data){
             //test
             qDebug() << "client receive JOIN_ROOM_REPLY_OP";
             //test end
-            players = data.data1.split(" ");//载入已有玩家姓名
-            for(int i=0;i<data.data2.length();i++){
-                playerState.append(QString(data.data2.at(i)).toInt());
-            }//设置已有玩家状态
-            players.append(PlName);
-            playerState.append(0);
-            for(int i=0;i<6;i++)
+            //设置已有玩家状态
+            if(data.data2==""){
+                qDebug() << "enter 1";
+                players.clear();
+                players.append(PlName);
+                playerState.clear();
+                playerState.append(0);
+            }
+            else{
+                qDebug() << "enter 2";
+                players = data.data1.split(" ");//载入已有玩家姓名
+                for(int i=0;i<data.data2.length();i++){
+                    playerState.append(QString(data.data2.at(i)).toInt());
+                }
+                players.append(PlName);
+                playerState.append(0);
+            }
+            qDebug() << "previous player name is " << players;
+            qDebug() << "now player number is " << players.length();
+            for(int i=0;i<players.length();i++)
             {
                  ww.ids[i]->setText(players.at(i));
                  if(playerState.at(i))
@@ -681,6 +696,7 @@ int ClientWindow::place2num(char pln){
 void ClientWindow::initializeChecker(QString data){
     //初始化棋子 2player
     //wzr：我觉得不用根据data改棋子位置，把玩家和区域对应起来应该就行
+    qDebug() << "enter initialize";
     int k=0;
     flag=pink;
     nowplayer = new QLabel(this);
@@ -692,6 +708,7 @@ void ClientWindow::initializeChecker(QString data){
     for(int j=5;j<=8;j++){
         for(int i=j-4;i<=4;i++){
             btn[pink][k]=new CheckerButton(this);
+            qDebug() << "debug: btn[" << pink << "][" << k << "] is constructed";
             btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
             btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
             btn[pink][k]->setIconSize(QSize(RRR,RRR));
@@ -701,6 +718,7 @@ void ClientWindow::initializeChecker(QString data){
             btn[pink][k]->y=j+8;
             isfill[-i+8][j+8]=pink+1;
             btn[green][k]=new CheckerButton(this);
+            qDebug() << "debug: btn[" << green << "][" << k << "] is constructed";
             btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
             btn[green][k]->setIcon(QPixmap(":/image/green.png"));
             btn[green][k]->setIconSize(QSize(RRR,RRR));

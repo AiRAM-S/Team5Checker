@@ -26,7 +26,7 @@ void Widget::cbuttonpress()
 }
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget)
+    ,ui(new Ui::Widget)
 {
     ui->setupUi(this);
     //初始化等待界面和过渡界面
@@ -35,12 +35,12 @@ Widget::Widget(QWidget *parent)
     //初始化server
     server = new NetworkServer(this);
     connect(server, &NetworkServer::receive, this, &Widget::receiveData);
-    connect(this->d.getJoin(),&QPushButton::clicked,this,[=](){
-       server->listen(QHostAddress::Any,d.getPort().toInt());
-       //test
-       qDebug() << "begin to listen";
-       //test end
-    });
+//    connect(this->d.getJoin(),&QPushButton::clicked,this,[=](){
+//       server->listen(QHostAddress::Any,d.getPort().toInt());
+//       //test
+//       qDebug() << "begin to listen";
+//       //test end
+//    });
     //初始化秒表
     clock1 = new QLabel("剩余时间",this);
     clock1->setFont(QFont("Microsoft YaHei",20));
