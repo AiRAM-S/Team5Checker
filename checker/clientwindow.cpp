@@ -57,7 +57,12 @@ ClientWindow::ClientWindow(QWidget *parent) :
         //test end
     });
 
-
+    //页面3：等待界面，ready按钮功能实现
+    connect(ww.rea,&QPushButton::clicked,this,[=](){
+        NetworkData sure(OPCODE::PLAYER_READY_OP,PlName,"");
+        socket->send(sure);
+        qDebug() << PlName << " says he is ready";
+    });
 
     //开始界面 设置玩家人数
    /* myDialog *d = new myDialog;
@@ -470,6 +475,7 @@ void ClientWindow::receive(NetworkData data){
         //test end
         players.append(data.data1);
         playerState.append(0);
+        ww.ids[players.length()-1]->setText(players.at(players.length()-1));
         }
         break;
         case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
@@ -478,23 +484,22 @@ void ClientWindow::receive(NetworkData data){
             //test end
             //设置已有玩家状态
             if(data.data2==""){
-                qDebug() << "enter 1";
                 players.clear();
                 players.append(PlName);
                 playerState.clear();
                 playerState.append(0);
             }
             else{
-                qDebug() << "enter 2";
                 players = data.data1.split(" ");//载入已有玩家姓名
+                players.removeLast();
                 for(int i=0;i<data.data2.length();i++){
                     playerState.append(QString(data.data2.at(i)).toInt());
                 }
                 players.append(PlName);
                 playerState.append(0);
             }
-            qDebug() << "previous player name is " << players;
-            qDebug() << "now player number is " << players.length();
+//            qDebug() << "previous player name is " << players;
+//            qDebug() << "now player number is " << players.length();
             for(int i=0;i<players.length();i++)
             {
                  ww.ids[i]->setText(players.at(i));
@@ -522,6 +527,8 @@ void ClientWindow::receive(NetworkData data){
             qDebug() << "client receive PLAYER_READY_OP";
             //test end
             playerState[players.indexOf(data.data1)] = 1;
+            ww.sis[players.indexOf(data.data1)]->setText("Ready");
+
         break;
         case OPCODE::START_GAME_OP://开始游戏 实现了一半
            {

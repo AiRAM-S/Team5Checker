@@ -836,8 +836,9 @@ Widget::Widget(QWidget *parent)
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
                     //test
                     qDebug() << "server send JOIN_ROOM_REPLY_OP";
+//                    qDebug() << "to new pl:previous player is " << prevPl;
+//                    qDebug() << "to new pl:previous player status is " << prevState;
                     //test end
-                   // server->send(client,NetworkData(OPCODE::START_GAME_OP,prevPl,prevState));
                 }
             }
         }
@@ -1044,7 +1045,11 @@ Widget::Widget(QWidget *parent)
                                 plName.append(" ").append(roomList[i].getPl()[t].getID());
                                 QChar place(65+t);
                                 roomList[i].getPl()[t].setPlace(place.toLatin1());
+                            }
                         }
+                        qDebug() << "game will start";
+                        qDebug() << "players are " << plName;
+                        qDebug() << "the sequence is " << seq;
                         roomList[i].gameBegin();//游戏开始
                         for(int j=0;j<roomList[i].getPlnum();j++)
                             server->send(roomList[i].getPl()[j].getSocket(),NetworkData(OPCODE::START_GAME_OP,plName,seq));
@@ -1056,18 +1061,16 @@ Widget::Widget(QWidget *parent)
                         timeleft=30;
                         id = startTimer(1000);
                     }
-                    }
                     break;
+                    }
                 }
-            }
-            if(!found){
+            if(!found)
                 server->send(client,NetworkData(OPCODE::ERROR_OP,QString("NOT_IN_ROOM"),QString("")));
-            }
         }
         break;
-        }
-
     }
+
+}
     void Widget::timerEvent(QTimerEvent *event){
         timeleft--;
         if(timeleft<0){
