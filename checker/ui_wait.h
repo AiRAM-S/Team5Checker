@@ -131,6 +131,7 @@ public:
     void retranslateUi(QWidget *Wait)
     {
         Wait->setWindowTitle(QCoreApplication::translate("Wait", "Form", nullptr));
+
         ques->setText(QCoreApplication::translate("Wait", "Are you ready ?", nullptr));
         EXIT->setText(QCoreApplication::translate("Wait", "QUIT", nullptr));
         YES->setText(QCoreApplication::translate("Wait", "READY", nullptr));
@@ -140,6 +141,7 @@ public:
         situ4->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
         situ5->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
         situ6->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+
     } // retranslateUi
 
 };
