@@ -10,6 +10,7 @@ CheckerButton::CheckerButton(QWidget *parent)
 
     connect(this,&CheckerButton::clicked,this,[=](){
         emit is_chosen(*this);
+        qDebug()<<"push button"<<this->x<<' '<<this->y;
     });
 
 }

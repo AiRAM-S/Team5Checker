@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
             Widget* w = new Widget;
             w->hide();
             w->setPort(port);
+            w->initializeChecker(h.setplayer->currentText().toInt());
             //开始监听
             w->server->listen(QHostAddress::Any,port.toInt());
             //test
