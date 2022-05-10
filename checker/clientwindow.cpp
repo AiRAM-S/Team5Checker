@@ -63,20 +63,6 @@ ClientWindow::ClientWindow(QWidget *parent) :
         qDebug() << PlName << " says he is ready";
     });
 
-    //开始界面 设置玩家人数
-   /* myDialog *d = new myDialog;
-    d->exec();
-    int ifstart=d->Join();
-    QString str=d->setplayer->currentText();
-        if(str=="2")
-            playernum=2;
-        else if(str=="3")
-            playernum=3;
-        else
-            playernum=6;
-    if(!ifstart)
-        exit(0);*/
-
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     //设置禁止摆烂弹窗
     nobai = new QDialog(this);
@@ -122,12 +108,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         rank->hide();
 
   //      initializeChecker(QString("data2"));//这一处最后应该是需要删掉的
-
-
-        //调错用 做完删
-        test = new QLabel(this);
-        test->setGeometry(0,0,1000,20);
-        test->setText("here");
+      
         //初始化回合结束按钮
         end = new QPushButton(this);
         end->setText("回合结束");
@@ -144,7 +125,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                 NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
                 socket->send(mv);//发送move信号
                 //test
-                qDebug() << "client send MOVE_OP ";
+                qDebug() << myPos << "send jump MOVE_OP ";
                 qDebug() << "path is " << path;
                 //test end
             }
@@ -177,32 +158,33 @@ void ClientWindow::changeplayer(){
     for(int j=0;j<10;j++){
         btn[flag][j]->setCheckable(true);
     }
-   /* switch(flag){
-    case red:
-        nowplayer->setText("Player:  RED");
-        nowplayer->setStyleSheet("color:red;");
-        break;
-    case blue:
-        nowplayer->setText("Player: BLUE");
-        nowplayer->setStyleSheet("color:blue;");
-        break;
-    case green:
-        nowplayer->setText("Player:GREEN");
-        nowplayer->setStyleSheet("color:green;");
-        break;
-    case pink:
-        nowplayer->setText("Player:PINK");
-        nowplayer->setStyleSheet("color:#DB7093;");
-        break;
-    case purple:
-        nowplayer->setText("Player:PURPLE");
-        nowplayer->setStyleSheet("color:#800080;");
-        break;
-      case orange:
-        nowplayer->setText("Player:ORANGE");
-        nowplayer->setStyleSheet("color:#FF4500;");
-        break;
-    }*/
+
+//    switch(flag){
+//    case red:
+//       nowplayer->setText("Player:  RED");
+//        nowplayer->setStyleSheet("color:red;");
+//        break;
+//    case blue:
+//        nowplayer->setText("Player: BLUE");
+//        nowplayer->setStyleSheet("color:blue;");
+//        break;
+//    case green:
+//        nowplayer->setText("Player:GREEN");
+//        nowplayer->setStyleSheet("color:green;");
+//        break;
+//    case pink:
+//        nowplayer->setText("Player:PINK");
+//        nowplayer->setStyleSheet("color:#DB7093;");
+//        break;
+//    case purple:
+//        nowplayer->setText("Player:PURPLE");
+//        nowplayer->setStyleSheet("color:#800080;");
+//        break;
+//      case orange:
+//        nowplayer->setText("Player:ORANGE");
+//        nowplayer->setStyleSheet("color:#FF4500;");
+//        break;
+//    }
     haveJumped=false;
     ischosen=false;
     isobjset=false;
@@ -272,7 +254,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
         QPointF td=ev->pos();
         int l=pixel2int(td);
         if((td.rx()-loc[l/17][l%17].rx())*(td.rx()-loc[l/17][l%17].rx())+(td.ry()-loc[l/17][l%17].ry())*(td.ry()-loc[l/17][l%17].ry())>RR*RR/4){
-            test->setText("out range");//不合法
+            //test->setText("out range");//不合法
         }
         else{
             isobjset=true;//is obj set
@@ -291,7 +273,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
                     NetworkData mv(OPCODE::MOVE_OP,QString(myPos),path);
                     socket->send(mv);//发送move信号
                     //test
-                    qDebug() << "client send MOVE_OP";
+                    qDebug() << myPos << " send flat MOVE_OP";
                     qDebug() << "path is " << path;
                     //test end
                 }
@@ -308,12 +290,12 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
 int ClientWindow::islegal(){
     //判断是否已经有选中棋子
     if(!ischosen){
-        test->setText("no chosen checker");
+        //test->setText("no chosen checker");
         return 0;
     }
     //判断目标点是否为空位
     if(isfill[objloc[0]][objloc[1]]){
-        test->setText("object is filled");
+        //test->setText("object is filled");
         return 0;
     }
     //判断是否平动
@@ -333,7 +315,7 @@ int ClientWindow::islegal(){
 
     //判断连跳
     if(haveJumped&&jumped!=checked){
-        test->setText("jump checker changed");
+        //test->setText("jump checker changed");
         return 0;
     }
     //判断是否为跳跃
@@ -353,13 +335,13 @@ int ClientWindow::islegal(){
             else{
                 shouldSwitch=false;
             }
-            test->setText("jump made");
+            //test->setText("jump made");
             haveJumped=true;
             return 2;
         }
     }
     //排查是否可以进行下一次跳跃
-    test->setText("undefined move");
+    //test->setText("undefined move");
     return 0;
 }
 
@@ -519,9 +501,21 @@ void ClientWindow::receive(NetworkData data){
             myPos = seq.at(pls.indexOf(PlName)).toLatin1()[0];
             //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
             initializeChecker(data.data2);//画棋子
-            setWindowTitle(PlName);
+            setPlayerTable();
+            if(myPos!='A'){
+//                for(int i=0;i<10;i++)
+//                    btn[0][i]->setCheckable(true);
+                nowplayer->setText("Not Your Turn");
+                nowplayer->setStyleSheet("color:grey");
+//                timeLeft = 30;
+//                id=startTimer(1000);
+//                clock1->show();
+//                clock2->show();
+            }
+            ww.hide();
+            this->setWindowTitle(QString("Client %1").arg(PlName));
+            this->show();
             qDebug()<<myPos<<' '<<place2num(myPos);
-            show();
         }
         break;
    case OPCODE::START_TURN_OP://我的回合开始
@@ -535,10 +529,32 @@ void ClientWindow::receive(NetworkData data){
             id=startTimer(1000);
             clock1->show();
             clock2->show();
+        
             flag =place2num(myPos);
             qDebug()<<"now flag"<<myPos<<' '<<flag;
-            nowplayer->setText(QString("Player:%1").arg(PlName));
             step=0;
+            nowplayer->setText("Your Turn");
+            switch(flag){
+            case red:
+                nowplayer->setStyleSheet("color:red;");
+                break;
+            case blue:
+                nowplayer->setStyleSheet("color:blue;");
+                break;
+            case green:
+                nowplayer->setStyleSheet("color:green;");
+                break;
+            case pink:
+                nowplayer->setStyleSheet("color:#DB7093;");
+                break;
+            case purple:
+                nowplayer->setStyleSheet("color:#800080;");
+                break;
+              case orange:
+                nowplayer->setStyleSheet("color:#FF4500;");
+                break;
+            }
+            //nowplayer->setText(QString("Player:%1").arg(PlName));
         break;
     case OPCODE::MOVE_OP://其他玩家移动棋子
             {
@@ -548,6 +564,13 @@ void ClientWindow::receive(NetworkData data){
                 qDebug() << "path is " << data.data2;
                 //test end
                 //nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
+                if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
+                    this->killTimer(id);
+                    changeplayer();
+                    nowplayer->setText("Not Your Turn");
+                    nowplayer->setStyleSheet("color:grey;");
+                    break;
+                }
                 int nowPlpos;//该玩家的ABCDEF对应在btn里的序号
                 nowPlpos = place2num(data.data1.toLatin1()[0]);
                 if(data.data2=="-1"){
@@ -559,13 +582,8 @@ void ClientWindow::receive(NetworkData data){
                     }
                 }
                 else{
-                if(data.data1[0].toLatin1()==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
-                    qDebug()<<"change player";
-                    changeplayer();
-                }
-                else {
                    flag = data.data1[0].toLatin1()-65;
-                    nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
+                   //nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
                     QStringList checkerpath = data.data2.split(" ");
                     int stepnum = checkerpath.length()/2;
                     chosenloc[0]= checkerpath.at(0).toInt()+8;
@@ -672,6 +690,9 @@ void ClientWindow::timerEvent(QTimerEvent *event){
     timeLeft--;
     if(timeLeft<0){
         this->killTimer(id);//停止计时
+        for(int i=0;i<10;i++){
+            btn[myPos-65][i]->setCheckable(false);
+        }
     }
     else{
        clock2->setText(QString("%1 s").arg(timeLeft));
@@ -697,14 +718,14 @@ int ClientWindow::place2num(char pln){
 void ClientWindow::initializeChecker(QString data){
     //初始化棋子 2player
     //wzr：我觉得不用根据data改棋子位置，把玩家和区域对应起来应该就行
-    qDebug() << "enter initialize";
+    playernum = players.length();
     int k=0;
     flag=pink;
     nowplayer = new QLabel(this);
     nowplayer->setFont(QFont("Agency FB",24));
     nowplayer->setGeometry(275,0,300,50);
-   // nowplayer->setText("Player: PINK");
-   // nowplayer->setStyleSheet("color:#DB7093;");
+    //nowplayer->setText("Player: PINK");
+    nowplayer->setStyleSheet("color:#DB7093;");
     if(playernum==2){
     for(int j=5;j<=8;j++){
         for(int i=j-4;i<=4;i++){
@@ -731,7 +752,7 @@ void ClientWindow::initializeChecker(QString data){
             k++;
         }
     }
-}
+    }
     if(playernum==3){
         k=0;
         for(int j=5;j<=8;j++){
@@ -854,7 +875,8 @@ void ClientWindow::initializeChecker(QString data){
             }
         }
     }
-    for(int i=0;i<10;i++){
+
+   for(int i=0;i<10;i++){
         for(int j=0;j<playernum;j++){
             if(flag!=place2num(myPos))
             btn[j][i]->setCheckable(false);
@@ -863,14 +885,10 @@ void ClientWindow::initializeChecker(QString data){
     for(int i=0;i<playernum;i++){
         isover[i]=false;
     }
-
     //建立连接：按下棋子后记录被选中者
     for(int t=0;t<10;t++){
         for(int j=0;j<playernum;j++){
-            qDebug() << "debug:j = " << j;
-            qDebug() << "debug: t = " << t;
             connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
-                qDebug()<<flag<<' '<<but.player<<' '<<step;
                 if(flag==but.player&&step==0){
                    chosen.setX(but.pos().rx());
                    chosen.setY(but.pos().ry());
@@ -883,8 +901,51 @@ void ClientWindow::initializeChecker(QString data){
                  //  qDebug()<<but.x<<' '<<but.y;
                  //  qDebug() << "choose a check";
                }
+               else{
+                   //返回警告
+               }
             });
         }
+    }
+}
+
+void ClientWindow::setPlayerTable(){
+    QLabel* Title = new QLabel(this);
+    Title->setFont(QFont("Agency FB",20));
+    Title->setGeometry(15,5,300,50);
+    Title->setText("Players:");
+    Title->setStyleSheet("color:black;");
+    PlayerTable.append(Title);
+
+    int plnum = players.length();
+    int cir=30;
+    for(int i=0;i<plnum;i++){
+        QLabel* pl = new QLabel(this);
+        pl->setFont(QFont("Agency FB",15));
+        pl->setGeometry(15,10+cir,300,50);
+        pl->setText(players[i]);
+        switch(i){
+        case 0:
+            pl->setStyleSheet("color:#DB7093;");
+            break;
+        case 1:
+            pl->setStyleSheet("color:green;");
+            break;
+        case 2:
+            pl->setStyleSheet("color:blue;");
+            break;
+        case 3:
+            pl->setStyleSheet("color:red;");
+            break;
+        case 4:
+            pl->setStyleSheet("color:#FF4500;");
+            break;
+        case 5:
+            pl->setStyleSheet("coloc:#800080");
+            break;
+        }
+        PlayerTable.append(pl);
+        cir += 25;
     }
 }
 
