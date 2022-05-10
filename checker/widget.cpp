@@ -144,7 +144,7 @@ void Widget::initializeChecker(int x){
            qDebug() << "debug: btn[" << pink << "][" << k << "] is constructed";
            btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
            btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-           btn[pink][k]->setIconSize(QSize(RRR,RRR));
+           btn[pink][k]->setIconSize(QSize(RRR+0.5,RRR+0.5));
            btn[pink][k]->setFlat(true);
            btn[pink][k]->player=pink;//set player
            btn[pink][k]->x=-i+8;
@@ -520,8 +520,11 @@ void Widget::initializeChecker(int x){
     void Widget::CheckerMove(CheckerButton*btn,QPointF p){
         QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
         anim->setDuration(300);
-        anim->setStartValue(btn->pos());
-        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2));
+        QPointF obj;
+        obj.setX(loc[btn->x][btn->y].rx()-R+3);
+        obj.setY(loc[btn->x][btn->y].ry()-R+2);
+        anim->setStartValue(obj);
+        anim->setEndValue(QPointF(p.rx()-R+3,p.ry()-R+2.5));
         anim->start(QPropertyAnimation::KeepWhenStopped);
         btn->x=objloc[0];
         btn->y=objloc[1];

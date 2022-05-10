@@ -369,7 +369,10 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
         return;//赢了就不让动 su
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
     anim->setDuration(300);
-    anim->setStartValue(btn->pos());
+    QPointF obj;
+    obj.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
+    obj.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
+    anim->setStartValue(obj);
     anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
     anim->start(QPropertyAnimation::DeleteWhenStopped);
     btn->x=objloc[0];
