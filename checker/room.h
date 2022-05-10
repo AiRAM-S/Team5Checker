@@ -4,6 +4,7 @@
 #include<QStringList>
 #include<QString>
 #include<QTcpSocket>
+#include<QDebug>
 
 class Player{
 private:
@@ -12,13 +13,19 @@ private:
     QTcpSocket* pSocket;
     char place;
 public:
-    Player(QString _ID,QTcpSocket* _client):ID(_ID),pSocket(_client){
-        isReady = false;
+    Player(QString _ID,QTcpSocket* _client):ID(_ID),pSocket(_client),isReady(false){
     }
+//    Player(Player& p){
+//        ID=p.ID;
+//        isReady=p.isReady;
+//        pSocket = p.pSocket;
+//        place = p.place;
+//    }
     QString getID() const{
         return ID;
     }
     bool ifReady() const{
+        qDebug() << "class player ifready is :" << isReady;
         return isReady;
     }
     QTcpSocket* getSocket() const{
@@ -26,6 +33,9 @@ public:
     }
     void setReady(){
         isReady = true;
+        qDebug() << "class player:set ready";
+        qDebug() << "now status is " << isReady;
+        return;
     }
     char getPlace(){
         return place;
@@ -40,7 +50,9 @@ class Room
 {
 private:
     int roomID;
+public:
     QList<Player> playerList;
+private:
     bool gameOn;
     int playerNumber;
     int readynum;
@@ -53,9 +65,6 @@ public:
     void addPl(QString _name,QTcpSocket* _client);
     int getID() const{
         return roomID;
-    }
-    QList<Player> getPl() const{
-        return playerList;
     }
     bool ifON() const{
         return gameOn;
