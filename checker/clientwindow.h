@@ -42,6 +42,13 @@ public:
     void shouldSwitcht2f();
     void isfinish();//棋子是否走完
     int place2num(char);
+    void setPort(QString p){
+        Port = p;
+        return;
+    }
+    NetworkSocket* getSocket(){
+        return socket;
+    }
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -89,7 +96,7 @@ private:
     int id;//计时器id,负责倒计时
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间
-    bool iswin;//是否胜利，不知道有没有用先写着
+    bool iswin=false;//是否胜利，不知道有没有用先写着
     Rank* rank;
     void initializeChecker(QString);//根据服务端发来的信号，画棋子
     QStringList players;
@@ -97,8 +104,10 @@ private:
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
-    myDialog dd;
+public:
+    //myDialog dd;
     chooseclient cc;
+private:
     void passit1(QString a)
     {
         Port=a;

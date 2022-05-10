@@ -36,6 +36,9 @@ public:
     QComboBox *setplayer;
     QComboBox *settype;
     QString port;
+    QPushButton* getJoin(){
+        return join;
+    }
 
 protected:
     void mpe(QMouseEvent *mo);

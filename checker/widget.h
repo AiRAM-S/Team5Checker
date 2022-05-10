@@ -15,6 +15,8 @@
 #include"networksocket.h"
 #include"networkdata.h"
 #include"room.h"
+#include"serverwait.h"
+#include"chooseservice.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -42,6 +44,15 @@ public:
     bool isfinish(int x);
     CheckerButton* int2btn(int x,int y);
     int place2num(char pln);
+    void setPort(QString p){
+        Port = p;
+        return;
+    }
+    NetworkServer* getServer(){
+        return server;
+    }
+    void initializeChecker(int x);
+
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
@@ -79,12 +90,16 @@ private:
     QLabel* nowplayer;
     QPushButton* end;
     bool shouldSwitch;
+public:
     myDialog d;
     mydialog1 *z;
+private:
     int totalstep=0;
 
     //stage2相关
+public:
     NetworkServer* server;//监听,其中的clients队列应指向每一个客户端，进行通信；
+private:
     QList<Room> roomList;//房间，每个room类里包括：房间号（roomID)
                          //游戏状态（gameOn）,玩家人数（playerNumber）,玩家列表（playerList):包含玩家类（Player）
                          //玩家类，内含玩家socket，玩家ID，玩家状态
@@ -94,6 +109,9 @@ private:
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间
     QString Port;//端口号
+public:
+    serverwait* ServerWait;//房间等待界面
+    chooseservice* ChooseServer;//服务端等待第一个玩家接入界面
 
 signals:
     void shouldSwitchChanged();

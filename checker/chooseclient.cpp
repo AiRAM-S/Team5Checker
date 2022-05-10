@@ -69,13 +69,21 @@ chooseclient::chooseclient(QWidget *parent) :
 
     IDS=new QLineEdit(this);
     IDS->move(130,76);
-    IDS->setText("请输入用户名...");
+    IDS->setPlaceholderText("请输入用户名...");
     IDS->setStyleSheet("QLineEdit{color:black;font:11px}");
+    QRegularExpression rx1;
+    rx1.setPattern("[A-Za-z0-9_]{1,20}");
+    QValidator *validator0 = new QRegularExpressionValidator(rx1,this);
+    IDS->setValidator(validator0);
 
     ROOMS=new QLineEdit(this);
     ROOMS->move(130,125);
-    ROOMS->setText("请输入房间号...");
+    ROOMS->setPlaceholderText("请输入房间号...");
     ROOMS->setStyleSheet("QLineEdit{color:black;font:11px}");
+    QRegularExpression rx2;
+    rx2.setPattern("^([1-9]{1}[0-9]{0,4})$");
+    QValidator *validator1 = new QRegularExpressionValidator(rx2,this);
+    ROOMS->setValidator(validator1);
 
     YES=new QPushButton(this);
     YES->move(160,175);
@@ -84,22 +92,23 @@ chooseclient::chooseclient(QWidget *parent) :
 
     connect(YES,&QPushButton::clicked,[&]()
             {
-        ip=IPS->text();
-        ip=ip.mid(0,6);
-        room=ROOMS->text();
-        id=IDS->text();
-        //if(ip=="10.46."||ip=="10.47.")
-        //{
-            id=IDS->text();
-            room=ROOMS->text();
-        Wait *d=new Wait;
-        d->setWindowTitle("waiting");
-        d->show();
+//        ip=IPS->text();
+//        ip=ip.mid(0,6);
+//        room=ROOMS->text();
+//        id=IDS->text();
+//        //if(ip=="10.46."||ip=="10.47.")
+//        //{
+//            id=IDS->text();
+//            room=ROOMS->text();
+//        Wait *d=new Wait;
+//        d->setWindowTitle("waiting");
+//        d->show();
 //        int ifs=d->Join();
 //        if(!ifs)
 //           exit(0);
 //                    hide();
 //        }
+
     });
 
 }

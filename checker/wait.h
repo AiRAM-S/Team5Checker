@@ -4,6 +4,7 @@
 #include <QWidget>
 #include<QLineEdit>
 #include<QLabel>
+#include<QPushButton>
 
 namespace Ui {
 class Wait;
@@ -23,11 +24,13 @@ public:
     //bool isready[6];
     QLineEdit *ids[6];
     QLabel *sis[6];
+    QPushButton* rea;
+    QPushButton *exi;
 
 private slots:
    void qqq();
 
-private:
+public:
     Ui::Wait *ui;
     bool ifsuccessed;
 };
