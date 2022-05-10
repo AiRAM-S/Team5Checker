@@ -53,6 +53,7 @@ public:
     }
     void InitializeChecker();//画棋子
     void setPlayerTable();//列玩家列表
+   // void initializeChecker(int x);
 
 protected:
     void paintEvent(QPaintEvent *);
