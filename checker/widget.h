@@ -51,6 +51,7 @@ public:
     NetworkServer* getServer(){
         return server;
     }
+    void initializeChecker(int x);
 
 protected:
     void paintEvent(QPaintEvent *);

@@ -344,6 +344,7 @@ DIST          = ../../Qt/6.3.0/macos/mkspecs/features/spec_pre.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/qt_config.prf \
 		../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.conf \
 		../../Qt/6.3.0/macos/mkspecs/features/spec_post.prf \
+		../checker/.qmake.stash \
 		../../Qt/6.3.0/macos/mkspecs/features/exclusive_builds.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/mac/sdk.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/toolchain.prf \
@@ -408,7 +409,7 @@ TARGET        = checker.app/Contents/MacOS/checker
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 12.3
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qmake.stash
 EXPORT_VALID_ARCHS = x86_64 arm64
 EXPORT_DEFAULT_ARCHS = x86_64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -665,6 +666,7 @@ Makefile: ../checker/checker.pro ../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.c
 		../../Qt/6.3.0/macos/mkspecs/features/qt_config.prf \
 		../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.conf \
 		../../Qt/6.3.0/macos/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../Qt/6.3.0/macos/mkspecs/features/exclusive_builds.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/mac/sdk.prf \
 		../../Qt/6.3.0/macos/mkspecs/features/toolchain.prf \
@@ -941,6 +943,7 @@ Makefile: ../checker/checker.pro ../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.c
 ../../Qt/6.3.0/macos/mkspecs/features/qt_config.prf:
 ../../Qt/6.3.0/macos/mkspecs/macx-clang/qmake.conf:
 ../../Qt/6.3.0/macos/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../Qt/6.3.0/macos/mkspecs/features/exclusive_builds.prf:
 ../../Qt/6.3.0/macos/mkspecs/features/mac/sdk.prf:
 ../../Qt/6.3.0/macos/mkspecs/features/toolchain.prf:
@@ -1017,6 +1020,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r checker.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -1822,6 +1826,8 @@ moc_wait.cpp: ../checker/wait.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/wait.h -o moc_wait.cpp
 
@@ -4003,6 +4009,8 @@ wait.o: ../checker/wait.cpp ../checker/wait.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../checker/ui_wait.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o wait.o ../checker/wait.cpp
 
