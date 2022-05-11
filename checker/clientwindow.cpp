@@ -70,12 +70,16 @@ ClientWindow::ClientWindow(QWidget *parent) :
         socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,RoomID,PlName));
         for(int i=0;i<6;i++)
         {
-            if(ww.ids[i]->text()==PlName)
-            {
-                ww.sis[i]->setText("waiting");
-                break;
-            }
+//            if(ww.ids[i]->text()==PlName)
+//            {
+//                ww.sis[i]->setText("Waiting");
+//                break;
+//            }
+            ww.ids[i]->setText("");
+            ww.sis[i]->setText("Waiting");
         }
+        players.clear();
+        playerState.clear();
         cc.show();
         ww.hide();
     });
@@ -465,6 +469,7 @@ void ClientWindow::receive(NetworkData data){
         players.append(data.data1);
         playerState.append(0);
         ww.ids[players.length()-1]->setText(players.at(players.length()-1));
+        playernum++;
         }
         break;
         case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
@@ -486,6 +491,7 @@ void ClientWindow::receive(NetworkData data){
                 }
                 players.append(PlName);
                 playerState.append(0);
+                playernum = players.length();
             }
 //            qDebug() << "previous player name is " << players;
 //            qDebug() << "now player number is " << players.length();
@@ -506,10 +512,17 @@ void ClientWindow::receive(NetworkData data){
             int Index = players.indexOf(data.data1);
             players.removeAt(Index);
             playerState.removeAt(Index);
+            for(int m=Index;m<playernum-1;m++){
+                ww.ids[m]->setText(ww.ids[m+1]->text());
+                ww.sis[m]->setText(ww.sis[m+1]->text());
+            }
+            ww.ids[playernum-1]->setText("");
+            ww.sis[playernum-1]->setText("Waiting");
         }
         break;
-        case OPCODE::CLOSE_ROOM_OP://关闭房间 待实现 我理解是断开连接（Su）
-            this->socket->bye();
+        case OPCODE::CLOSE_ROOM_OP://关闭房间 应该是回到进房界面
+            cc.show();
+            ww.hide();
         break;
         case OPCODE::PLAYER_READY_OP://有玩家准备就绪
             //test
@@ -558,6 +571,7 @@ void ClientWindow::receive(NetworkData data){
         }
             timeLeft=30;
             id=startTimer(1000);
+            clock2->setText("30 s");
             clock1->show();
             clock2->show();
         
@@ -618,6 +632,8 @@ void ClientWindow::receive(NetworkData data){
                     changeplayer();
                     nowplayer->setText("Not Your Turn");
                     nowplayer->setStyleSheet("color:grey;");
+                    clock1->hide();
+                    clock2->hide();
                     break;
                 }
                 else {
@@ -644,8 +660,8 @@ void ClientWindow::receive(NetworkData data){
                         }
                     }
                 }
-
             }
+        }
         break;
     case OPCODE::END_TURN_OP://胜利反馈
     {
@@ -680,8 +696,8 @@ void ClientWindow::receive(NetworkData data){
                 rank->ranktable->setItem(i/2,0,new QTableWidgetItem(players[plnow-65]));
             }
         }
-        //断开连接
-        socket->bye(); 
+        //退出房间
+        socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,QString(RoomID),QString(PlName)));
     }
     break;
     case OPCODE::ERROR_OP://错误
@@ -730,8 +746,10 @@ void ClientWindow::timerEvent(QTimerEvent *event){
     if(timeLeft<0){
         this->killTimer(id);//停止计时
         for(int i=0;i<10;i++){
-            btn[myPos-65][i]->setCheckable(false);
+            btn[place2num(myPos)][i]->close();
         }
+        nowplayer->setText("You Are OUT");
+        nowplayer->setStyleSheet("color:grey");
     }
     else{
        clock2->setText(QString("%1 s").arg(timeLeft));

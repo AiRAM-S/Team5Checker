@@ -501,7 +501,7 @@ Widget::Widget(QWidget *parent)
             if(flg){//未完成
                 isover[place2num(x)]=true;
                 int index = place2num(x);
-                this->PlayerTable[index+1]->setText(QString("%1 %2").arg(roomList[0].playerList[index].getID()).arg(overnum++));
+                this->PlayerTable[index+1]->setText(QString("%1 %2").arg(roomList[0].playerList[index].getID()).arg(overnum));
                 overnum++;
             }
         }
@@ -615,6 +615,7 @@ Widget::Widget(QWidget *parent)
                 //test end
                 ChooseServer->hide();//关闭等待页面
                 ServerWait->setPlayerName(0,data.data2);//添加玩家
+                ServerWait->setWindowTitle(QString("ROOM %1 Server").arg(data.data1));
                 ServerWait->show();
             }
             if(nameConflict){
@@ -642,12 +643,13 @@ Widget::Widget(QWidget *parent)
                             prevState.append("1");
                         else prevState.append("0");
                         //qDebug()<<prevPl;
-                        server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
+                        server->send(roomList[objRoom].playerList[t].getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                         //test
                         qDebug() << "server send JOIN_ROOM_OP";
                         //test end
                         ChooseServer->hide();//关闭等待页面
                         ServerWait->setPlayerName(roomList[objRoom].getPlnum()-1,data.data2);//添加玩家
+                        ServerWait->setWindowTitle(QString("ROOM %1 Server").arg(data.data1));
                         ServerWait->show();
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
@@ -676,22 +678,30 @@ Widget::Widget(QWidget *parent)
                     int plPos = -1;
                     for(int j=0;j<plnum;j++){
                         if(roomList[i].playerList[j].getID()==outPl){
-                            roomList[i].playerList.removeAt(j);
+                            roomList[i].plLeave(j);
                             inRoom = true;
                             plPos = j;
                             break;
                         }
                     }
                     if(inRoom){
-                        for(int t=0;t<plnum;t++){
-                            if(t!=plPos)
-                                server->send(roomList[i].playerList[plPos].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
-                                //test
-                                qDebug() << "server send LEAVE_ROOM_OP";
-                                //test end
-                                ServerWait->setPlayerReady(plPos,false);//清空该玩家姓名
-                                ServerWait->setPlayerName(plPos,"");
+                        for(int t=0;t<roomList[i].getPlnum();t++){
+                            server->send(roomList[i].playerList[t].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
+                            //test
+                            qDebug() << "server send LEAVE_ROOM_OP";
+                            //test end
+//                            ServerWait->setPlayerReady(plPos,false);//清空该玩家姓名
+//                            ServerWait->setPlayerName(plPos,"");
+                            qDebug() << "plPos is " << plPos;
+                            for(int m=plPos;m<roomList[i].getPlnum();m++){
+                                ServerWait->setPlayerReady(m,roomList[i].playerList[m].ifReady());
+                                qDebug() << m << " is set with " << roomList[i].playerList[m].getID();
+                                ServerWait->setPlayerName(m,roomList[i].playerList[m].getID());
+                            }
+                            ServerWait->setPlayerName(roomList[i].getPlnum(),"");
+                            ServerWait->setPlayerReady(roomList[i].getPlnum(),false);
                         }
+                        break;
                     }
                     else
                         server->send(client,NetworkData(OPCODE::ERROR_OP,QString("NOT_IN_ROOM"),QString("")));
@@ -794,6 +804,11 @@ Widget::Widget(QWidget *parent)
            }
            if(overnum==playernum) {
                for(int i=0;i<playernum;i++){
+                   if(overlist.length()){
+                       for(int g=0;g<overlist.length()-1;g++)
+                           ranklist.append(overlist[g]).append(" ");
+                       ranklist.append(overlist[overlist.length()-1]);
+                   }
                    server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
                    //test
                    qDebug() << "server send END_GAME_OP";
@@ -891,12 +906,27 @@ Widget::Widget(QWidget *parent)
         timeleft--;
         if(timeleft<0){
             this->killTimer(id);//停止计时
-            //向其他玩家发送超时判负信号
-            char outPl = flag+65;
-            for(int i=0;i<roomList[0].getPlnum();i++){
-                if(roomList[0].playerList[i].getID()!=QChar(flag+65))
-                    server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(outPl),QString("-1")));
+            for(int i=0;i<10;i++){
+                btn[flag][i]->close();
             }
+            //test
+            qDebug() << "out player is " << flag;
+            qDebug() << "now player seq is";
+            for(int s=0;s<3;s++)
+                 qDebug() << roomList[0].playerList[s].getID();
+            //test end
+            isover[flag] = true;
+            overnum++;
+            overlist.append(roomList[0].playerList[flag].getID());
+            //向其他玩家发送超时判负信号
+            for(int i=0;i<roomList[0].getPlnum();i++){
+                if(i!=flag)
+                    server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(roomList[0].playerList[flag].getPlace()),QString("-1")));
+            }
+            changeplayer();
+            server->send(roomList[0].playerList[flag].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(""),QString("")));
+            timeleft=30;
+            id = startTimer(1000);
         }
         else{
            clock2->setText(QString("%1 s").arg(timeleft));
