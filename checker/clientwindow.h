@@ -99,6 +99,8 @@ private:
     bool iswin=false;//是否胜利，不知道有没有用先写着
     Rank* rank;
     void initializeChecker(QString);//根据服务端发来的信号，画棋子
+    void setPlayerTable();//列玩家列表
+    QList<QLabel*> PlayerTable;
     QStringList players;
     QList<int> playerState;
     QString RoomID;//该客户端所处房间号

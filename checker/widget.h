@@ -51,7 +51,9 @@ public:
     NetworkServer* getServer(){
         return server;
     }
-    void initializeChecker(int x);
+    void InitializeChecker();//画棋子
+    void setPlayerTable();//列玩家列表
+   // void initializeChecker(int x);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -61,7 +63,6 @@ protected:
 private:
     Ui::Widget *ui;
     void DrawCheckerboard();
-    void InitCheckerboard();
     QPointF loc[17][17];//棋盘每个位置的坐标
     int isfill[17][17];//棋盘每个位置是否有棋子
     CheckerButton* btn[6][10]; //六方棋子
@@ -112,6 +113,7 @@ private:
 public:
     serverwait* ServerWait;//房间等待界面
     chooseservice* ChooseServer;//服务端等待第一个玩家接入界面
+    QList<QLabel*> PlayerTable;//局内玩家用户名表
 
 signals:
     void shouldSwitchChanged();

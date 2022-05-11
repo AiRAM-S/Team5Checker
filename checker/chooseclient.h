@@ -8,9 +8,17 @@
 #include<QNetworkInterface>
 #include<QLineEdit>
 
+#include<QValidator>
+#include<QRegularExpression>
+#include<QRegularExpressionValidator>
+
+
 class QPushButton;
 class QLabel;
 class QLineEdit;
+class QValidator;
+class QRegExpValidator;
+class QRegularExpression;
 
 class chooseclient:public QWidget
 {

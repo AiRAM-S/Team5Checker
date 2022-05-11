@@ -15,6 +15,7 @@ Wait::Wait(QWidget *parent) :
     setWindowTitle("client");
 
     rea = ui->YES;
+    exi=ui->EXIT;
 
     for(int i=0;i<6;i++)
     {
