@@ -1,5 +1,6 @@
 #include "checkerbutton.h"
 #include <QPushButton>
+#include <QDebug>
 
 CheckerButton::CheckerButton(QWidget *parent)
     : QPushButton{parent}

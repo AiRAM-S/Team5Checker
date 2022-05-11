@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	"C:\\Users\\AiRAM\\Team5Checker\\checker(1)\\mapp.ico"
+IDI_ICON1	ICON	"C:\\Users\\AiRAM\\Team5Checker\\checker\\mapp.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0

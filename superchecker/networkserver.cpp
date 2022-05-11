@@ -1,4 +1,5 @@
 #include "networkserver.h"
+#include<QDebug>
 
 NetworkServer::NetworkServer(QObject* parent)
     : QTcpServer(parent)
@@ -54,4 +55,5 @@ void NetworkServer::newconnection() {
     connect(client, &QAbstractSocket::disconnected, this->disconnMapper, qOverload<>(&QSignalMapper::map));
     this->disconnMapper->setMapping(client, client);
     this->recvMapper->setMapping(client, client);
+    qDebug() << "newconnection constructed";
 }
