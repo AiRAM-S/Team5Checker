@@ -24,6 +24,7 @@ Rank::Rank(QWidget *parent) :
     ranktable = new QTableWidget(this);
     ranktable->setGeometry(125,90,300,300);
     ranktable->setColumnCount(1);
+    ranktable->setSelectionMode(QAbstractItemView::NoSelection);
 }
 
 Rank::~Rank()
