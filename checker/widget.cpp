@@ -641,7 +641,8 @@ Widget::Widget(QWidget *parent)
                         if(roomList[objRoom].playerList[t].ifReady())
                             prevState.append("1");
                         else prevState.append("0");
-                        server->send(roomList[objRoom].playerList[t].getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
+                        //qDebug()<<prevPl;
+                        server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                         //test
                         qDebug() << "server send JOIN_ROOM_OP";
                         //test end

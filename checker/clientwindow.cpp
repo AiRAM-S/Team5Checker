@@ -58,10 +58,41 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
     //页面3：等待界面，ready按钮功能实现
     connect(ww.rea,&QPushButton::clicked,this,[=](){
+        if(cc.getRoomID()!=""&&cc.getRoomID()!="请输入房间号..."&&cc.getName()!=""&&cc.getName()!="请输入用户名...")
+        {
         NetworkData sure(OPCODE::PLAYER_READY_OP,PlName,"");
         socket->send(sure);
         qDebug() << PlName << " says he is ready";
+        }
     });
+
+    connect(ww.exi,&QPushButton::clicked,this,[=](){
+        socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,RoomID,PlName));
+        for(int i=0;i<6;i++)
+        {
+            if(ww.ids[i]->text()==PlName)
+            {
+                ww.sis[i]->setText("waiting");
+                break;
+            }
+        }
+        cc.show();
+        ww.hide();
+    });
+
+    //开始界面 设置玩家人数
+   /* myDialog *d = new myDialog;
+    d->exec();
+    int ifstart=d->Join();
+    QString str=d->setplayer->currentText();
+        if(str=="2")
+            playernum=2;
+        else if(str=="3")
+            playernum=3;
+        else
+            playernum=6;
+    if(!ifstart)
+        exit(0);*/
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     //设置禁止摆烂弹窗
@@ -108,7 +139,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         rank->hide();
 
   //      initializeChecker(QString("data2"));//这一处最后应该是需要删掉的
-      
+
         //初始化回合结束按钮
         end = new QPushButton(this);
         end->setText("回合结束");
@@ -158,33 +189,32 @@ void ClientWindow::changeplayer(){
     for(int j=0;j<10;j++){
         btn[flag][j]->setCheckable(true);
     }
-
-//    switch(flag){
-//    case red:
-//       nowplayer->setText("Player:  RED");
-//        nowplayer->setStyleSheet("color:red;");
-//        break;
-//    case blue:
-//        nowplayer->setText("Player: BLUE");
-//        nowplayer->setStyleSheet("color:blue;");
-//        break;
-//    case green:
-//        nowplayer->setText("Player:GREEN");
-//        nowplayer->setStyleSheet("color:green;");
-//        break;
-//    case pink:
-//        nowplayer->setText("Player:PINK");
-//        nowplayer->setStyleSheet("color:#DB7093;");
-//        break;
-//    case purple:
-//        nowplayer->setText("Player:PURPLE");
-//        nowplayer->setStyleSheet("color:#800080;");
-//        break;
-//      case orange:
-//        nowplayer->setText("Player:ORANGE");
-//        nowplayer->setStyleSheet("color:#FF4500;");
-//        break;
-//    }
+   /* switch(flag){
+    case red:
+        nowplayer->setText("Player:  RED");
+        nowplayer->setStyleSheet("color:red;");
+        break;
+    case blue:
+        nowplayer->setText("Player: BLUE");
+        nowplayer->setStyleSheet("color:blue;");
+        break;
+    case green:
+        nowplayer->setText("Player:GREEN");
+        nowplayer->setStyleSheet("color:green;");
+        break;
+    case pink:
+        nowplayer->setText("Player:PINK");
+        nowplayer->setStyleSheet("color:#DB7093;");
+        break;
+    case purple:
+        nowplayer->setText("Player:PURPLE");
+        nowplayer->setStyleSheet("color:#800080;");
+        break;
+      case orange:
+        nowplayer->setText("Player:ORANGE");
+        nowplayer->setStyleSheet("color:#FF4500;");
+        break;
+    }*/
     haveJumped=false;
     ischosen=false;
     isobjset=false;
@@ -572,15 +602,6 @@ void ClientWindow::receive(NetworkData data){
                 qDebug() << "path is " << data.data2;
                 //test end
                 //nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
-                if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
-                    this->killTimer(id);
-                    clock1->hide();
-                    clock2->hide();
-                    changeplayer();
-                    nowplayer->setText("Not Your Turn");
-                    nowplayer->setStyleSheet("color:grey;");
-                    break;
-                }
                 int nowPlpos;//该玩家的ABCDEF对应在btn里的序号
                 nowPlpos = place2num(data.data1.toLatin1()[0]);
                 if(data.data2=="-1"){
@@ -592,8 +613,16 @@ void ClientWindow::receive(NetworkData data){
                     }
                 }
                 else{
+                if(data.data1[0].toLatin1()==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
+                    this->killTimer(id);
+                    changeplayer();
+                    nowplayer->setText("Not Your Turn");
+                    nowplayer->setStyleSheet("color:grey;");
+                    break;
+                }
+                else {
                    flag = data.data1[0].toLatin1()-65;
-                   //nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
+                    //nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
                     QStringList checkerpath = data.data2.split(" ");
                     int stepnum = checkerpath.length()/2;
                     chosenloc[0]= checkerpath.at(0).toInt()+8;
@@ -728,6 +757,7 @@ int ClientWindow::place2num(char pln){
 void ClientWindow::initializeChecker(QString data){
     //初始化棋子 2player
     //wzr：我觉得不用根据data改棋子位置，把玩家和区域对应起来应该就行
+    qDebug() << "enter initialize";
     playernum = players.length();
     int k=0;
     flag=pink;
@@ -762,7 +792,7 @@ void ClientWindow::initializeChecker(QString data){
             k++;
         }
     }
-    }
+}
     if(playernum==3){
         k=0;
         for(int j=5;j<=8;j++){
