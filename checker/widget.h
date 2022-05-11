@@ -106,6 +106,7 @@ private:
                          //玩家类，内含玩家socket，玩家ID，玩家状态
 
     QString ranklist;
+    QStringList overlist;//出局的人
     int id;//计时器id,负责倒计时
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include"room.h"
 #include<QPushButton>
+#include<QLabel>
 
 namespace Ui {
 class serverwait;

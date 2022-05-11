@@ -62,6 +62,12 @@ public:
         playerNumber=0;
         readynum=0;
     }
+    void plLeave(int index){
+        playerNumber--;
+        if(playerList[index].ifReady())
+            readynum--;
+        playerList.removeAt(index);
+    }
     void addPl(QString _name,QTcpSocket* _client);
     QList<Player> getPl() const{
         return playerList;
