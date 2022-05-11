@@ -132,10 +132,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
         lbrn->setStyleSheet("QLabel {color:blue;font:bold 25px;}");
 
         ronm=new QLabel(this);
-        ronm->setGeometry(100,560,300,50);
-        RoomID=ww.rn->text();
-        ronm->setText(RoomID);
-        lbrn->setStyleSheet("QLabel {color:black;font:bold 20px;}");
+        ronm->setGeometry(190,560,300,50);
+        ronm->setStyleSheet("QLabel {color:black;font:bold 21px;}");
 
 
         //初始化是否需要更换棋手
@@ -509,6 +507,7 @@ void ClientWindow::receive(NetworkData data){
                      ww.sis[i]->setText("ready");
             }
             ww.rn->setText(RoomID);
+            ronm->setText(RoomID);
             cc.hide();
             ww.show();
         break;
@@ -697,7 +696,14 @@ void ClientWindow::receive(NetworkData data){
          rank->show();
          //断开连接
          // socket->bye();
-         socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,QString(""),QString("")));
+         for(int i=0;i<6;i++)
+         {
+                 ww.reID(i);
+                 ww.sis[i]->setText("waiting");
+         }
+         players.clear();
+         playerState.clear();
+         cc.show();
     }
     break;
     case OPCODE::ERROR_OP://错误
