@@ -116,7 +116,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
-            if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
+            if(ischosen==true&&ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
 //                shouldSwitch=true;
 //                shouldSwitcht2f();
 //                shouldSwitch=false;
@@ -129,7 +129,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                 qDebug() << "path is " << path;
                 //test end
             }
-            else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
+            else if(chosenloc[0]==btnx&&chosenloc[1]==btny||ischosen==false){
                 nobai->show();
             }
         });
@@ -247,8 +247,8 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
     qDebug()<<"clicked"<<ischosen;
     if(ischosen){
           //反映鼠标点击点坐标
-               QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
-        test->setText(posi);
+        //       QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
+        //test->setText(posi);
 
         //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
         QPointF td=ev->pos();
@@ -266,6 +266,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
             int mv=islegal();
             if(mv&&isobjset){
                 qDebug()<<"legal move";
+                qDebug()<<"now the path is " << path;
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
@@ -530,6 +531,13 @@ void ClientWindow::receive(NetworkData data){
             clock1->show();
             clock2->show();
         
+            haveJumped=false;
+            ischosen=false;
+            isobjset=false;
+            checked=NULL;
+            jumped=NULL;
+            path = "";
+
             flag =place2num(myPos);
             qDebug()<<"now flag"<<myPos<<' '<<flag;
             step=0;
@@ -566,6 +574,8 @@ void ClientWindow::receive(NetworkData data){
                 //nowplayer->setText(QString("Player:%1").arg(players.at(data.data1.toLatin1()[0]-65)));
                 if(data.data1.toLatin1()[0]==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
                     this->killTimer(id);
+                    clock1->hide();
+                    clock2->hide();
                     changeplayer();
                     nowplayer->setText("Not Your Turn");
                     nowplayer->setStyleSheet("color:grey;");
@@ -605,7 +615,7 @@ void ClientWindow::receive(NetworkData data){
                         }
                     }
                 }
-                }
+
             }
         break;
     case OPCODE::END_TURN_OP://胜利反馈
