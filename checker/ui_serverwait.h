@@ -33,6 +33,8 @@ public:
     QLabel *situ4;
     QLabel *situ5;
     QLabel *situ6;
+    QLabel *room;
+    QLabel *roomnum;
 
     void setupUi(QWidget *serverwait)
     {
@@ -105,6 +107,17 @@ public:
         situ6->setObjectName(QString::fromUtf8("situ6"));
         situ6->setGeometry(QRect(460, 246, 54, 20));
         situ6->setFont(font2);
+        room = new QLabel(serverwait);
+        room->setObjectName(QString::fromUtf8("room"));
+        room->setGeometry(QRect(50, 40, 54, 21));
+        QFont font3;
+        font3.setPointSize(12);
+        font3.setBold(true);
+        room->setFont(font3);
+        roomnum = new QLabel(serverwait);
+        roomnum->setObjectName(QString::fromUtf8("roomnum"));
+        roomnum->setGeometry(QRect(130, 40, 54, 21));
+        roomnum->setFont(font2);
 
         retranslateUi(serverwait);
 
@@ -121,6 +134,7 @@ public:
         situ4->setText(QCoreApplication::translate("serverwait", "waiting", nullptr));
         situ5->setText(QCoreApplication::translate("serverwait", "waiting", nullptr));
         situ6->setText(QCoreApplication::translate("serverwait", "waiting", nullptr));
+        room->setText(QCoreApplication::translate("serverwait", "ROOM", nullptr));
     } // retranslateUi
 
 };
