@@ -63,7 +63,6 @@ protected:
 private:
     Ui::Widget *ui;
     void DrawCheckerboard();
-    void InitCheckerboard();
     QPointF loc[17][17];//棋盘每个位置的坐标
     int isfill[17][17];//棋盘每个位置是否有棋子
     CheckerButton* btn[6][10]; //六方棋子
@@ -111,6 +110,7 @@ private:
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间
     QString Port;//端口号
+
 public:
     serverwait* ServerWait;//房间等待界面
     chooseservice* ChooseServer;//服务端等待第一个玩家接入界面

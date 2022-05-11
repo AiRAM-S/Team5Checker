@@ -72,6 +72,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         {
             if(ww.ids[i]->text()==PlName)
             {
+                ww.reID(i);
                 ww.sis[i]->setText("waiting");
                 break;
             }
@@ -125,6 +126,17 @@ ClientWindow::ClientWindow(QWidget *parent) :
                 isfill[i1][i2]=0;
             }
         }
+        lbrn=new QLabel(this);
+        lbrn->setGeometry(70,560,300,50);
+        lbrn->setText("ROOM");
+        lbrn->setStyleSheet("QLabel {color:blue;font:bold 25px;}");
+
+        ronm=new QLabel(this);
+        ronm->setGeometry(100,560,300,50);
+        RoomID=ww.rn->text();
+        ronm->setText(RoomID);
+        lbrn->setStyleSheet("QLabel {color:black;font:bold 20px;}");
+
 
         //初始化是否需要更换棋手
         shouldSwitch=false;
@@ -147,7 +159,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
         //实现更换执棋方功能
         connect(end,&QPushButton::clicked,this,[=](){
-            if(ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
+            if(ischosen==true&&ischange==false&&!(chosenloc[0]==btnx&&chosenloc[1]==btny)){//当没有换过且棋子不在初始位置时换player
 //                shouldSwitch=true;
 //                shouldSwitcht2f();
 //                shouldSwitch=false;
@@ -160,7 +172,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
                 qDebug() << "path is " << path;
                 //test end
             }
-            else if(chosenloc[0]==btnx&&chosenloc[1]==btny){
+            else if(chosenloc[0]==btnx&&chosenloc[1]==btny||ischosen==false){
                 nobai->show();
             }
         });
@@ -231,6 +243,7 @@ void ClientWindow::paintEvent(QPaintEvent *)
 }
 
 
+
 void ClientWindow::DrawCheckerboard(void)
 {
     QPainter plot(this);
@@ -277,8 +290,8 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
     qDebug()<<"clicked"<<ischosen;
     if(ischosen){
           //反映鼠标点击点坐标
-               QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
-        test->setText(posi);
+        //       QString posi = QString("%1,%2").arg(ev->pos().rx()).arg(ev->pos().ry());
+        //test->setText(posi);
 
         //在这里判断所点位置是否在圆圈内，若在圆圈内，则为合法，直接设置目标位置obj
         QPointF td=ev->pos();
@@ -296,6 +309,7 @@ void ClientWindow::mousePressEvent(QMouseEvent *ev){
             int mv=islegal();
             if(mv&&isobjset){
                 qDebug()<<"legal move";
+                qDebug()<<"now the path is " << path;
                 CheckerMove(checked,obj);
                 isobjset=false;
                 if(mv==1){
@@ -494,6 +508,7 @@ void ClientWindow::receive(NetworkData data){
                  if(playerState.at(i))
                      ww.sis[i]->setText("ready");
             }
+            ww.rn->setText(RoomID);
             cc.hide();
             ww.show();
         break;
@@ -559,7 +574,14 @@ void ClientWindow::receive(NetworkData data){
             id=startTimer(1000);
             clock1->show();
             clock2->show();
-        
+
+            haveJumped=false;
+            ischosen=false;
+            isobjset=false;
+            checked=NULL;
+            jumped=NULL;
+            path = "";
+
             flag =place2num(myPos);
             qDebug()<<"now flag"<<myPos<<' '<<flag;
             step=0;
@@ -636,7 +658,7 @@ void ClientWindow::receive(NetworkData data){
                         }
                     }
                 }
-                }
+
             }
         break;
     case OPCODE::END_TURN_OP://胜利反馈
@@ -653,6 +675,8 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_GAME_OP://游戏结束
     {
         //弹排名界面
+        QStringList pls = data.data1.split(" ");
+        pls.removeLast();
         rank->ranktable->setRowCount(data.data1.length());
         rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
         QStringList header;
@@ -666,14 +690,14 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         rank->ranktable->setVerticalHeaderLabels(header);
-        for(int i=0;i<data.data1.length();i++){
-            if(i%2==0){
-                char plnow=data.data1.toLatin1()[i];
-                rank->ranktable->setItem(i/2,0,new QTableWidgetItem(players[plnow-65]));
-            }
-        }
-        //断开连接
-        socket->bye(); 
+        for(int i=0;i<pls.length();i++){
+           rank->ranktable->setItem(i,0,new QTableWidgetItem(pls[i]));
+
+         }
+         rank->show();
+         //断开连接
+         // socket->bye();
+         socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,QString(""),QString("")));
     }
     break;
     case OPCODE::ERROR_OP://错误
@@ -715,6 +739,7 @@ void ClientWindow::receive(NetworkData data){
         }
     }
     }
+}
 }
 
 void ClientWindow::timerEvent(QTimerEvent *event){
@@ -980,4 +1005,3 @@ void ClientWindow::setPlayerTable(){
         cir += 25;
     }
 }
-

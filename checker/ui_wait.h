@@ -36,6 +36,8 @@ public:
     QLabel *situ4;
     QLabel *situ5;
     QLabel *situ6;
+    QLabel *room;
+    QLabel *roomnum;
 
     void setupUi(QWidget *Wait)
     {
@@ -45,7 +47,7 @@ public:
         Wait->setStyleSheet(QString::fromUtf8("background-color: rgb(176, 224, 230);"));
         ques = new QLabel(Wait);
         ques->setObjectName(QString::fromUtf8("ques"));
-        ques->setGeometry(QRect(60, 40, 221, 41));
+        ques->setGeometry(QRect(60, 70, 221, 41));
         QFont font;
         font.setPointSize(20);
         font.setBold(true);
@@ -122,6 +124,17 @@ public:
         situ6->setObjectName(QString::fromUtf8("situ6"));
         situ6->setGeometry(QRect(470, 266, 54, 20));
         situ6->setFont(font3);
+        room = new QLabel(Wait);
+        room->setObjectName(QString::fromUtf8("room"));
+        room->setGeometry(QRect(50, 40, 54, 21));
+        QFont font4;
+        font4.setPointSize(12);
+        font4.setBold(true);
+        room->setFont(font4);
+        roomnum = new QLabel(Wait);
+        roomnum->setObjectName(QString::fromUtf8("roomnum"));
+        roomnum->setGeometry(QRect(130, 40, 54, 21));
+        roomnum->setFont(font3);
 
         retranslateUi(Wait);
 
@@ -141,6 +154,7 @@ public:
         situ4->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
         situ5->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
         situ6->setText(QCoreApplication::translate("Wait", "waiting", nullptr));
+        room->setText(QCoreApplication::translate("Wait", "ROOM", nullptr));
 
     } // retranslateUi
 

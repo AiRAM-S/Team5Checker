@@ -26,6 +26,11 @@ public:
     QLabel *sis[6];
     QPushButton* rea;
     QPushButton *exi;
+    QLabel *rn;
+    void reID(int i)
+    {
+        ids[i]->setText("");
+    }
 
 private slots:
    void qqq();

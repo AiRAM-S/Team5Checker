@@ -8,6 +8,9 @@ serverwait::serverwait(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    rn=new QLabel(this);
+    rn=ui->roomnum;
+
     b=new QPushButton(this);
     b->move(450,50);
     b->setText("ok");
