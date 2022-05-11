@@ -66,6 +66,15 @@ ClientWindow::ClientWindow(QWidget *parent) :
         }
     });
 
+    //test
+    infoTest = new QPushButton(this);
+    infoTest->setText("test");
+    infoTest->setGeometry(70,600,50,50);
+    connect(infoTest,&QPushButton::clicked,this,[=](){
+        socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),QString("-2 5 -2 3")));
+    });
+    //test end
+
     connect(ww.exi,&QPushButton::clicked,this,[=](){
         socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,RoomID,PlName));
         for(int i=0;i<6;i++)
@@ -169,7 +178,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
             }
         });
 
-        connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
+        //connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
 
 }
 void ClientWindow::shouldSwitcht2f(){
@@ -463,6 +472,30 @@ void ClientWindow::receive(NetworkData data){
     switch(data.op){
         case OPCODE::JOIN_ROOM_OP://有新玩家加入
         {
+        //请求合法性判定
+        bool isValid=true;
+        if(data.data1.length>20)
+            isValid=false;
+        else{
+            for(int i=0;i<data.data1.length();i++)
+            {
+                char ch = data.data1.toStdString()[i];
+                if((ch>=48&&ch<=57)
+                 ||(ch>=65&&ch<=90)
+                 ||(ch>=97&&ch<=122)
+                        ||ch==95){
+                    continue;
+                }
+                else{
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+        if(!isValid){
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ")));
+            break;
+        }
         //test
         qDebug() << "client receive JOIN_ROOM_OP";
         //test end
@@ -506,9 +539,34 @@ void ClientWindow::receive(NetworkData data){
         break;
         case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
         {
+            //请求合法性判定
+            bool isValid=true;
+            if(data.data1.length>20)
+                isValid=false;
+            else{
+                for(int i=0;i<data.data1.length();i++)
+                {
+                    char ch = data.data1.toStdString()[i];
+                    if((ch>=48&&ch<=57)
+                     ||(ch>=65&&ch<=90)
+                     ||(ch>=97&&ch<=122)
+                            ||ch==95){
+                        continue;
+                    }
+                    else{
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            if(!isValid){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ")));
+                break;
+            }
             //test
             qDebug() << "client receive LEAVE_ROOM_OP";
             //test end
+
             int Index = players.indexOf(data.data1);
             players.removeAt(Index);
             playerState.removeAt(Index);
@@ -525,11 +583,38 @@ void ClientWindow::receive(NetworkData data){
             ww.hide();
         break;
         case OPCODE::PLAYER_READY_OP://有玩家准备就绪
-            //test
-            qDebug() << "client receive PLAYER_READY_OP";
-            //test end
-            playerState[players.indexOf(data.data1)] = 1;
-            ww.sis[players.indexOf(data.data1)]->setText("Ready");
+    {
+        //请求合法性判定
+        bool isValid=true;
+        if(data.data1.length>20)
+            isValid=false;
+        else{
+            for(int i=0;i<data.data1.length();i++)
+            {
+                char ch = data.data1.toStdString()[i];
+                if((ch>=48&&ch<=57)
+                 ||(ch>=65&&ch<=90)
+                 ||(ch>=97&&ch<=122)
+                        ||ch==95){
+                    continue;
+                }
+                else{
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+        if(!isValid){
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ")));
+            break;
+        }
+
+        //test
+        qDebug() << "client receive PLAYER_READY_OP";
+        //test end
+        playerState[players.indexOf(data.data1)] = 1;
+        ww.sis[players.indexOf(data.data1)]->setText("Ready");
+    }
         break;
         case OPCODE::START_GAME_OP://开始游戏 实现了一半
            {
@@ -637,7 +722,7 @@ void ClientWindow::receive(NetworkData data){
                     break;
                 }
                 else {
-                   flag = data.data1[0].toLatin1()-65;
+                    flag = place2num(data.data1.toLatin1()[0]);
                     //nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
                     QStringList checkerpath = data.data2.split(" ");
                     int stepnum = checkerpath.length()/2;
@@ -677,30 +762,37 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_GAME_OP://游戏结束
     {
 
-                    //弹排名界面
-                    QStringList pls = data.data1.split(" ");
-                    pls.removeLast();
-                    rank->ranktable->setRowCount(pls.length());
-                    rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
-                    QStringList header;
-                    for(int i=0;i<pls.length();i++){
-                        if(i==0)
-                            header << "1st";
-                        else if(i==1)
-                            header << "2nd";
-                        else{
-                            header << QString("%1th").arg(i);
-                        }
-                    }
-                    rank->ranktable->setVerticalHeaderLabels(header);
-                    for(int i=0;i<pls.length();i++){
-                            rank->ranktable->setItem(i,0,new QTableWidgetItem(pls[i]));
-
-                    }
-                    rank->show();
-                    //断开连接
-                   // socket->bye();
-                    socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,QString(""),QString("")));
+           //弹排名界面
+           QStringList pls = data.data1.split(" ");
+           pls.removeLast();
+           rank->ranktable->setRowCount(pls.length());
+           rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+           QStringList header;
+           for(int i=0;i<pls.length();i++){
+               if(i==0)
+                   header << "1st";
+               else if(i==1)
+                   header << "2nd";
+               else{
+                   header << QString("%1th").arg(i);
+               }
+           }
+           rank->ranktable->setVerticalHeaderLabels(header);
+           for(int i=0;i<pls.length();i++){
+                   rank->ranktable->setItem(i,0,new QTableWidgetItem(pls[i]));
+           }
+           rank->show();
+           //断开连接
+          // socket->bye();
+           for(int i=0;i<6;i++)
+           {
+               ww.ids[i]->setText("");
+               ww.sis[i]->setText("Waiting");
+           }
+           players.clear();
+           playerState.clear();
+           cc.show();
+           ww.hide();
     }
     break;
     case OPCODE::ERROR_OP://错误
@@ -709,9 +801,11 @@ void ClientWindow::receive(NetworkData data){
             QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
         else if(data.data1=="INVALID_MOVE"){
             //把棋子移回去
-            CheckerMove(checked,loc[btnx][btny]);
-            isfill[btnx][btny] = 1;
-            isfill[objloc[0]][objloc[1]]=0;
+            if(checked!=NULL){
+                CheckerMove(checked,loc[btnx][btny]);
+                isfill[btnx][btny] = 1;
+                isfill[objloc[0]][objloc[1]]=0;
+            }
             QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");}
         else if(data.data1=="INVALID_REQ")
             QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
@@ -719,9 +813,11 @@ void ClientWindow::receive(NetworkData data){
             QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
         else if(data.data1=="OUTTURN_MOVE"){
             //把棋子移回去
-            CheckerMove(checked,loc[btnx][btny]);
-            isfill[btnx][btny] = 1;
-            isfill[objloc[0]][objloc[1]]=0;
+            if(checked!=NULL){
+                CheckerMove(checked,loc[btnx][btny]);
+                isfill[btnx][btny] = 1;
+                isfill[objloc[0]][objloc[1]]=0;
+            }
             QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
             }
         else if(data.data1=="ROOM_IS_RUNNING")
@@ -743,7 +839,7 @@ void ClientWindow::receive(NetworkData data){
     }
     }
 }
-}
+
 void ClientWindow::timerEvent(QTimerEvent *event){
     timeLeft--;
     if(timeLeft<0){
