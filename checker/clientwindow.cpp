@@ -676,28 +676,31 @@ void ClientWindow::receive(NetworkData data){
     break;
     case OPCODE::END_GAME_OP://游戏结束
     {
-        //弹排名界面
-        rank->ranktable->setRowCount(data.data1.length());
-        rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
-        QStringList header;
-        for(int i=0;i<data.data1.length();i++){
-            if(i==0)
-                header << "1st";
-            else if(i==1)
-                header << "2nd";
-            else{
-                header << QString("%1th").arg(i);
-            }
-        }
-        rank->ranktable->setVerticalHeaderLabels(header);
-        for(int i=0;i<data.data1.length();i++){
-            if(i%2==0){
-                char plnow=data.data1.toLatin1()[i];
-                rank->ranktable->setItem(i/2,0,new QTableWidgetItem(players[plnow-65]));
-            }
-        }
-        //退出房间
-        socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,QString(RoomID),QString(PlName)));
+
+                    //弹排名界面
+                    QStringList pls = data.data1.split(" ");
+                    pls.removeLast();
+                    rank->ranktable->setRowCount(pls.length());
+                    rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+                    QStringList header;
+                    for(int i=0;i<pls.length();i++){
+                        if(i==0)
+                            header << "1st";
+                        else if(i==1)
+                            header << "2nd";
+                        else{
+                            header << QString("%1th").arg(i);
+                        }
+                    }
+                    rank->ranktable->setVerticalHeaderLabels(header);
+                    for(int i=0;i<pls.length();i++){
+                            rank->ranktable->setItem(i,0,new QTableWidgetItem(pls[i]));
+
+                    }
+                    rank->show();
+                    //断开连接
+                   // socket->bye();
+                    socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,QString(""),QString("")));
     }
     break;
     case OPCODE::ERROR_OP://错误
@@ -740,7 +743,7 @@ void ClientWindow::receive(NetworkData data){
     }
     }
 }
-
+}
 void ClientWindow::timerEvent(QTimerEvent *event){
     timeLeft--;
     if(timeLeft<0){
@@ -936,7 +939,6 @@ void ClientWindow::initializeChecker(QString data){
 
    for(int i=0;i<10;i++){
         for(int j=0;j<playernum;j++){
-            if(flag!=place2num(myPos))
             btn[j][i]->setCheckable(false);
         }
     }

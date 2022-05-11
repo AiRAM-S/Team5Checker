@@ -69,6 +69,9 @@ public:
         playerList.removeAt(index);
     }
     void addPl(QString _name,QTcpSocket* _client);
+    QList<Player> getPl() const{
+        return playerList;
+    }
     int getID() const{
         return roomID;
     }

@@ -139,10 +139,9 @@ Widget::Widget(QWidget *parent)
 
     void Widget::changeplayer(){
 
-        flag = (flag+1)%playernum;
-        while(isover[flag]){
+        do{
             flag = (flag+1)%playernum;
-        }
+        }while(isover[flag]);
         switch(flag){
         case red:
             nowplayer->setText(QString("Player:%1").arg(roomList[0].playerList[red].getID()));
@@ -498,47 +497,14 @@ Widget::Widget(QWidget *parent)
             }
             break;
         }}
-            if(flg){//未完成
-                isover[place2num(x)]=true;
-                int index = place2num(x);
-                this->PlayerTable[index+1]->setText(QString("%1 %2").arg(roomList[0].playerList[index].getID()).arg(overnum));
-                overnum++;
-            }
         }
-        if(overnum==playernum){
-            //游戏结束信号
-//            for(int i=0;i<playernum;i++){
-//            server->send(roomList[0].playerList()[i].getSocket(),NetworkData(OPCODE::END_GAME_OP),)
-//            }
-//        }
-
-    }
+        if(flg){//未完成
+            isover[place2num(x)]=true;
+            int index =(place2num(x)+1)%playernum;
+            this->PlayerTable[index]->setText(QString("%1 %2").arg(roomList[0].playerList[place2num(x)].getID()).arg(overnum++));
+        }
         return flg;
 }
-   /* void Widget::someoneover(int i){
-        switch(i){
-        case red:
-            w->setText("Congratulations RED");
-            break;
-        case blue:
-            w->setText("Congratulations BLUE");
-            break;
-        case green:
-            w->setText("Congratulations GREEN");
-            break;
-        case pink:
-            w->setText("Congratulations PINK");
-            break;
-        case purple:
-            w->setText("Congratulations PURPLE");
-            break;
-        case orange:
-            w->setText("Congratulations ORANGE");
-            break;
-        }
-        w->show();
-    }*/
-
     CheckerButton* Widget::int2btn(int btnx,int btny){
         int flag=0;
         for(int i=0;i<playernum;i++){
@@ -777,45 +743,42 @@ Widget::Widget(QWidget *parent)
                this->killTimer(id);
                timeleft = 30;
                clock2->setText("30 s");
-               //换人
+
+               if(totalstep>70*playernum){
+                   if(isfinish(pln)){
+                       server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
+                       //test
+                       qDebug() << "server send END_TURN_OP";
+                       //test end
+                       for(int i=0;i<playernum;i++){
+                           if(pln==roomList[0].playerList[i].getPlace()){
+                               ranklist.append(roomList[0].playerList[i].getID()).append(" ");//roomList设置为玩家姓名表
+                               break;
+                           }
+                       }
+               }}
+               if(overnum==playernum) {
+                    if(overlist.length()){
+                       for(int g=0;g<overlist.length();g++)
+                           ranklist.append(overlist[g]).append(" ");
+                    }  
+                 for(int i=0;i<playernum;i++){
+                       server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
+                       //test
+                       qDebug() << "server send END_GAME_OP";
+                       //test end
+                       }
+                    }
+               else{
                changeplayer();
                server->send(roomList[0].playerList[flag].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(),QString()));
                //test
                qDebug() << "server send START_TURN_OP";
                //test end
                timeleft = 30;
-               id = startTimer(1000);
+               id = startTimer(1000);}
            }
-           else{
-               break;
-           }
-           if(totalstep>70*playernum){
-               if(isfinish(pln)){
-                   server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
-                   //test
-                   qDebug() << "server send END_TURN_OP";
-                   //test end
-                   for(int i=0;i<playernum;i++){
-                       if(pln==roomList[0].playerList[i].getPlace()){
-                           ranklist.append(roomList[0].playerList[i].getID()).append(" ");//roomList设置为玩家姓名表
-                           break;
-                       }
-                   }
-           }
-           if(overnum==playernum) {
-               for(int i=0;i<playernum;i++){
-                   if(overlist.length()){
-                       for(int g=0;g<overlist.length()-1;g++)
-                           ranklist.append(overlist[g]).append(" ");
-                       ranklist.append(overlist[overlist.length()-1]);
-                   }
-                   server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
-                   //test
-                   qDebug() << "server send END_GAME_OP";
-                   //test end
-                   }
-                }
-           }
+
         }
         break;
         case OPCODE::PLAYER_READY_OP:{

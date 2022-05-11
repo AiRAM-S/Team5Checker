@@ -1306,6 +1306,8 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qhostaddress.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/wait.h \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/clientwindow.h -o moc_clientwindow.cpp
@@ -1814,6 +1816,8 @@ moc_serverwait.cpp: ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../../Qt/6.3.0/macos/libexec/moc
@@ -2161,7 +2165,9 @@ checkerbutton.o: ../checker/checkerbutton.cpp ../checker/checkerbutton.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o checkerbutton.o ../checker/checkerbutton.cpp
 
 chooseclient.o: ../checker/chooseclient.cpp ../checker/chooseclient.h \
@@ -2177,6 +2183,11 @@ chooseclient.o: ../checker/chooseclient.cpp ../checker/chooseclient.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLineEdit \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QValidator \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QApplication \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
@@ -2210,7 +2221,9 @@ chooseservice.o: ../checker/chooseservice.cpp ../checker/chooseservice.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QStringList \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstringlist.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o chooseservice.o ../checker/chooseservice.cpp
 
 clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
@@ -2456,6 +2469,8 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qhostaddress.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/wait.h \
 		../checker/ui_clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QPainter \
@@ -2755,6 +2770,8 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../checker/chooseclient.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QHostAddress \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/wait.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../checker/main.cpp
 
@@ -3716,7 +3733,9 @@ room.o: ../checker/room.cpp ../checker/room.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
-		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h
+		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o room.o ../checker/room.cpp
 
 serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
@@ -3729,6 +3748,8 @@ serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QTcpSocket \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qtcpsocket.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../checker/ui_serverwait.h \
@@ -3753,8 +3774,6 @@ serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpoint.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QComboBox \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qcombobox.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QValidator \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../checker/mydialog1.h \
