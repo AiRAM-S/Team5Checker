@@ -85,7 +85,6 @@ Widget::Widget(QWidget *parent)
                 isfill[i1][i2]=0;
             }
         }
-
         /*win=new QDialog(this);
         win->setFixedSize(200,100);
         QLabel *w=new QLabel(win);
@@ -127,175 +126,9 @@ Widget::Widget(QWidget *parent)
             }
         });*/
 
-        connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
+        //connect(this,SIGNAL(shouldSwitchChanged()),this,SLOT(changeplayer()));
 
     }
-
-
-void Widget::initializeChecker(int x){
-   qDebug() << "enter initialize";
-   playernum=x;
-   int k=0;
-   flag=pink;
-   if(playernum==2){
-   for(int j=5;j<=8;j++){
-       for(int i=j-4;i<=4;i++){
-           btn[pink][k]=new CheckerButton(this);
-           qDebug() << "debug: btn[" << pink << "][" << k << "] is constructed";
-           btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-           btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-           btn[pink][k]->setIconSize(QSize(RRR+0.5,RRR+0.5));
-           btn[pink][k]->setFlat(true);
-           btn[pink][k]->player=pink;//set player
-           btn[pink][k]->x=-i+8;
-           btn[pink][k]->y=j+8;
-           isfill[-i+8][j+8]=pink+1;
-           btn[green][k]=new CheckerButton(this);
-           qDebug() << "debug: btn[" << green << "][" << k << "] is constructed";
-           btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-           btn[green][k]->setIcon(QPixmap(":/image/green.png"));
-           btn[green][k]->setIconSize(QSize(RRR,RRR));
-           btn[green][k]->setFlat(true);
-           btn[green][k]->player=green; //set player
-           btn[green][k]->x=i+8;
-           btn[green][k]->y=-j+8;
-           isfill[i+8][-j+8]=green+1;
-           k++;
-       }
-   }
-}
-   if(playernum==3){
-       k=0;
-       for(int j=5;j<=8;j++){
-           for(int i=j-4;i<=4;i++){
-               btn[pink][k]=new CheckerButton(this);
-               btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-               btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-               btn[pink][k]->setIconSize(QSize(RRR,RRR));
-               btn[pink][k]->setFlat(true);
-               btn[pink][k]->player=pink;//set player
-               btn[pink][k]->x=-i+8;
-               btn[pink][k]->y=j+8;
-               isfill[-i+8][j+8]=pink+1;
-               k++;
-           }
-       }
-       k=0;
-       for(int i=1; i<5; i++){
-           for(int j=-4; j<i-4; j++){
-               btn[blue][k]=new CheckerButton(this);
-               btn[blue][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-               btn[blue][k]->setIcon(QPixmap(":/image/blue.png"));
-               btn[blue][k]->setIconSize(QSize(RR,RR));
-               btn[blue][k]->setFlat(true);
-               btn[blue][k]->player=blue; //set player
-               btn[blue][k]->x=-i+8;
-               btn[blue][k]->y=j+8;
-               isfill[-i+8][j+8]=blue+1;
-               k++;
-           }
-       }
-
-       k=0;
-       for(int i=5;i<=8;i++){
-           for(int j=i-4;j<=4;j++){
-               btn[green][k]=new CheckerButton(this);
-               btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-               btn[green][k]->setIcon(QPixmap(":/image/green.png"));
-               btn[green][k]->setIconSize(QSize(RRR,RRR));
-               btn[green][k]->setFlat(true);
-               btn[green][k]->player=green; //set player
-               btn[green][k]->x=i+8;
-               btn[green][k]->y=-j+8;
-               isfill[i+8][-j+8]=green+1;
-               k++;
-           }
-       }
-   }
-   if(playernum==6){
-       k=0;
-       for(int j=5;j<=8;j++){
-           for(int i=j-4;i<=4;i++){
-               btn[red][k]=new CheckerButton(this);
-               btn[red][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-               btn[red][k]->setIcon(QPixmap(":/image/red.png"));
-               btn[red][k]->setIconSize(QSize(RR,RR));
-               btn[red][k]->setFlat(true);
-               btn[red][k]->player=red; //set player
-               btn[red][k]->x=i+8;
-               btn[red][k]->y=-j+8;
-               isfill[i+8][-j+8]=red+1;
-               btn[pink][k]=new CheckerButton(this);
-               btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-               btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-               btn[pink][k]->setIconSize(QSize(RRR,RRR));
-               btn[pink][k]->setFlat(true);
-               btn[pink][k]->player=pink;//set player
-               btn[pink][k]->x=-i+8;
-               btn[pink][k]->y=j+8;
-               isfill[-i+8][j+8]=pink+1;
-               k++;
-           }
-       }
-       k=0;
-       for(int i=1; i<5; i++){
-           for(int j=-4; j<i-4; j++){
-               btn[green][k]=new CheckerButton(this);
-               btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-               btn[green][k]->setIcon(QPixmap(":/image/green.png"));
-               btn[green][k]->setIconSize(QSize(RRR,RRR));
-               btn[green][k]->setFlat(true);
-               btn[green][k]->player=green; //set player
-               btn[green][k]->x=i+8;
-               btn[green][k]->y=-j+8;
-               isfill[i+8][-j+8]=green+1;
-               btn[orange][k]=new CheckerButton(this);
-               btn[orange][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-               btn[orange][k]->setIcon(QPixmap(":/image/orange.png"));
-               btn[orange][k]->setIconSize(QSize(RRR,RRR));
-               btn[orange][k]->setFlat(true);
-               btn[orange][k]->player=orange; //set player
-               btn[orange][k]->x=-i+8;
-               btn[orange][k]->y=j+8;
-               isfill[-i+8][j+8]=orange+1;
-               k++;
-           }
-       }
-       k=0;
-       for(int i=5;i<=8;i++){
-           for(int j=i-4;j<=4;j++){
-               btn[purple][k]=new CheckerButton(this);
-               btn[purple][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-               btn[purple][k]->setIcon(QPixmap(":/image/purple.png"));
-               btn[purple][k]->setIconSize(QSize(RRR,RRR));
-               btn[purple][k]->setFlat(true);
-               btn[purple][k]->player=purple; //set player
-               btn[purple][k]->x=-i+8;
-               btn[purple][k]->y=j+8;
-               isfill[-i+8][j+8]=purple+1;
-               btn[blue][k]=new CheckerButton(this);
-               btn[blue][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-               btn[blue][k]->setIcon(QPixmap(":/image/blue.png"));
-               btn[blue][k]->setIconSize(QSize(RR,RR));
-               btn[blue][k]->setFlat(true);
-               btn[blue][k]->player=blue; //set player
-               btn[blue][k]->x=i+8;
-               btn[blue][k]->y=-j+8;
-               isfill[i+8][-j+8]=blue+1;
-               k++;
-           }
-       }
-   }
-
-   for(int t=0;t<10;t++)
-       for(int j=0;j<playernum;j++)
-               btn[j][t]->setCheckable(false);
-
-   for(int i=0;i<playernum;i++){
-       isover[i]=false;
-   }
-}
-
 
     void Widget::shouldSwitcht2f(){
         if(shouldSwitch==true){
@@ -927,26 +760,33 @@ void Widget::initializeChecker(int x){
                    //转发move op
                    server->send(roomList[0].playerList[i].getSocket(),data);
                    //test
-                   qDebug() << "server send MOVE_OP to "<<roomList[0].getPl()[i].getID();
+                   qDebug() << "server send MOVE_OP to "<<roomList[0].playerList[i].getID();
                    //test end
                   }
                this->killTimer(id);
                timeleft = 30;
                clock2->setText("30 s");
+               //换人
+               changeplayer();
+               server->send(roomList[0].playerList[flag].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(),QString()));
+               //test
+               qDebug() << "server send START_TURN_OP";
+               //test end
+               timeleft = 30;
+               id = startTimer(1000);
            }
            else{
                break;
            }
            if(totalstep>70*playernum){
-               if(isfinish(pln)) {
+               if(isfinish(pln)){
                    server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
-
                    //test
                    qDebug() << "server send END_TURN_OP";
                    //test end
                    for(int i=0;i<playernum;i++){
                        if(pln==roomList[0].playerList[i].getPlace()){
-                           ranklist.append(roomList[0].playerList[i].getID()).append(" ");
+                           ranklist.append(roomList[0].playerList[i].getID()).append(" ");//roomList设置为玩家姓名表
                            break;
                        }
                    }
@@ -957,17 +797,9 @@ void Widget::initializeChecker(int x){
                    //test
                    qDebug() << "server send END_GAME_OP";
                    //test end
-               }
-           }}
-           else {
-               changeplayer();
-               server->send(roomList[0].getPl()[flag].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(),QString()));
-                       //test
-                       qDebug() << "server send START_TURN_OP";
-                       //test end
-                       id = startTimer(1000);
+                   }
+                }
            }
-
         }
         break;
         case OPCODE::PLAYER_READY_OP:{
@@ -1069,165 +901,7 @@ void Widget::initializeChecker(int x){
            clock2->setText(QString("%1 s").arg(timeleft));
         }
     }
-    void Widget::InitializeChecker(){
-        //初始化棋子
-        playernum = this->roomList[0].getPlnum();
-        int k=0;
-        if(playernum==2){
-        for(int j=5;j<=8;j++){
-            for(int i=j-4;i<=4;i++){
-                btn[pink][k]=new CheckerButton(this);
-                btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-                btn[pink][k]->setIconSize(QSize(RRR,RRR));
-                btn[pink][k]->setFlat(true);
-                btn[pink][k]->player=pink;//set player
-                btn[pink][k]->x=-i+8;
-                btn[pink][k]->y=j+8;
-                isfill[-i+8][j+8]=pink+1;
-                btn[green][k]=new CheckerButton(this);
-                btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                btn[green][k]->setIcon(QPixmap(":/image/green.png"));
-                btn[green][k]->setIconSize(QSize(RRR,RRR));
-                btn[green][k]->setFlat(true);
-                btn[green][k]->player=green; //set player
-                btn[green][k]->x=i+8;
-                btn[green][k]->y=-j+8;
-                isfill[i+8][-j+8]=green+1;
-                k++;
-            }
-            }
-        }
 
-        if(playernum==3){
-            k=0;
-            for(int j=5;j<=8;j++){
-                for(int i=j-4;i<=4;i++){
-                    btn[pink][k]=new CheckerButton(this);
-                    btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-                    btn[pink][k]->setIconSize(QSize(RRR,RRR));
-                    btn[pink][k]->setFlat(true);
-                    btn[pink][k]->player=pink;//set player
-                    btn[pink][k]->x=-i+8;
-                    btn[pink][k]->y=j+8;
-                    isfill[-i+8][j+8]=pink+1;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=1; i<5; i++){
-                for(int j=-4; j<i-4; j++){
-                    btn[blue][k]=new CheckerButton(this);
-                    btn[blue][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[blue][k]->setIcon(QPixmap(":/image/blue.png"));
-                    btn[blue][k]->setIconSize(QSize(RR,RR));
-                    btn[blue][k]->setFlat(true);
-                    btn[blue][k]->player=blue; //set player
-                    btn[blue][k]->x=-i+8;
-                    btn[blue][k]->y=j+8;
-                    isfill[-i+8][j+8]=blue+1;
-                    k++;
-                }
-            }
-
-            k=0;
-            for(int i=5;i<=8;i++){
-                for(int j=i-4;j<=4;j++){
-                    btn[green][k]=new CheckerButton(this);
-                    btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[green][k]->setIcon(QPixmap(":/image/green.png"));
-                    btn[green][k]->setIconSize(QSize(RRR,RRR));
-                    btn[green][k]->setFlat(true);
-                    btn[green][k]->player=green; //set player
-                    btn[green][k]->x=i+8;
-                    btn[green][k]->y=-j+8;
-                    isfill[i+8][-j+8]=green+1;
-                    k++;
-                }
-            }
-        }
-        if(playernum==6){
-            k=0;
-            for(int j=5;j<=8;j++){
-                for(int i=j-4;i<=4;i++){
-                    btn[red][k]=new CheckerButton(this);
-                    btn[red][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[red][k]->setIcon(QPixmap(":/image/red.png"));
-                    btn[red][k]->setIconSize(QSize(RR,RR));
-                    btn[red][k]->setFlat(true);
-                    btn[red][k]->player=red; //set player
-                    btn[red][k]->x=i+8;
-                    btn[red][k]->y=-j+8;
-                    isfill[i+8][-j+8]=red+1;
-                    btn[pink][k]=new CheckerButton(this);
-                    btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
-                    btn[pink][k]->setIconSize(QSize(RRR,RRR));
-                    btn[pink][k]->setFlat(true);
-                    btn[pink][k]->player=pink;//set player
-                    btn[pink][k]->x=-i+8;
-                    btn[pink][k]->y=j+8;
-                    isfill[-i+8][j+8]=pink+1;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=1; i<5; i++){
-                for(int j=-4; j<i-4; j++){
-                    btn[green][k]=new CheckerButton(this);
-                    btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[green][k]->setIcon(QPixmap(":/image/green.png"));
-                    btn[green][k]->setIconSize(QSize(RRR,RRR));
-                    btn[green][k]->setFlat(true);
-                    btn[green][k]->player=green; //set player
-                    btn[green][k]->x=i+8;
-                    btn[green][k]->y=-j+8;
-                    isfill[i+8][-j+8]=green+1;
-                    btn[orange][k]=new CheckerButton(this);
-                    btn[orange][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[orange][k]->setIcon(QPixmap(":/image/orange.png"));
-                    btn[orange][k]->setIconSize(QSize(RRR,RRR));
-                    btn[orange][k]->setFlat(true);
-                    btn[orange][k]->player=orange; //set player
-                    btn[orange][k]->x=-i+8;
-                    btn[orange][k]->y=j+8;
-                    isfill[-i+8][j+8]=orange+1;
-                    k++;
-                }
-            }
-            k=0;
-            for(int i=5;i<=8;i++){
-                for(int j=i-4;j<=4;j++){
-                    btn[purple][k]=new CheckerButton(this);
-                    btn[purple][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
-                    btn[purple][k]->setIcon(QPixmap(":/image/purple.png"));
-                    btn[purple][k]->setIconSize(QSize(RRR,RRR));
-                    btn[purple][k]->setFlat(true);
-                    btn[purple][k]->player=purple; //set player
-                    btn[purple][k]->x=-i+8;
-                    btn[purple][k]->y=j+8;
-                    isfill[-i+8][j+8]=purple+1;
-                    btn[blue][k]=new CheckerButton(this);
-                    btn[blue][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
-                    btn[blue][k]->setIcon(QPixmap(":/image/blue.png"));
-                    btn[blue][k]->setIconSize(QSize(RR,RR));
-                    btn[blue][k]->setFlat(true);
-                    btn[blue][k]->player=blue; //set player
-                    btn[blue][k]->x=i+8;
-                    btn[blue][k]->y=-j+8;
-                    isfill[i+8][-j+8]=blue+1;
-                    k++;
-                }
-            }
-        }
-        //服务端棋子不可动
-        for(int t=0;t<10;t++){
-            for(int j=0;j<playernum;j++){
-                    btn[j][t]->setCheckable(false);
-            }
-        }
-    }
     void Widget::setPlayerTable(){
         QLabel* Title = new QLabel(this);
         Title->setFont(QFont("Agency FB",20));
@@ -1266,4 +940,166 @@ void Widget::initializeChecker(int x){
             PlayerTable.append(pl);
             cir += 25;
         }
+    }
+
+    void Widget::InitializeChecker(){
+       qDebug() << "enter initialize";
+       playernum= roomList[0].getPlnum();
+       int k=0;
+       flag=pink;
+       if(playernum==2){
+       for(int j=5;j<=8;j++){
+           for(int i=j-4;i<=4;i++){
+               btn[pink][k]=new CheckerButton(this);
+               btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+               btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
+               btn[pink][k]->setIconSize(QSize(RRR+0.5,RRR+0.5));
+               btn[pink][k]->setFlat(true);
+               btn[pink][k]->player=pink;//set player
+               btn[pink][k]->x=-i+8;
+               btn[pink][k]->y=j+8;
+               isfill[-i+8][j+8]=pink+1;
+               btn[green][k]=new CheckerButton(this);
+               btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+               btn[green][k]->setIcon(QPixmap(":/image/green.png"));
+               btn[green][k]->setIconSize(QSize(RRR,RRR));
+               btn[green][k]->setFlat(true);
+               btn[green][k]->player=green; //set player
+               btn[green][k]->x=i+8;
+               btn[green][k]->y=-j+8;
+               isfill[i+8][-j+8]=green+1;
+               k++;
+           }
+       }
+    }
+       if(playernum==3){
+           k=0;
+           for(int j=5;j<=8;j++){
+               for(int i=j-4;i<=4;i++){
+                   btn[pink][k]=new CheckerButton(this);
+                   btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                   btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
+                   btn[pink][k]->setIconSize(QSize(RRR,RRR));
+                   btn[pink][k]->setFlat(true);
+                   btn[pink][k]->player=pink;//set player
+                   btn[pink][k]->x=-i+8;
+                   btn[pink][k]->y=j+8;
+                   isfill[-i+8][j+8]=pink+1;
+                   k++;
+               }
+           }
+           k=0;
+           for(int i=1; i<5; i++){
+               for(int j=-4; j<i-4; j++){
+                   btn[blue][k]=new CheckerButton(this);
+                   btn[blue][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                   btn[blue][k]->setIcon(QPixmap(":/image/blue.png"));
+                   btn[blue][k]->setIconSize(QSize(RR,RR));
+                   btn[blue][k]->setFlat(true);
+                   btn[blue][k]->player=blue; //set player
+                   btn[blue][k]->x=-i+8;
+                   btn[blue][k]->y=j+8;
+                   isfill[-i+8][j+8]=blue+1;
+                   k++;
+               }
+           }
+
+           k=0;
+           for(int i=5;i<=8;i++){
+               for(int j=i-4;j<=4;j++){
+                   btn[green][k]=new CheckerButton(this);
+                   btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                   btn[green][k]->setIcon(QPixmap(":/image/green.png"));
+                   btn[green][k]->setIconSize(QSize(RRR,RRR));
+                   btn[green][k]->setFlat(true);
+                   btn[green][k]->player=green; //set player
+                   btn[green][k]->x=i+8;
+                   btn[green][k]->y=-j+8;
+                   isfill[i+8][-j+8]=green+1;
+                   k++;
+               }
+           }
+       }
+       if(playernum==6){
+           k=0;
+           for(int j=5;j<=8;j++){
+               for(int i=j-4;i<=4;i++){
+                   btn[red][k]=new CheckerButton(this);
+                   btn[red][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                   btn[red][k]->setIcon(QPixmap(":/image/red.png"));
+                   btn[red][k]->setIconSize(QSize(RR,RR));
+                   btn[red][k]->setFlat(true);
+                   btn[red][k]->player=red; //set player
+                   btn[red][k]->x=i+8;
+                   btn[red][k]->y=-j+8;
+                   isfill[i+8][-j+8]=red+1;
+                   btn[pink][k]=new CheckerButton(this);
+                   btn[pink][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                   btn[pink][k]->setIcon(QPixmap(":/image/pink.png"));
+                   btn[pink][k]->setIconSize(QSize(RRR,RRR));
+                   btn[pink][k]->setFlat(true);
+                   btn[pink][k]->player=pink;//set player
+                   btn[pink][k]->x=-i+8;
+                   btn[pink][k]->y=j+8;
+                   isfill[-i+8][j+8]=pink+1;
+                   k++;
+               }
+           }
+           k=0;
+           for(int i=1; i<5; i++){
+               for(int j=-4; j<i-4; j++){
+                   btn[green][k]=new CheckerButton(this);
+                   btn[green][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                   btn[green][k]->setIcon(QPixmap(":/image/green.png"));
+                   btn[green][k]->setIconSize(QSize(RRR,RRR));
+                   btn[green][k]->setFlat(true);
+                   btn[green][k]->player=green; //set player
+                   btn[green][k]->x=i+8;
+                   btn[green][k]->y=-j+8;
+                   isfill[i+8][-j+8]=green+1;
+                   btn[orange][k]=new CheckerButton(this);
+                   btn[orange][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                   btn[orange][k]->setIcon(QPixmap(":/image/orange.png"));
+                   btn[orange][k]->setIconSize(QSize(RRR,RRR));
+                   btn[orange][k]->setFlat(true);
+                   btn[orange][k]->player=orange; //set player
+                   btn[orange][k]->x=-i+8;
+                   btn[orange][k]->y=j+8;
+                   isfill[-i+8][j+8]=orange+1;
+                   k++;
+               }
+           }
+           k=0;
+           for(int i=5;i<=8;i++){
+               for(int j=i-4;j<=4;j++){
+                   btn[purple][k]=new CheckerButton(this);
+                   btn[purple][k]->setGeometry(loc[-i+8][j+8].rx()-RR/2,loc[-i+8][j+8].ry()-RR/2,RR,RR);
+                   btn[purple][k]->setIcon(QPixmap(":/image/purple.png"));
+                   btn[purple][k]->setIconSize(QSize(RRR,RRR));
+                   btn[purple][k]->setFlat(true);
+                   btn[purple][k]->player=purple; //set player
+                   btn[purple][k]->x=-i+8;
+                   btn[purple][k]->y=j+8;
+                   isfill[-i+8][j+8]=purple+1;
+                   btn[blue][k]=new CheckerButton(this);
+                   btn[blue][k]->setGeometry(loc[i+8][-j+8].rx()-RR/2,loc[i+8][-j+8].ry()-RR/2,RR,RR);
+                   btn[blue][k]->setIcon(QPixmap(":/image/blue.png"));
+                   btn[blue][k]->setIconSize(QSize(RR,RR));
+                   btn[blue][k]->setFlat(true);
+                   btn[blue][k]->player=blue; //set player
+                   btn[blue][k]->x=i+8;
+                   btn[blue][k]->y=-j+8;
+                   isfill[i+8][-j+8]=blue+1;
+                   k++;
+               }
+           }
+       }
+
+       for(int t=0;t<10;t++)
+           for(int j=0;j<playernum;j++)
+                   btn[j][t]->setCheckable(false);
+
+       for(int i=0;i<playernum;i++){
+           isover[i]=false;
+       }
     }
