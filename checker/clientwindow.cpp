@@ -670,7 +670,7 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::START_TURN_OP://我的回合开始
     {
         //test
-        qDebug() << "client receive START_TURN_OP";
+        qDebug() << PlName <<" receive START_TURN_OP";
         //test end
         for(int i=0;i<10;i++){
             btn[place2num(myPos)][i]->setCheckable(true);
@@ -730,6 +730,11 @@ void ClientWindow::receive(NetworkData data){
                 int nowPlpos;//该玩家的ABCDEF对应在btn里的序号
                 nowPlpos = place2num(data.data1.toLatin1()[0]);
                 if(data.data2=="-1"){
+                    if(nowPlpos==place2num(myPos)){
+                       killTimer(id);
+                       nowplayer->setText("You Are OUT");
+                       nowplayer->setStyleSheet("color:grey");
+                    }
                     //移除该玩家所有棋子
                     for(int i=0;i<10;i++){
                         isfill[btn[nowPlpos][i]->x][btn[nowPlpos][i]->y]=0;
@@ -884,12 +889,11 @@ void ClientWindow::receive(NetworkData data){
 void ClientWindow::timerEvent(QTimerEvent *event){
     timeLeft--;
     if(timeLeft<0){
-        this->killTimer(id);//停止计时
+        timeLeft = 0;
+        //this->killTimer(id);//停止计时
 //        for(int i=0;i<10;i++){
 //            btn[place2num(myPos)][i]->close();
 //        }
-        nowplayer->setText("You Are OUT");
-        nowplayer->setStyleSheet("color:grey");
     }
     else{
        clock2->setText(QString("%1 s").arg(timeLeft));

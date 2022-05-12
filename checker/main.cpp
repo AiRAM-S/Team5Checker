@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
             //test end
             e2->cc.show();
 
-            ClientWindow *e3 = new ClientWindow;
-            qDebug() << "point 1";
-            e3->hide();
-            //e3->setPort(port);
-            //建立连接
-            e3->getSocket()->hello(ip,9999);
-            e3->cc.show();
+//            ClientWindow *e3 = new ClientWindow;
+//            qDebug() << "point 1";
+//            e3->hide();
+//            //e3->setPort(port);
+//            //建立连接
+//            e3->getSocket()->hello(ip,9999);
+//            e3->cc.show();
         //}
     return a.exec();
 }

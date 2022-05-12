@@ -49,7 +49,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));  //不加入游戏
     connect(join, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
-        if(setplayer->currentIndex()!=-1&&settype->currentIndex()!=-1&&PORTS->text()!="请输入..."){
+        if(settype->currentIndex()!=-1&&PORTS->text()!="请输入..."){
                     port=PORTS->text();
             joinSuccessed = true;
             hide();
@@ -63,6 +63,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     setplayer->addItem("3");
     setplayer->addItem("6");
     setplayer->setGeometry(180,325,150,30);
+    setplayer->hide();
 
     settype=new QComboBox(this);
     settype->setPlaceholderText(QStringLiteral("请选择..."));
