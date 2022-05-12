@@ -541,13 +541,12 @@ Widget::Widget(QWidget *parent)
             //请求合法性判定
             bool isValid=true;
             for(int i=0;i<data.data1.length();i++){
-                if(data.data1.toStdString()[i]<0||data.data1.toStdString()[i]>9){
+                if(data.data1.toStdString()[i]<'0'||data.data1.toStdString()[i]>'9'){
                     isValid = false;
                     break;
                 }
             }
-
-            if(data.data2.length>20)
+            if(data.data2.length()>20||data.data2.isEmpty())
                 isValid=false;
             else{
                 for(int i=0;i<data.data2.length();i++)
@@ -566,7 +565,7 @@ Widget::Widget(QWidget *parent)
                 }
             }
             if(!isValid){
-                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ")));
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ"),QString()));
                 break;
             }
             //test
@@ -663,14 +662,17 @@ Widget::Widget(QWidget *parent)
         case OPCODE::LEAVE_ROOM_OP:{
             //请求合法性判定
             bool isValid=true;
+            if(data.data1.isEmpty()){
+                break;
+            }
             for(int i=0;i<data.data1.length();i++){
-                if(data.data1.toStdString()[i]<0||data.data1.toStdString()[i]>9){
+                if(data.data1.toStdString()[i]<'0'||data.data1.toStdString()[i]>'9'){
                     isValid = false;
                     break;
                 }
             }
 
-            if(data.data2.length>20)
+            if(data.data2.length()>20||data.data2.isEmpty())
                 isValid=false;
             else{
                 for(int i=0;i<data.data2.length();i++)
@@ -689,7 +691,7 @@ Widget::Widget(QWidget *parent)
                 }
             }
             if(!isValid){
-                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ")));
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ"),QString("")));
                 break;
             }
             //test
@@ -861,7 +863,7 @@ Widget::Widget(QWidget *parent)
         case OPCODE::PLAYER_READY_OP:{
             //请求合法性判定
             bool isValid=true;
-            if(data.data1.length>20)
+            if(data.data1.length()>20||data.data1.isEmpty())
                 isValid=false;
             else{
                 for(int i=0;i<data.data1.length();i++)
@@ -880,7 +882,7 @@ Widget::Widget(QWidget *parent)
                 }
             }
             if(!isValid){
-                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ")));
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ"),QString("")));
                 break;
             }
             //test

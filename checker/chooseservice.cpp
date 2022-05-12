@@ -21,7 +21,7 @@ chooseservice::chooseservice(QWidget *parent) :
 
         loading=new QLabel(this);
         loading->move(50,60);
-        loading->setText("等待玩家接入中……");
+        loading->setText("等待玩家进入房间……");
         loading->setStyleSheet("QLabel {color:black;font:bold 11px;}");
 //    IP=new QLabel(this);
 //    IP->move(50,60);
