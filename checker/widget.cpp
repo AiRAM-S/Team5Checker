@@ -843,6 +843,12 @@ Widget::Widget(QWidget *parent)
                     }  
                  for(int i=0;i<playernum;i++){
                        server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
+                       ranklist = "";
+                       roomList.removeAt(0);
+                       overlist.clear();
+                       ChooseServer->show();
+                       this->hide();
+
                        //test
                        qDebug() << "server send END_GAME_OP";
                        //test end
@@ -924,7 +930,7 @@ Widget::Widget(QWidget *parent)
                         else if(roomList[i].getReadynum()==3){
                             seq = "A C E";
                             plName = roomList[i].playerList[0].getID();
-                            roomList[i].playerList[0].setPlace('D');
+                            roomList[i].playerList[0].setPlace('A');
                             for(int t=1;t<=2;t++){
                                 plName.append(" ").append(roomList[i].playerList[t].getID());
                                 QChar place(65+2*t);
@@ -945,6 +951,8 @@ Widget::Widget(QWidget *parent)
                         qDebug() << "players are " << plName;
                         qDebug() << "the sequence is " << seq;
                         roomList[i].gameBegin();//游戏开始
+                        flag = 0;
+                        nowplayer->setText(QString("Player:%1").arg(roomList[0].playerList[0].getID()));
                         for(int j=0;j<roomList[i].getPlnum();j++)
                             server->send(roomList[i].playerList[j].getSocket(),NetworkData(OPCODE::START_GAME_OP,plName,seq));
                         server->send(roomList[i].playerList[0].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(""),QString("")));
@@ -984,7 +992,7 @@ Widget::Widget(QWidget *parent)
             overlist.append(roomList[0].playerList[flag].getID());
             //向其他玩家发送超时判负信号
             for(int i=0;i<roomList[0].getPlnum();i++){
-                if(i!=flag)
+                //if(i!=flag)
                     server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(roomList[0].playerList[flag].getPlace()),QString("-1")));
             }
             if(overnum==playernum) {
@@ -994,6 +1002,12 @@ Widget::Widget(QWidget *parent)
                  }
               for(int i=0;i<playernum;i++){
                     server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
+                    ranklist = "";
+                    roomList.removeAt(0);
+                    overlist.clear();
+                    overnum=0;
+                    ChooseServer->show();
+                    this->hide();
                     //test
                     qDebug() << "server send END_GAME_OP";
                     //test end
