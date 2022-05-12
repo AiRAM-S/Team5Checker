@@ -843,16 +843,20 @@ Widget::Widget(QWidget *parent)
                     }  
                  for(int i=0;i<playernum;i++){
                        server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
-                       ranklist = "";
-                       roomList.removeAt(0);
-                       overlist.clear();
-                       ChooseServer->show();
-                       this->hide();
-
                        //test
                        qDebug() << "server send END_GAME_OP";
                        //test end
                        }
+                     ranklist = "";
+                     roomList.clear();
+                     overlist.clear();
+                     overnum=0;
+                     for(int i=0;i<6;i++){
+                         ServerWait->setPlayerName(i,"");
+                         ServerWait->setPlayerReady(i,false);
+                     }
+                     ChooseServer->show();
+                     this->hide();
                     }
                else{
                changeplayer();
@@ -1002,16 +1006,20 @@ Widget::Widget(QWidget *parent)
                  }
               for(int i=0;i<playernum;i++){
                     server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
-                    ranklist = "";
-                    roomList.removeAt(0);
-                    overlist.clear();
-                    overnum=0;
-                    ChooseServer->show();
-                    this->hide();
                     //test
                     qDebug() << "server send END_GAME_OP";
                     //test end
                     }
+                  ranklist = "";
+                  roomList.removeAt(0);
+                  overlist.clear();
+                  overnum=0;
+                  for(int i=0;i<6;i++){
+                      ServerWait->setPlayerName(i,"");
+                      ServerWait->setPlayerReady(i,false);
+                  }
+                  ChooseServer->show();
+                  this->hide();
             }
             else{
                 changeplayer();
