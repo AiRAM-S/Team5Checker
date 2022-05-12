@@ -73,17 +73,17 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
 
     PORT=new QLabel(this);
     PORT->move(178,390);
-    PORT->setText("Port");
+    PORT->setText("IP");
     PORT->setStyleSheet("color:white;font:bold 12px;}");
 
-    QRegularExpression rx3;
-    rx3.setPattern("[0-9.]{9,13}");
-    QValidator *validator3 = new QRegularExpressionValidator(rx3,this);
+//     QRegularExpression rx3;
+//     rx3.setPattern("[0-9.]{9,13}");
+//     QValidator *validator3 = new QRegularExpressionValidator(rx3,this);
     //QValidator *validator=new QIntValidator(1024, 49151, this);
     PORTS=new QLineEdit(this);
     PORTS->move(205,385);
     PORTS->setPlaceholderText("请输入...");
     PORTS->setStyleSheet("QLineEdit{color:black;font:11px}");
-    PORTS->setValidator(validator3);
+   // PORTS->setValidator(validator);
 
 }

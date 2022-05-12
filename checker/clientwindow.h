@@ -131,6 +131,8 @@ signals:
 public slots:
     void changeplayer();
     void receive(NetworkData);
+    void displayError();
+    void connected();
 };
 
 #endif // CLIENTWINDOW_H
