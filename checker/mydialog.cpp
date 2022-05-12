@@ -56,14 +56,13 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
         }
     });
 
-    setplayer = new QComboBox(this);
+    /*setplayer = new QComboBox(this);
     setplayer->setPlaceholderText(QStringLiteral("请选择玩家人数"));
     setplayer->setCurrentIndex(-1);
     setplayer->addItem("2");
     setplayer->addItem("3");
     setplayer->addItem("6");
-    setplayer->setGeometry(180,325,150,30);
-    setplayer->hide();
+    setplayer->setGeometry(180,325,150,30);*/
 
     settype=new QComboBox(this);
     settype->setPlaceholderText(QStringLiteral("请选择..."));
@@ -77,7 +76,10 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     PORT->setText("IP");
     PORT->setStyleSheet("color:white;font:bold 12px;}");
 
-   // QValidator *validator=new QIntValidator(1024, 49151, this);
+//     QRegularExpression rx3;
+//     rx3.setPattern("[0-9.]{9,13}");
+//     QValidator *validator3 = new QRegularExpressionValidator(rx3,this);
+    //QValidator *validator=new QIntValidator(1024, 49151, this);
     PORTS=new QLineEdit(this);
     PORTS->move(205,385);
     PORTS->setPlaceholderText("请输入...");
