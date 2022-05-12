@@ -469,7 +469,7 @@ ClientWindow::~ClientWindow()
     delete ui;
 }
 
-static int timeLeft=30;
+int timeLeft=30;
 
 void ClientWindow::receive(NetworkData data){
     switch(data.op){
@@ -736,6 +736,7 @@ void ClientWindow::receive(NetworkData data){
                         btn[nowPlpos][i]->close();
                      delete btn[nowPlpos][i];
                     }
+                    PlayerTable[place2num(data.data1.toUtf8()[0])+1]->setStyleSheet("color:grey");
                 }
                 else{
                 if(data.data1[0].toLatin1()==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
@@ -884,9 +885,9 @@ void ClientWindow::timerEvent(QTimerEvent *event){
     timeLeft--;
     if(timeLeft<0){
         this->killTimer(id);//停止计时
-        for(int i=0;i<10;i++){
-            btn[place2num(myPos)][i]->close();
-        }
+//        for(int i=0;i<10;i++){
+//            btn[place2num(myPos)][i]->close();
+//        }
         nowplayer->setText("You Are OUT");
         nowplayer->setStyleSheet("color:grey");
     }
