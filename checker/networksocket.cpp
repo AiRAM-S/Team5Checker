@@ -1,5 +1,6 @@
 #include "networksocket.h"
 #include <QtCore>
+#include <QDebug>
 
 NetworkSocket::NetworkSocket(QTcpSocket* socket, QObject* parent)
     : QObject(parent)
@@ -14,7 +15,8 @@ QTcpSocket* NetworkSocket::base() const {
 
 void NetworkSocket::hello(const QString& host, quint16 port) {
     this->socket->abort();
-    this->socket->connectToHost(host, port);
+    this->socket->connectToHost(host,port);
+//    qDebug() << host << "&" << port;
 }
 
 void NetworkSocket::bye() {

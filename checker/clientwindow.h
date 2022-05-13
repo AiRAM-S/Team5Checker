@@ -100,12 +100,16 @@ private:
     Rank* rank;
     void initializeChecker(QString);//根据服务端发来的信号，画棋子
     void setPlayerTable();//列玩家列表
+ public:
     QList<QLabel*> PlayerTable;
+ private:
     QStringList players;
     QList<int> playerState;
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
+
+    QPushButton* infoTest;//测试客户端向服务端发送错误信号
 public:
     //myDialog dd;
     chooseclient cc;
@@ -129,6 +133,8 @@ signals:
 public slots:
     void changeplayer();
     void receive(NetworkData);
+    void displayError();
+    void connected();
 };
 
 #endif // CLIENTWINDOW_H

@@ -39,7 +39,7 @@ Wait::Wait(QWidget *parent) :
         ids[i]->setReadOnly(true);
     }
 
-    connect(ui->EXIT,SIGNAL(clicked(bool)), this, SLOT(qqq()));
+    //connect(ui->EXIT,SIGNAL(clicked(bool)), this, SLOT(qqq()));
     connect(ui->YES, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
 

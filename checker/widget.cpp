@@ -538,6 +538,36 @@ Widget::Widget(QWidget *parent)
     void Widget::receiveData(QTcpSocket *client, NetworkData data){
         switch(data.op){
         case OPCODE::JOIN_ROOM_OP:{
+            //请求合法性判定
+            bool isValid=true;
+            for(int i=0;i<data.data1.length();i++){
+                if(data.data1.toStdString()[i]<'0'||data.data1.toStdString()[i]>'9'){
+                    isValid = false;
+                    break;
+                }
+            }
+            if(data.data2.length()>20||data.data2.isEmpty())
+                isValid=false;
+            else{
+                for(int i=0;i<data.data2.length();i++)
+                {
+                    char ch = data.data2.toStdString()[i];
+                    if((ch>=48&&ch<=57)
+                     ||(ch>=65&&ch<=90)
+                     ||(ch>=97&&ch<=122)
+                            ||ch==95){
+                        continue;
+                    }
+                    else{
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            if(!isValid){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ"),QString()));
+                break;
+            }
             //test
             qDebug() << "server receive JOIN_ROOM_OP";
             //test end
@@ -581,6 +611,7 @@ Widget::Widget(QWidget *parent)
                 //test end
                 ChooseServer->hide();//关闭等待页面
                 ServerWait->setPlayerName(0,data.data2);//添加玩家
+                ServerWait->setWindowTitle(QString("ROOM %1 Server").arg(data.data1));
                 ServerWait->show();
             }
             if(nameConflict){
@@ -608,12 +639,13 @@ Widget::Widget(QWidget *parent)
                             prevState.append("1");
                         else prevState.append("0");
                         //qDebug()<<prevPl;
-                        server->send(roomList[objRoom].getPl().at(t).getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
+                        server->send(roomList[objRoom].playerList[t].getSocket(),NetworkData(OPCODE::JOIN_ROOM_OP,data.data2,QString("")));//向其他玩家发送新玩家信息
                         //test
                         qDebug() << "server send JOIN_ROOM_OP";
                         //test end
                         ChooseServer->hide();//关闭等待页面
                         ServerWait->setPlayerName(roomList[objRoom].getPlnum()-1,data.data2);//添加玩家
+                        ServerWait->setWindowTitle(QString("ROOM %1 Server").arg(data.data1));
                         ServerWait->show();
                     }
                     server->send(client,NetworkData(OPCODE::JOIN_ROOM_REPLY_OP,prevPl,prevState));//向新加入玩家发送其他玩家信息
@@ -628,6 +660,40 @@ Widget::Widget(QWidget *parent)
         }
         break;
         case OPCODE::LEAVE_ROOM_OP:{
+            //请求合法性判定
+            bool isValid=true;
+            if(data.data1.isEmpty()){
+                break;
+            }
+            for(int i=0;i<data.data1.length();i++){
+                if(data.data1.toStdString()[i]<'0'||data.data1.toStdString()[i]>'9'){
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if(data.data2.length()>20||data.data2.isEmpty())
+                isValid=false;
+            else{
+                for(int i=0;i<data.data2.length();i++)
+                {
+                    char ch = data.data2.toStdString()[i];
+                    if((ch>=48&&ch<=57)
+                     ||(ch>=65&&ch<=90)
+                     ||(ch>=97&&ch<=122)
+                            ||ch==95){
+                        continue;
+                    }
+                    else{
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            if(!isValid){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ"),QString("")));
+                break;
+            }
             //test
             qDebug() << "server receive LEAVE_ROOM_OP";
             //test end
@@ -642,22 +708,30 @@ Widget::Widget(QWidget *parent)
                     int plPos = -1;
                     for(int j=0;j<plnum;j++){
                         if(roomList[i].playerList[j].getID()==outPl){
-                            roomList[i].playerList.removeAt(j);
+                            roomList[i].plLeave(j);
                             inRoom = true;
                             plPos = j;
                             break;
                         }
                     }
                     if(inRoom){
-                        for(int t=0;t<plnum;t++){
-                            if(t!=plPos)
-                                server->send(roomList[i].playerList[plPos].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
-                                //test
-                                qDebug() << "server send LEAVE_ROOM_OP";
-                                //test end
-                                ServerWait->setPlayerReady(plPos,false);//清空该玩家姓名
-                                ServerWait->setPlayerName(plPos,"");
+                        for(int t=0;t<roomList[i].getPlnum();t++){
+                            server->send(roomList[i].playerList[t].getSocket(),NetworkData(OPCODE::LEAVE_ROOM_OP,data.data2,QString("")));
+                            //test
+                            qDebug() << "server send LEAVE_ROOM_OP";
+                            //test end
+//                            ServerWait->setPlayerReady(plPos,false);//清空该玩家姓名
+//                            ServerWait->setPlayerName(plPos,"");
+                            qDebug() << "plPos is " << plPos;
+                            for(int m=plPos;m<roomList[i].getPlnum();m++){
+                                ServerWait->setPlayerReady(m,roomList[i].playerList[m].ifReady());
+                                qDebug() << m << " is set with " << roomList[i].playerList[m].getID();
+                                ServerWait->setPlayerName(m,roomList[i].playerList[m].getID());
+                            }
+                            ServerWait->setPlayerName(roomList[i].getPlnum(),"");
+                            ServerWait->setPlayerReady(roomList[i].getPlnum(),false);
                         }
+                        break;
                     }
                     else
                         server->send(client,NetworkData(OPCODE::ERROR_OP,QString("NOT_IN_ROOM"),QString("")));
@@ -680,15 +754,30 @@ Widget::Widget(QWidget *parent)
             //test end
             qDebug()<<"receive success";
             qDebug() << "path is " << data.data2;
+            if(place2num(data.data1.toUtf8()[0])!=flag){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("OUTTURN_MOVE"),QString("")));
+                break;
+            }
             QStringList step = data.data2.split(" ");
             char pln=data.data1[0].toLatin1();
            int stepNum = step.length();
             //设置初始点
             btnx = step[0].toInt()+8;
             btny = step[1].toInt()+8;
+            CheckerButton*b=int2btn(btnx,btny);
+            bool belonged = false;
+            for(int s=0;s<10;s++){
+                if(btn[flag][s]==b){
+                    belonged = true;
+                    break;
+                }
+            }
+            if(!belonged){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("OTHER_ERROR"),QString("not your checker")));
+                break;
+            }
             chosenloc[0]=btnx;
             chosenloc[1]=btny;
-            CheckerButton*b=int2btn(btnx,btny);
             bool legalmove = true;
            for(int i=2;i<stepNum;i++){
                if(i%2==0){
@@ -748,12 +837,26 @@ Widget::Widget(QWidget *parent)
                        }
                }}
                if(overnum==playernum) {
-                   for(int i=0;i<playernum;i++){
+                    if(overlist.length()){
+                       for(int g=0;g<overlist.length();g++)
+                           ranklist.append(overlist[overlist.length()-g-1]).append(" ");
+                    }  
+                 for(int i=0;i<playernum;i++){
                        server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
                        //test
                        qDebug() << "server send END_GAME_OP";
                        //test end
                        }
+                     ranklist = "";
+                     roomList.clear();
+                     overlist.clear();
+                     overnum=0;
+                     for(int i=0;i<6;i++){
+                         ServerWait->setPlayerName(i,"");
+                         ServerWait->setPlayerReady(i,false);
+                     }
+                     ChooseServer->show();
+                     this->hide();
                     }
                else{
                changeplayer();
@@ -768,6 +871,30 @@ Widget::Widget(QWidget *parent)
         }
         break;
         case OPCODE::PLAYER_READY_OP:{
+            //请求合法性判定
+            bool isValid=true;
+            if(data.data1.length()>20||data.data1.isEmpty())
+                isValid=false;
+            else{
+                for(int i=0;i<data.data1.length();i++)
+                {
+                    char ch = data.data1.toStdString()[i];
+                    if((ch>=48&&ch<=57)
+                     ||(ch>=65&&ch<=90)
+                     ||(ch>=97&&ch<=122)
+                            ||ch==95){
+                        continue;
+                    }
+                    else{
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            if(!isValid){
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString("INVALID_REQ"),QString("")));
+                break;
+            }
             //test
             qDebug() << "server receive PLAYER_READY_OP";
             //test end
@@ -807,7 +934,7 @@ Widget::Widget(QWidget *parent)
                         else if(roomList[i].getReadynum()==3){
                             seq = "A C E";
                             plName = roomList[i].playerList[0].getID();
-                            roomList[i].playerList[0].setPlace('D');
+                            roomList[i].playerList[0].setPlace('A');
                             for(int t=1;t<=2;t++){
                                 plName.append(" ").append(roomList[i].playerList[t].getID());
                                 QChar place(65+2*t);
@@ -828,6 +955,8 @@ Widget::Widget(QWidget *parent)
                         qDebug() << "players are " << plName;
                         qDebug() << "the sequence is " << seq;
                         roomList[i].gameBegin();//游戏开始
+                        flag = 0;
+                        nowplayer->setText(QString("Player:%1").arg(roomList[0].playerList[0].getID()));
                         for(int j=0;j<roomList[i].getPlnum();j++)
                             server->send(roomList[i].playerList[j].getSocket(),NetworkData(OPCODE::START_GAME_OP,plName,seq));
                         server->send(roomList[i].playerList[0].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(""),QString("")));
@@ -855,11 +984,48 @@ Widget::Widget(QWidget *parent)
         timeleft--;
         if(timeleft<0){
             this->killTimer(id);//停止计时
+            for(int i=0;i<10;i++){
+                btn[flag][i]->close();
+                isfill[btn[flag][i]->x][btn[flag][i]->y] = 0;
+            }
+            //test
+            qDebug() << "out player is " << flag;
+            //test end
+            isover[flag] = true;
+            overnum++;
+            overlist.append(roomList[0].playerList[flag].getID());
             //向其他玩家发送超时判负信号
-            char outPl = flag+65;
             for(int i=0;i<roomList[0].getPlnum();i++){
-                if(roomList[0].playerList[i].getID()!=QChar(flag+65))
-                    server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(outPl),QString("-1")));
+                //if(i!=flag)
+                    server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(roomList[0].playerList[flag].getPlace()),QString("-1")));
+            }
+            if(overnum==playernum) {
+                 if(overlist.length()){
+                    for(int g=0;g<overlist.length();g++)
+                        ranklist.append(overlist[overlist.length()-g-1]).append(" ");
+                 }
+              for(int i=0;i<playernum;i++){
+                    server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::END_GAME_OP,ranklist,QString(" ")));
+                    //test
+                    qDebug() << "server send END_GAME_OP";
+                    //test end
+                    }
+                  ranklist = "";
+                  roomList.removeAt(0);
+                  overlist.clear();
+                  overnum=0;
+                  for(int i=0;i<6;i++){
+                      ServerWait->setPlayerName(i,"");
+                      ServerWait->setPlayerReady(i,false);
+                  }
+                  ChooseServer->show();
+                  this->hide();
+            }
+            else{
+                changeplayer();
+                timeleft=30;
+                id = startTimer(1000);
+                server->send(roomList[0].playerList[flag].getSocket(),NetworkData(OPCODE::START_TURN_OP,QString(""),QString("")));
             }
         }
         else{

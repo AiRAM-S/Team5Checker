@@ -49,20 +49,20 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));  //不加入游戏
     connect(join, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
-        if(setplayer->currentIndex()!=-1&&settype->currentIndex()!=-1&&PORTS->text()!="请输入..."){
+        if(settype->currentIndex()!=-1&&PORTS->text()!="请输入..."){
                     port=PORTS->text();
             joinSuccessed = true;
             hide();
         }
     });
 
-    setplayer = new QComboBox(this);
+    /*setplayer = new QComboBox(this);
     setplayer->setPlaceholderText(QStringLiteral("请选择玩家人数"));
     setplayer->setCurrentIndex(-1);
     setplayer->addItem("2");
     setplayer->addItem("3");
     setplayer->addItem("6");
-    setplayer->setGeometry(180,325,150,30);
+    setplayer->setGeometry(180,325,150,30);*/
 
     settype=new QComboBox(this);
     settype->setPlaceholderText(QStringLiteral("请选择..."));
@@ -73,14 +73,17 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
 
     PORT=new QLabel(this);
     PORT->move(178,390);
-    PORT->setText("Port");
+    PORT->setText("IP");
     PORT->setStyleSheet("color:white;font:bold 12px;}");
 
-    QValidator *validator=new QIntValidator(1024, 49151, this);
+//     QRegularExpression rx3;
+//     rx3.setPattern("[0-9.]{9,13}");
+//     QValidator *validator3 = new QRegularExpressionValidator(rx3,this);
+    //QValidator *validator=new QIntValidator(1024, 49151, this);
     PORTS=new QLineEdit(this);
     PORTS->move(205,385);
     PORTS->setPlaceholderText("请输入...");
     PORTS->setStyleSheet("QLineEdit{color:black;font:11px}");
-    PORTS->setValidator(validator);
+   // PORTS->setValidator(validator);
 
 }
