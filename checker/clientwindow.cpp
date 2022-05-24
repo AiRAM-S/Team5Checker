@@ -30,6 +30,92 @@ void ClientWindow::cbuttonpress()
     z->show();
 }
 
+float ddd;
+float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目标要移动的位置的x,y坐标和该棋子的初始区域如‘A’，计算到目标区域的平均距离
+{
+    ddd=0;
+    float x1=0,y1=0;
+    if(z=='A')
+    {
+        for(int i=1;i<=4;i++)
+        {
+            for(int j=-5;j>=-i-4;j--)
+            {
+                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
+                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
+                ddd+=sqrt(x1+y1);
+            }
+        }
+    }
+    else if(z=='B')
+    {
+        for(int j=-4;j<=-1;j++)
+        {
+            for(int i=-4;i<=-j-5;i++)
+            {
+                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
+                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
+                ddd+=sqrt(x1+y1);
+            }
+        }
+    }
+    else if(z=='C')
+    {
+        for(int i=-8;i<=-5;i++)
+        {
+            for(int j=4;j>=-i-4;j--)
+            {
+                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
+                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
+                ddd+=sqrt(x1+y1);
+            }
+        }
+    }
+    else if(z=='D')
+    {
+        for(int i=-4;i<=-1;i++)
+        {
+            for(int j=-i+4;j>=5;j--)
+            {
+                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
+                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
+                ddd+=sqrt(x1+y1);
+            }
+        }
+    }
+    else if(z=='E')
+    {
+        for(int j=1;j<=4;j++)
+        {
+            for(int i=4;i>=-j+5;i--)
+            {
+                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
+                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
+                ddd+=sqrt(x1+y1);
+            }
+        }
+    }
+    else if(z=='F')
+    {
+        for(int i=5;i<=8;i++)
+        {
+            for(int j=-4;j<=-i+4;j++)
+            {
+                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
+                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
+                ddd+=sqrt(x1+y1);
+            }
+        }
+    }
+    return ddd/10.0;
+}
+
+float ClientWindow::guessvalue2(int x1,int y1,int x2,int y2)//这里传入的参数是目标位置和初始位置的x,y坐标，计算移动的距离大小,目前想的是，如果到中心区域一样，就选走到距离最长的
+{
+    return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+}
+
+
 ClientWindow::ClientWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ClientWindow)
