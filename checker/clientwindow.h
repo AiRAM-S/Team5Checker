@@ -49,6 +49,8 @@ public:
     NetworkSocket* getSocket(){
         return socket;
     }
+    float guessvalue1(int x,int y,int z);
+    float guessvalue2(int x1,int y1,int x2,int y2);
 
 protected:
     void paintEvent(QPaintEvent *);
