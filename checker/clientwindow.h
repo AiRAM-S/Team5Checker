@@ -110,6 +110,8 @@ private:
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
+    QPushButton *ai;
+    int clicknum;
 
     QPushButton* infoTest;//测试客户端向服务端发送错误信号
 public:
