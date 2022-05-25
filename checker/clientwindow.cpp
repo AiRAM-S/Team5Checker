@@ -198,6 +198,26 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     //设置禁止摆烂弹窗
+        
+    ai=new QPushButton(this);
+    ai->setGeometry(600,90,73,31);
+    ai->setText("deposit");
+    clicknum=0;
+    ai->setStyleSheet("background-color:  rgb(255,255,255);color: rgb(255, 85, 0);font:bold 16px;");
+        connect(ai, &QPushButton::clicked, [&]()  //进入AI
+        {
+                    ++clicknum;
+                    if(clicknum%2)//进入AI模式
+                    {
+                        ai->setText("cancel");
+                        //dfs();
+                    }
+                    else//退出AI模式
+                    {
+                        ai->setText("deposit");
+                    }
+        });
+        
     nobai = new QDialog(this);
     QLabel *lb = new QLabel("禁止摆烂",nobai);
     nobai->setFixedSize(200,100);
