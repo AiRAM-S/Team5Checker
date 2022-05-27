@@ -30,10 +30,11 @@ void ClientWindow::cbuttonpress()
     z->show();
 }
 
-float ddd;
+float ddd,fll;
 float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目标要移动的位置的x,y坐标和该棋子的初始区域如‘A’，计算到目标区域的平均距离
 {
     ddd=0;
+    fll=0;
     float x1=0,y1=0;
     if(z=='A')
     {
@@ -41,9 +42,30 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
         {
             for(int j=-5;j>=-i-4;j--)
             {
-                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
-                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
-                ddd+=sqrt(x1+y1);
+                if(!isfill[i+8][j+8])
+                {
+                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                    ddd+=sqrt(x1+y1);
+                }
+                else
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
+                        {
+                            fll=1;
+                            break;
+                        }
+                    }
+                    if(!fll)
+                    {
+                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                        ddd+=sqrt(x1+y1);
+                    }
+                    fll=0;
+                }
             }
         }
     }
@@ -53,9 +75,30 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
         {
             for(int i=-4;i<=-j-5;i++)
             {
-                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
-                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
-                ddd+=sqrt(x1+y1);
+                if(!isfill[i+8][j+8])
+                {
+                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                    ddd+=sqrt(x1+y1);
+                }
+                else
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
+                        {
+                            fll=1;
+                            break;
+                        }
+                    }
+                    if(!fll)
+                    {
+                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                        ddd+=sqrt(x1+y1);
+                    }
+                    fll=0;
+                }
             }
         }
     }
@@ -65,9 +108,30 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
         {
             for(int j=4;j>=-i-4;j--)
             {
-                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
-                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
-                ddd+=sqrt(x1+y1);
+                if(!isfill[i+8][j+8])
+                {
+                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                    ddd+=sqrt(x1+y1);
+                }
+                else
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
+                        {
+                            fll=1;
+                            break;
+                        }
+                    }
+                    if(!fll)
+                    {
+                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                        ddd+=sqrt(x1+y1);
+                    }
+                    fll=0;
+                }
             }
         }
     }
@@ -77,9 +141,30 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
         {
             for(int j=-i+4;j>=5;j--)
             {
-                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
-                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
-                ddd+=sqrt(x1+y1);
+                if(!isfill[i+8][j+8])
+                {
+                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                    ddd+=sqrt(x1+y1);
+                }
+                else
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
+                        {
+                            fll=1;
+                            break;
+                        }
+                    }
+                    if(!fll)
+                    {
+                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                        ddd+=sqrt(x1+y1);
+                    }
+                    fll=0;
+                }
             }
         }
     }
@@ -89,9 +174,30 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
         {
             for(int i=4;i>=-j+5;i--)
             {
-                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
-                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
-                ddd+=sqrt(x1+y1);
+                if(!isfill[i+8][j+8])
+                {
+                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                    ddd+=sqrt(x1+y1);
+                }
+                else
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
+                        {
+                            fll=1;
+                            break;
+                        }
+                    }
+                    if(!fll)
+                    {
+                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                        ddd+=sqrt(x1+y1);
+                    }
+                    fll=0;
+                }
             }
         }
     }
@@ -101,9 +207,30 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
         {
             for(int j=-4;j<=-i+4;j++)
             {
-                x1=(x-loc[i][j].x())*(x-loc[i][j].x());
-                y1=(y-loc[i][j].y())*(y-loc[i][j].y());
-                ddd+=sqrt(x1+y1);
+                if(!isfill[i+8][j+8])
+                {
+                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                    ddd+=sqrt(x1+y1);
+                }
+                else
+                {
+                    for(int k=0;k<10;k++)
+                    {
+                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
+                        {
+                            fll=1;
+                            break;
+                        }
+                    }
+                    if(!fll)
+                    {
+                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
+                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
+                        ddd+=sqrt(x1+y1);
+                    }
+                    fll=0;
+                }
             }
         }
     }
