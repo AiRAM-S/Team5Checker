@@ -242,6 +242,19 @@ float ClientWindow::guessvalue2(int x1,int y1,int x2,int y2)//这里传入的参
     return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
 
+bool ClientWindow::guessvalue3(int x,int y)//检查移动处是否可以跳跃
+{
+    int direction[6][2]={{1,0},{-1,0},{0,1},{-1,1},{0,-1},{1,1}};
+    for(int i=0;i<6;i++)
+    {
+        int x1=direction[i][0]+x,x2=direction[i][0]+x1;
+        int y1=direction[i][1]+y,y2=direction[i][1]+y1;
+        if(isfill[x1][y1]&&!isfill[x2][y2])
+            return true;
+    }
+    return false;
+}
+
 
 ClientWindow::ClientWindow(QWidget *parent) :
     QMainWindow(parent),
