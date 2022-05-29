@@ -415,13 +415,15 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     if(iswin)
         return;//赢了就不让动 su
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
-    anim->setDuration(300);
+    anim->setDuration(500);
     QPointF obj;
     obj.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
     obj.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
     anim->setStartValue(obj);
     anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
     anim->start(QPropertyAnimation::DeleteWhenStopped);
+    QPauseAnimation *pause=new QPauseAnimation(this);
+    pause->setDuration(500);
     btn->x=objloc[0];
     btn->y=objloc[1];
     isfill[objloc[0]][objloc[1]]=btn->player+1;
@@ -672,25 +674,33 @@ void ClientWindow::receive(NetworkData data){
         //test
         qDebug() << PlName <<" receive START_TURN_OP";
         //test end
-        for(int i=0;i<10;i++){
-            btn[place2num(myPos)][i]->setCheckable(true);
-        }
+
         timeLeft=30;
         id=startTimer(1000);
         clock2->setText("30 s");
         clock1->show();
         clock2->show();
-
         haveJumped=false;
         ischosen=false;
         isobjset=false;
         checked=NULL;
         jumped=NULL;
         path = "";
+        flag=place2num(myPos);
+        step=0;
+        isaimove=false;
+
+        if(aiflag&&!isaimove){
+             ai();
+             isaimove=true;
+        }
+        else{
+        for(int i=0;i<10;i++){
+            btn[place2num(myPos)][i]->setCheckable(true);
+        }}
 
         flag =place2num(myPos);
         qDebug()<<"now flag"<<myPos<<' '<<flag;
-        step=0;
         nowplayer->setText("Your Turn");
         switch(flag){
         case red:
@@ -732,7 +742,7 @@ void ClientWindow::receive(NetworkData data){
                 if(data.data2=="-1"){
                     if(nowPlpos==place2num(myPos)){
                        killTimer(id);
-                       nowplayer->setText("You Are OUT");
+                       nowplayer->setText("OUT!");
                        nowplayer->setStyleSheet("color:grey");
                     }
                     //移除该玩家所有棋子
@@ -805,37 +815,48 @@ void ClientWindow::receive(NetworkData data){
            }
            //弹排名界面
            QStringList pls = data.data1.split(" ");
-           if(pls.at(pls.length()-1)==""){
-               pls.removeLast();
-           }
+           pls.removeLast();
            rank->ranktable->setRowCount(pls.length());
            rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+           QLabel* conlb=new QLabel(rank);
+           conlb->setGeometry(220,400,150,50);
+           conlb->setFont(QFont("Microsoft YaHei",20));
+           conlb->setStyleSheet("color:brown;");
            QStringList header;
            for(int i=0;i<pls.length();i++){
+               if(pls[i]==PlName){
+                   conlb->setText("Your rank is "+QString((char)(i+'1')));
+               }
                if(i==0)
                    header << "1st";
                else if(i==1)
                    header << "2nd";
+               else if(i==2)
+                   header << "3rd";
                else{
-                   header << QString("%1th").arg(i);
+                   header << QString("%1th").arg(i+1);
                }
-           }
-           rank->ranktable->setVerticalHeaderLabels(header);
+           }        rank->ranktable->setVerticalHeaderLabels(header);
            for(int i=0;i<pls.length();i++){
                    rank->ranktable->setItem(i,0,new QTableWidgetItem(pls[i]));
            }
+           QPushButton* con=new QPushButton(rank);
+           con->setGeometry(225,450,100,40);
+           con->setText("Confirm");
+           connect(con,&QPushButton::clicked,this,[=](){
+               for(int i=0;i<6;i++)
+               {
+                   ww.ids[i]->setText("");
+                   ww.sis[i]->setText("Waiting");
+               }
+               players.clear();
+               playerState.clear();
+               cc.show();
+               this->close();
+               ww.hide();
+               rank->hide();
+           });
            rank->show();
-           //断开连接
-          // socket->bye();
-           for(int i=0;i<6;i++)
-           {
-               ww.ids[i]->setText("");
-               ww.sis[i]->setText("Waiting");
-           }
-           players.clear();
-           playerState.clear();
-           cc.show();
-           ww.hide();
     }
     break;
     case OPCODE::ERROR_OP://错误
@@ -1108,6 +1129,37 @@ void ClientWindow::initializeChecker(QString data){
             });
         }
     }
+
+    aiflag=false;
+    isaimove=false;
+    dep=new QPushButton(this);
+    dep->setText("deposit");
+    dep->setGeometry(600,100,80,40);
+    connect(dep,&QPushButton::clicked,[&](){
+        if(!aiflag){
+            dep->setText("cancel");
+            aiflag=true;
+            if(flag==place2num(myPos)){
+                for(int i=0;i<10;i++){
+                    btn[flag][i]->setCheckable(false);
+                }
+                if(!isaimove){
+                    ai();
+                    isaimove=true;
+                }
+            }
+        }
+        else{
+            dep->setText("deposit");
+            aiflag=false;
+            for(int i=0;i<10;i++){
+                btn[flag][i]->setCheckable(true);
+            }
+        }
+    });
+
+    memset(fillnum,0,sizeof(fillnum));
+
 }
 
 void ClientWindow::setPlayerTable(){
@@ -1159,3 +1211,582 @@ void ClientWindow::connected(){
     QMessageBox::information(this,QString(""),QString("连接成功"),"OK");
     return;
 }
+
+int flatm[6][2]={{1,0},{0,1},{-1,0},{0,-1},{1,-1},{-1,1}};
+int jumpm[6][2]={{2,0},{0,2},{-2,0},{0,-2},{2,-2},{-2,2}};
+
+void ClientWindow::ai(){
+    int t=place2num(myPos);
+    val=0;
+    bool ispass[17][17];
+    for(int i=0;i<10;i++){
+        ov=originvalue3();
+        way.clear();
+        memset(ispass,false,sizeof(ispass));
+        qDebug()<<"button:"<<t<<' '<<i;
+        dfs(0,btn[t][i]->x,btn[t][i]->y,btn[t][i]->x,btn[t][i]->y);
+        qDebug()<<"aipath now:"<<aipath;
+    }
+    for(int i=0;i<10;i++){
+        if(btn[t][i]->x==aipath.at(0)&&btn[t][i]->y==aipath.at(1)){
+            checked=btn[t][i];
+            break;
+        }
+    }
+    chosenloc[0]=aipath.at(0);
+    chosenloc[1]=aipath.at(1);
+    for(int i=0;i<aipath.length();i++){
+        if(i>1) objloc[i%2]=aipath.at(i);
+        if(i%2&&i>1) {
+            qDebug()<<"objloc:"<<objloc[0]<<" "<<objloc[1];
+            obj.setX(loc[objloc[0]][objloc[1]].rx()-RR/4);
+            obj.setY(loc[objloc[0]][objloc[1]].ry()-RR/4);
+            CheckerMove(checked,obj);
+            chosenloc[0]=objloc[0];
+            chosenloc[1]=objloc[1];
+        }
+    }
+    socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),path));
+    changeplayer();
+}
+
+bool ClientWindow::isPlaceLegal(int x,int y){
+    int a=x-8,b=y-8;
+    if(-4<=a&&a<=4&&-4<=b&&b<=4) return true;
+    if((5<=a&&a<=8&&-4<=b&&b<=4-a)||((5<=-a&&-a<=8&&-4<=-b&&-b<=4+a))) return true;
+    if((5<=b&&b<=8&&-4<=a&&a<=4-b)||((5<=-b&&-b<=8&&-4<=-a&&-a<=4+b))) return true;
+    return false;
+}
+
+
+void ClientWindow::dfs(int k,int x,int y,int bx,int by){
+    qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
+    ispass[x][y]=true;
+    int flagg=0;
+    if(!k){
+        way.append(x);
+        way.append(y);
+    }
+    if(!k){
+    for(int i=0;i<6;i++){
+        int a=x+flatm[i][0],b=y+flatm[i][1];
+        bool pl=isPlaceLegal(a,b);
+       // qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+        if(pl){
+            if(!isfill[a][b]){
+                isfill[a][b]=flag+1;
+                isfill[x][y]=0;
+                int pv=PossibleValue(0,x,y,a,b,bx,by);
+                qDebug()<<"pv:"<<pv;
+                if(val<pv) {
+                    val=pv;
+                    //记录轨迹
+                    if(flagg)
+                    {
+                        way.removeLast();
+                        way.removeLast();
+                    }
+                        way.append(a);
+                        way.append(b);
+                    aipath=way;
+                    flagg=1;
+                    qDebug()<<"way now:"<<way;
+                }
+                valueback3(x,y,a,b);
+                isfill[a][b]=0;
+                isfill[x][y]=flag+1;
+            }
+        }
+    }
+    }
+    for(int i=0;i<6;i++){
+        int a=x+jumpm[i][0],b=y+jumpm[i][1];
+        bool pl=isPlaceLegal(a,b);
+     //   qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+        if(pl){
+           // qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
+            if(!isfill[a][b]&&!ispass[a][b]&&isfill[(a+x)/2][(b+y)/2]){
+                isfill[a][b]=flag+1;
+                isfill[x][y]=0;
+                if(flagg==1)
+                {
+                    way.removeLast();
+                    way.removeLast();
+                }
+                way.append(a);
+                way.append(b);
+                int vv=PossibleValue(0,x,y,a,b,bx,by);
+                qDebug()<<"value after jump: "<<vv;
+                if(vv>val) {
+                    val=vv;
+                    aipath.clear();
+                aipath=way;
+                qDebug()<<"way now:"<<way;
+                if(vv==1000000) return;}
+                dfs(k+1,a,b,bx,by);
+                valueback3(x,y,a,b);
+                way.removeLast();
+                way.removeLast();
+                isfill[a][b]=0;
+                isfill[x][y]=flag+1;
+                ispass[a][b]=false;
+                flagg=2;
+            }
+        }
+    }
+    ispass[x][y]=false;
+    return;
+}
+
+//估值   待实现
+//x,y跳前位置，a,b跳后位置，bx,by原始位置
+int ClientWindow::PossibleValue(int t,int x,int y,int a,int b,int bx,int by){
+    int fv=fillvalue(myPos);
+    if(fv==10) return 1000000;
+    int v3=guessvalue3(x,y,a,b);
+    int vb1=guessvalue1(bx,by,myPos);
+    int v1=guessvalue1(a,b,myPos);
+    int lpv=lonelypointvalue(myPos);
+    int il=0;
+    if(islonely(bx,by)) il=1000;
+    int v2=guessvalue2(bx,by,a,b);
+    //int msv=0;
+   // if(!t)
+   // msv=morestepvalue(t);
+    return fv*50+1000+vb1-v1+v2+v3; //    v3+2*vb1-v1+
+}
+
+float ddd;
+
+//目标位置到终点平均位置距离估值
+float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目标要移动的位置的x,y坐标和该棋子的初始区域如‘A’，计算到目标区域的平均距离
+ {
+     ddd=0;
+     int k=10;
+     int tt=place2num(z);
+     float x1=0,y1=0;
+     if(z=='A')
+     {
+         for(int i=1;i<=4;i++)
+         {
+             for(int j=-5;j>=-i-4;j--)
+             {
+                 if(isfill[i+8][j+8]==tt+1){
+                     k--;
+                     continue;
+                 }
+                 x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(loc[x][y].rx()-loc[i+8][j+8].rx());
+                 y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(loc[x][y].ry()-loc[i+8][j+8].ry());
+                 ddd+=sqrt(x1+y1);
+             }
+         }
+     }
+     else if(z=='B')
+     {
+         for(int j=-4;j<=-1;j++)
+         {
+             for(int i=-4;i<=-j-5;i++)
+             {
+                 if(isfill[i+8][j+8]==tt+1){
+                     k--;
+                     continue;
+                 }
+                 x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(loc[x][y].rx()-loc[i+8][j+8].rx());
+                 y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(loc[x][y].ry()-loc[i+8][j+8].ry());
+                 ddd+=sqrt(x1+y1);
+             }
+         }
+     }
+     else if(z=='C')
+     {
+         for(int i=-8;i<=-5;i++)
+         {
+             for(int j=4;j>=-i-4;j--)
+             {
+                 if(isfill[i+8][j+8]==tt+1){
+                     k--;
+                     continue;
+                 }
+                 x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(loc[x][y].rx()-loc[i+8][j+8].rx());
+                 y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(loc[x][y].ry()-loc[i+8][j+8].ry());
+                 ddd+=sqrt(x1+y1);
+             }
+         }
+     }
+     else if(z=='D')
+     {
+         for(int i=-4;i<=-1;i++)
+         {
+             for(int j=-i+4;j>=5;j--)
+             {
+                 if(isfill[i+8][j+8]==tt+1){
+                     k--;
+                     continue;
+                 }
+                 x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(loc[x][y].rx()-loc[i+8][j+8].rx());
+                 y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(loc[x][y].ry()-loc[i+8][j+8].ry());
+                 ddd+=sqrt(x1+y1);
+             }
+         }
+     }
+     else if(z=='E')
+     {
+         for(int j=1;j<=4;j++)
+         {
+             for(int i=4;i>=-j+5;i--)
+             {
+                 if(isfill[i+8][j+8]==tt+1){
+                     k--;
+                     continue;
+                 }
+                 x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(loc[x][y].rx()-loc[i+8][j+8].rx());
+                 y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(loc[x][y].ry()-loc[i+8][j+8].ry());
+                 ddd+=sqrt(x1+y1);
+             }
+         }
+     }
+     else if(z=='F')
+     {
+         for(int i=5;i<=8;i++)
+         {
+             for(int j=-4;j<=-i+4;j++)
+             {
+                 if(isfill[i+8][j+8]==tt+1){
+                     k--;
+                     continue;
+                 }
+                 x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(loc[x][y].rx()-loc[i+8][j+8].rx());
+                 y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(loc[x][y].ry()-loc[i+8][j+8].ry());
+                 ddd+=sqrt(x1+y1);
+             }
+         }
+     }
+     return ddd/k;
+ }
+
+//目标位置和初始位置的距离估值
+ float ClientWindow::guessvalue2(int x1,int y1,int x2,int y2)//这里传入的参数是目标位置和初始位置的x,y坐标，计算移动的距离大小,目前想的是，如果到中心区域一样，就选走到距离最长的
+ {
+     return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+ }
+
+ int ClientWindow::originvalue3(){
+     int d=0;
+     int t=place2num(myPos);
+     switch(myPos){
+     case'A':{
+       for(int i=0;i<10;i++){
+           d+=abs(btn[t][i]->x-12)+abs(btn[t][i]->y);
+       }
+       break;
+     }
+     case'B':{
+       for(int i=0;i<10;i++){
+           d+=abs(btn[t][i]->x-4)+abs(btn[t][i]->y-4);
+       }
+       break;
+     }
+     case'C':{
+       for(int i=0;i<10;i++){
+           d+=abs(btn[t][i]->x)+abs(btn[t][i]->y-12);
+       }
+       break;
+     }
+     case'D':{
+       for(int i=0;i<10;i++){
+           d+=abs(btn[t][i]->x-4)+abs(btn[t][i]->y-16);
+       }
+       break;
+     }
+     case'E':{
+       for(int i=0;i<10;i++){
+           d+=abs(btn[t][i]->x-12)+abs(btn[t][i]->y-12);
+       }
+       break;
+     }
+     case'F':{
+       for(int i=0;i<10;i++){
+           d+=abs(btn[t][i]->x-16)+abs(btn[t][i]->y-4);
+       }
+       break;
+     }
+     }
+     qDebug()<<"guessvalue3: "<<d;
+     return d;
+ }
+
+ //button到目标位置三角中心点坐标距离（移动步数）估值
+ int ClientWindow::guessvalue3(int x,int y,int a,int b){
+     switch(myPos){
+     case'A':{
+         ov-=abs(x-12)+abs(y);
+         ov+=abs(a-12)+abs(b);
+         break;
+     }
+     case'B':{
+         ov-=abs(x-4)+abs(y-4);
+         ov+=abs(a-4)+abs(b-4);
+         break;
+     }
+     case'C':{
+         ov-=abs(x)+abs(y-12);
+         ov+=abs(a)+abs(b-12);
+         break;
+     }
+     case'D':{
+         ov-=abs(x-4)+abs(y-16);
+         ov+=abs(a-4)+abs(b-16);
+         break;
+     }
+     case'E':{
+         ov-=abs(x-12)+abs(y-12);
+         ov+=abs(a-12)+abs(b-12);
+         break;
+     }
+     case'F':{
+         ov-=abs(x-16)+abs(y-4);
+         ov+=abs(a-16)+abs(b-4);
+         break;
+     }
+     }
+     return ov;
+ }
+
+ void ClientWindow::valueback3(int x,int y,int a,int b){
+     switch(myPos){
+     case'A':{
+         ov+=abs(x-11)+abs(y-2);
+         ov-=abs(a-11)+abs(b-2);
+         break;
+     }
+     case'B':{
+         ov+=abs(x-5)+abs(y-5);
+         ov-=abs(a-5)+abs(b-5);
+         break;
+     }
+     case'C':{
+         ov+=abs(x-2)+abs(y-11);
+         ov-=abs(a-2)+abs(b-11);
+         break;
+     }
+     case'D':{
+         ov+=abs(x-5)+abs(y-14);
+         ov-=abs(a-5)+abs(b-14);
+         break;
+     }
+     case'E':{
+         ov+=abs(x-11)+abs(y-11);
+         ov-=abs(a-11)+abs(b-11);
+         break;
+     }
+     case'F':{
+         ov+=abs(x-14)+abs(y-5);
+         ov-=abs(a-14)+abs(b-5);
+         break;
+     }
+     }
+     return;
+ }
+
+ int ClientWindow::distance(QPointF p,QPointF q){
+     return sqrt((p.rx()-q.rx())*(p.rx()-q.rx())+(p.ry()-q.ry())*(p.ry()-q.ry()));
+ }
+
+ //到达终点的估值
+ int ClientWindow::fillvalue(int x){
+     int flg=0;
+         if(x=='A'){
+             for(int j=5;j<=8;j++){
+                 for(int i=j-4;i<=4;i++){
+                     if(isfill[i+8][-j+8]==pink+1) flg++;
+                 }
+         }
+     }
+         else if(x=='D'){
+             for(int j=5;j<=8;j++){
+                 for(int i=j-4;i<=4;i++){
+                     if(isfill[-i+8][j+8]==green+1) flg++;
+                 }
+             }
+         }
+         else if(x=='C'){
+             for(int i=5;i<=8;i++){
+                 for(int j=i-4;j<=4;j++){
+                     if(isfill[-i+8][j+8]==green+1) flg++;
+                 }
+             }
+         }
+         else if(x=='E'){
+             for(int i=1; i<5; i++){
+                 for(int j=-4; j<i-4; j++){
+                     if(isfill[i+8][-j+8]==blue+1) flg++;
+                 }
+             }
+         }
+         fillnum[place2num(myPos)]=flg;
+         if(flg>=5) {
+             flg+=fillvalueplus(x);
+         }
+     return flg;
+}
+
+ int ClientWindow::fillvalueplus(int x){
+     int flg=0;
+         if(x=='A'){
+             for(int j=5;j<=8;j++){
+                 for(int i=j-4;i<=4;i++){
+                     if(isfill[i+8][-j+8]==pink+1){
+                         if(j==8) flg+=10;
+                         else if(j==7) flg+=5;
+                         else if(j==6) flg+=3;
+                         if(i==4||i+i-j==-4) flg+=2;
+                     }
+                 }
+         }
+     }
+         else if(x=='D'){
+             for(int j=5;j<=8;j++){
+                 for(int i=j-4;i<=4;i++){
+                     if(isfill[-i+8][j+8]==green+1){
+                         if(j==8) flg+=10;
+                         else if(j==7) flg+=5;
+                         else if(j==6) flg+=3;
+                         if(i==4||j-i==4) flg+=2;
+                     }
+                 }
+             }
+         }
+         else if(x=='C'){
+             for(int i=5;i<=8;i++){
+                 for(int j=i-4;j<=4;j++){
+                     if(isfill[-i+8][j+8]==green+1){
+                         if(i==8) flg+=10;
+                         else if(i==7) flg+=5;
+                         else if(i==6) flg+=3;
+                         if(j==4||i-j==4) flg+=2;
+                     }
+                 }
+             }
+         }
+         else if(x=='E'){
+             for(int i=1; i<5; i++){
+                 for(int j=-4; j<i-4; j++){
+                     if(isfill[i+8][-j+8]==blue+1){
+                         if(i-j==8) flg+=10;
+                         else if(i-j==7) flg+=5;
+                         else if(i-j==6) flg+=3;
+                         if(i==4||j==-4) flg+=2;
+                     }
+                 }
+             }
+         }
+         return flg;
+ }
+
+ int ClientWindow::lonelypointvalue(int x){
+     int t=place2num(x);
+     int k=0;
+     for(int i=0;i<17;i++){
+         for(int j=0;j<17;j++){
+             if(isfill[i][j]==t+1){
+                 bool ff=false;
+                 for(int p=0;p<6;p++){
+                     if(isPlaceLegal(i+flatm[p][0],j+flatm[p][1])){
+                         if(isfill[i+flatm[p][0]][j+flatm[p][1]]==t+1){
+                             ff=true;
+                             break;
+                         }
+                     }
+                     if(isPlaceLegal(i+jumpm[p][0],j+jumpm[p][1])){
+                         if(isfill[i+jumpm[p][0]][j+jumpm[p][1]]==t+1){
+                             ff=true;
+                             break;
+                         }
+                     }
+                 }
+                 if(!ff) k++;
+             }
+         }
+     }
+     return k;
+ }
+
+ bool ClientWindow::islonely(int bx,int by){
+     int k=0;
+     int tt=place2num(myPos);
+     for(int i=0;i<6;i++){
+         if(isPlaceLegal(bx+flatm[i][0],by+flatm[i][1])){
+             if(isfill[bx+flatm[i][0]][by+flatm[i][1]]==tt+1) {
+                 k++;
+             }
+         }
+         if(isPlaceLegal(bx+jumpm[i][0],by+jumpm[i][1])){
+             if(isfill[bx+jumpm[i][0]][by+jumpm[i][1]]==tt+1) {
+                 k++;
+             }
+         }
+     }
+     if(k<2) return true;
+     return false;
+ }
+ int ClientWindow::morestepvalue(int t){
+     int mpos=place2num(myPos);
+     val2=0;
+     memset(ispass2,false,sizeof(ispass2));
+     for(int i=0;i<10;i++){
+         dfsplus(t+1,0,btn[mpos][i]->x,btn[mpos][i]->y,btn[mpos][i]->x,btn[mpos][i]->y);
+     }
+     return val2-1;
+   //  int msv=morestepvalue(t+2);
+    // return val2>msv?val2:msv;
+
+ }
+ void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
+     qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
+     ispass2[x][y]=true;
+     if(!k){
+     for(int i=0;i<6;i++){
+         int a=x+flatm[i][0],b=y+flatm[i][1];
+         bool pl=isPlaceLegal(a,b);
+        // qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+         if(pl){
+             if(!isfill[a][b]){
+                 isfill[a][b]=flag+1;
+                 isfill[x][y]=0;
+                 int pv=PossibleValue(t,x,y,a,b,bx,by);
+                 qDebug()<<"pv:"<<pv;
+                 if(val2<pv) {
+                     val2=pv;
+                 }
+                 valueback3(x,y,a,b);
+                 isfill[a][b]=0;
+                 isfill[x][y]=flag+1;
+             }
+         }
+     }
+     }
+     for(int i=0;i<6;i++){
+         int a=x+jumpm[i][0],b=y+jumpm[i][1];
+         bool pl=isPlaceLegal(a,b);
+      //   qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+         if(pl){
+            // qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
+             if(!isfill[a][b]&&!ispass2[a][b]&&isfill[(a+x)/2][(b+y)/2]){
+                 isfill[a][b]=flag+1;
+                 isfill[x][y]=0;
+                 int vv=PossibleValue(t,x,y,a,b,bx,by);
+                 qDebug()<<"value after jump: "<<vv;
+                 if(vv>val2) {
+                     val2=vv;
+                 if(vv==1000000) return;}
+                 dfs(k+1,a,b,bx,by);
+                 valueback3(x,y,a,b);
+                 isfill[a][b]=0;
+                 isfill[x][y]=flag+1;
+                 ispass2[a][b]=false;
+             }
+         }
+     }
+     ispass2[x][y]=false;
+     return;
+ }

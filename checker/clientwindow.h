@@ -50,6 +50,8 @@ public:
         return socket;
     }
 
+
+
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *event);
@@ -110,9 +112,40 @@ private:
     QString Port;//端口号
 
     QPushButton* infoTest;//测试客户端向服务端发送错误信号
+
+    //stage3
+    bool ispass[17][17];
+    QList<int> way,aipath;
+    int val,val2;
+    QPushButton* dep;
+    bool aiflag;
+    bool isaimove;
+    int ov;
+    int fillnum[6];
+    bool ispass2[17][17];
+
 public:
     //myDialog dd;
     chooseclient cc;
+
+    //stage3
+    bool isPlaceLegal(int x,int y);
+    void ai();
+    void dfs(int,int,int,int,int);
+    int PossibleValue(int,int,int,int,int,int,int);
+    float guessvalue1(int,int,int);
+    float guessvalue2(int x1,int y1,int x2,int y2);
+    int guessvalue3(int,int,int,int);
+    void valueback3(int,int,int,int);
+    int originvalue3();
+    int fillvalue(int);
+    int fillvalueplus(int);
+    int lonelypointvalue(int);
+    int morestepvalue(int);
+     void dfsplus(int t,int k,int x,int y,int bx,int by);
+    inline int distance(QPointF,QPointF);
+    bool islonely(int,int);
+
 private:
     void passit1(QString a)
     {
