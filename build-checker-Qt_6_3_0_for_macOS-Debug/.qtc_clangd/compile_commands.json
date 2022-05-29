@@ -7,7 +7,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -30,7 +30,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -69,10 +69,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/checkerbutton.cpp"
+        "/Users/wzr/Team5Checker/checker/checkerbutton.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/checkerbutton.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/checkerbutton.cpp"
 },
 {
     "arguments": [
@@ -82,7 +82,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -105,7 +105,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -144,10 +144,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/chooseclient.cpp"
+        "/Users/wzr/Team5Checker/checker/chooseclient.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/chooseclient.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/chooseclient.cpp"
 },
 {
     "arguments": [
@@ -157,7 +157,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -180,7 +180,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -219,10 +219,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/chooseservice.cpp"
+        "/Users/wzr/Team5Checker/checker/chooseservice.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/chooseservice.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/chooseservice.cpp"
 },
 {
     "arguments": [
@@ -232,7 +232,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -255,7 +255,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -294,10 +294,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/clientwindow.cpp"
+        "/Users/wzr/Team5Checker/checker/clientwindow.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/clientwindow.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/clientwindow.cpp"
 },
 {
     "arguments": [
@@ -307,7 +307,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -330,7 +330,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -369,10 +369,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/main.cpp"
+        "/Users/wzr/Team5Checker/checker/main.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/main.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/main.cpp"
 },
 {
     "arguments": [
@@ -382,7 +382,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -405,7 +405,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -444,10 +444,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/mydialog.cpp"
+        "/Users/wzr/Team5Checker/checker/mydialog.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/mydialog.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/mydialog.cpp"
 },
 {
     "arguments": [
@@ -457,7 +457,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -480,7 +480,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -519,10 +519,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/mydialog1.cpp"
+        "/Users/wzr/Team5Checker/checker/mydialog1.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/mydialog1.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/mydialog1.cpp"
 },
 {
     "arguments": [
@@ -532,7 +532,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -555,7 +555,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -594,10 +594,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/networkdata.cpp"
+        "/Users/wzr/Team5Checker/checker/networkdata.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/networkdata.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/networkdata.cpp"
 },
 {
     "arguments": [
@@ -607,7 +607,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -630,7 +630,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -669,10 +669,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/networkserver.cpp"
+        "/Users/wzr/Team5Checker/checker/networkserver.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/networkserver.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/networkserver.cpp"
 },
 {
     "arguments": [
@@ -682,7 +682,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -705,7 +705,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -744,10 +744,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/networksocket.cpp"
+        "/Users/wzr/Team5Checker/checker/networksocket.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/networksocket.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/networksocket.cpp"
 },
 {
     "arguments": [
@@ -757,7 +757,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -780,7 +780,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -819,10 +819,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/rank.cpp"
+        "/Users/wzr/Team5Checker/checker/rank.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/rank.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/rank.cpp"
 },
 {
     "arguments": [
@@ -832,7 +832,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -855,7 +855,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -894,10 +894,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/room.cpp"
+        "/Users/wzr/Team5Checker/checker/room.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/room.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/room.cpp"
 },
 {
     "arguments": [
@@ -907,7 +907,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -930,7 +930,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -969,10 +969,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/serverwait.cpp"
+        "/Users/wzr/Team5Checker/checker/serverwait.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/serverwait.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/serverwait.cpp"
 },
 {
     "arguments": [
@@ -982,7 +982,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1005,7 +1005,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1044,10 +1044,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/wait.cpp"
+        "/Users/wzr/Team5Checker/checker/wait.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/wait.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/wait.cpp"
 },
 {
     "arguments": [
@@ -1057,7 +1057,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1080,7 +1080,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1119,10 +1119,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/widget.cpp"
+        "/Users/wzr/Team5Checker/checker/widget.cpp"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/widget.cpp"
+    "file": "/Users/wzr/Team5Checker/checker/widget.cpp"
 },
 {
     "arguments": [
@@ -1132,7 +1132,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1155,7 +1155,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1194,10 +1194,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/checkerbutton.h"
+        "/Users/wzr/Team5Checker/checker/checkerbutton.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/checkerbutton.h"
+    "file": "/Users/wzr/Team5Checker/checker/checkerbutton.h"
 },
 {
     "arguments": [
@@ -1207,7 +1207,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1230,7 +1230,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1269,10 +1269,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/chooseclient.h"
+        "/Users/wzr/Team5Checker/checker/chooseclient.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/chooseclient.h"
+    "file": "/Users/wzr/Team5Checker/checker/chooseclient.h"
 },
 {
     "arguments": [
@@ -1282,7 +1282,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1305,7 +1305,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1344,10 +1344,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/chooseservice.h"
+        "/Users/wzr/Team5Checker/checker/chooseservice.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/chooseservice.h"
+    "file": "/Users/wzr/Team5Checker/checker/chooseservice.h"
 },
 {
     "arguments": [
@@ -1357,7 +1357,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1380,7 +1380,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1419,10 +1419,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/clientwindow.h"
+        "/Users/wzr/Team5Checker/checker/clientwindow.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/clientwindow.h"
+    "file": "/Users/wzr/Team5Checker/checker/clientwindow.h"
 },
 {
     "arguments": [
@@ -1432,7 +1432,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1455,7 +1455,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1494,10 +1494,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/mydialog.h"
+        "/Users/wzr/Team5Checker/checker/mydialog.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/mydialog.h"
+    "file": "/Users/wzr/Team5Checker/checker/mydialog.h"
 },
 {
     "arguments": [
@@ -1507,7 +1507,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1530,7 +1530,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1569,10 +1569,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/mydialog1.h"
+        "/Users/wzr/Team5Checker/checker/mydialog1.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/mydialog1.h"
+    "file": "/Users/wzr/Team5Checker/checker/mydialog1.h"
 },
 {
     "arguments": [
@@ -1582,7 +1582,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1605,7 +1605,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1644,10 +1644,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/networkdata.h"
+        "/Users/wzr/Team5Checker/checker/networkdata.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/networkdata.h"
+    "file": "/Users/wzr/Team5Checker/checker/networkdata.h"
 },
 {
     "arguments": [
@@ -1657,7 +1657,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1680,7 +1680,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1719,10 +1719,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/networkserver.h"
+        "/Users/wzr/Team5Checker/checker/networkserver.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/networkserver.h"
+    "file": "/Users/wzr/Team5Checker/checker/networkserver.h"
 },
 {
     "arguments": [
@@ -1732,7 +1732,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1755,7 +1755,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1794,10 +1794,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/networksocket.h"
+        "/Users/wzr/Team5Checker/checker/networksocket.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/networksocket.h"
+    "file": "/Users/wzr/Team5Checker/checker/networksocket.h"
 },
 {
     "arguments": [
@@ -1807,7 +1807,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1830,7 +1830,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1869,10 +1869,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/rank.h"
+        "/Users/wzr/Team5Checker/checker/rank.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/rank.h"
+    "file": "/Users/wzr/Team5Checker/checker/rank.h"
 },
 {
     "arguments": [
@@ -1882,7 +1882,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1905,7 +1905,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -1944,10 +1944,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/room.h"
+        "/Users/wzr/Team5Checker/checker/room.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/room.h"
+    "file": "/Users/wzr/Team5Checker/checker/room.h"
 },
 {
     "arguments": [
@@ -1957,7 +1957,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -1980,7 +1980,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -2019,10 +2019,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/serverwait.h"
+        "/Users/wzr/Team5Checker/checker/serverwait.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/serverwait.h"
+    "file": "/Users/wzr/Team5Checker/checker/serverwait.h"
 },
 {
     "arguments": [
@@ -2032,7 +2032,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -2055,7 +2055,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -2094,10 +2094,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/wait.h"
+        "/Users/wzr/Team5Checker/checker/wait.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/wait.h"
+    "file": "/Users/wzr/Team5Checker/checker/wait.h"
 },
 {
     "arguments": [
@@ -2107,7 +2107,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -2130,7 +2130,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -2169,10 +2169,10 @@
         "-Wno-unknown-pragmas",
         "-Wno-unknown-warning-option",
         "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/version without islegal/checker/widget.h"
+        "/Users/wzr/Team5Checker/checker/widget.h"
     ],
     "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/version without islegal/checker/widget.h"
+    "file": "/Users/wzr/Team5Checker/checker/widget.h"
 },
 {
     "arguments": [
@@ -2182,7 +2182,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -2205,232 +2205,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers",
-        "-I",
-        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang",
-        "-F",
-        "/Users/wzr/Qt/6.3.0/macos/lib",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
-        "-isystem",
-        "/Applications/Qt Creator.app/Contents/Resources/libexec/clang/lib/clang/14.0.0/include",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-        "-fmessage-length=0",
-        "-fdiagnostics-show-note-include-stack",
-        "-fretain-comments-from-system-headers",
-        "-fmacro-backtrace-limit=0",
-        "-ferror-limit=1000",
-        "-x",
-        "c++-header",
-        "-Wno-unknown-pragmas",
-        "-Wno-unknown-warning-option",
-        "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_clientwindow.h"
-    ],
-    "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_clientwindow.h"
-},
-{
-    "arguments": [
-        "clang",
-        "-I",
-        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders",
-        "-I",
-        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
-        "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
-        "-nostdinc",
-        "-nostdinc++",
-        "-pipe",
-        "-stdlib=libc++",
-        "-g",
-        "-std=gnu++1z",
-        "-isysroot",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk",
-        "-mmacosx-version-min=10.14",
-        "-Wall",
-        "-Wextra",
-        "-fPIC",
-        "-fsyntax-only",
-        "-m64",
-        "--target=x86_64-apple-darwin21.3.0",
-        "-DQ_CREATOR_RUN",
-        "-DQT_QML_DEBUG",
-        "-DQT_WIDGETS_LIB",
-        "-DQT_GUI_LIB",
-        "-DQT_NETWORK_LIB",
-        "-DQT_CORE_LIB",
-        "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers",
-        "-I",
-        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang",
-        "-F",
-        "/Users/wzr/Qt/6.3.0/macos/lib",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
-        "-isystem",
-        "/Applications/Qt Creator.app/Contents/Resources/libexec/clang/lib/clang/14.0.0/include",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-        "-fmessage-length=0",
-        "-fdiagnostics-show-note-include-stack",
-        "-fretain-comments-from-system-headers",
-        "-fmacro-backtrace-limit=0",
-        "-ferror-limit=1000",
-        "-x",
-        "c++-header",
-        "-Wno-unknown-pragmas",
-        "-Wno-unknown-warning-option",
-        "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_wait.h"
-    ],
-    "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_wait.h"
-},
-{
-    "arguments": [
-        "clang",
-        "-I",
-        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders",
-        "-I",
-        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
-        "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
-        "-nostdinc",
-        "-nostdinc++",
-        "-pipe",
-        "-stdlib=libc++",
-        "-g",
-        "-std=gnu++1z",
-        "-isysroot",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk",
-        "-mmacosx-version-min=10.14",
-        "-Wall",
-        "-Wextra",
-        "-fPIC",
-        "-fsyntax-only",
-        "-m64",
-        "--target=x86_64-apple-darwin21.3.0",
-        "-DQ_CREATOR_RUN",
-        "-DQT_QML_DEBUG",
-        "-DQT_WIDGETS_LIB",
-        "-DQT_GUI_LIB",
-        "-DQT_NETWORK_LIB",
-        "-DQT_CORE_LIB",
-        "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers",
-        "-I",
-        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers",
-        "-I",
-        "/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang",
-        "-F",
-        "/Users/wzr/Qt/6.3.0/macos/lib",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
-        "-isystem",
-        "/Applications/Qt Creator.app/Contents/Resources/libexec/clang/lib/clang/14.0.0/include",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
-        "-isystem",
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-        "-fmessage-length=0",
-        "-fdiagnostics-show-note-include-stack",
-        "-fretain-comments-from-system-headers",
-        "-fmacro-backtrace-limit=0",
-        "-ferror-limit=1000",
-        "-x",
-        "c++-header",
-        "-Wno-unknown-pragmas",
-        "-Wno-unknown-warning-option",
-        "-Wno-documentation-unknown-command",
-        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_rank.h"
-    ],
-    "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
-    "file": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_rank.h"
-},
-{
-    "arguments": [
-        "clang",
-        "-I",
-        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders",
-        "-I",
-        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
-        "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
-        "-nostdinc",
-        "-nostdinc++",
-        "-pipe",
-        "-stdlib=libc++",
-        "-g",
-        "-std=gnu++1z",
-        "-isysroot",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk",
-        "-mmacosx-version-min=10.14",
-        "-Wall",
-        "-Wextra",
-        "-fPIC",
-        "-fsyntax-only",
-        "-m64",
-        "--target=x86_64-apple-darwin21.3.0",
-        "-DQ_CREATOR_RUN",
-        "-DQT_QML_DEBUG",
-        "-DQT_WIDGETS_LIB",
-        "-DQT_GUI_LIB",
-        "-DQT_NETWORK_LIB",
-        "-DQT_CORE_LIB",
-        "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -2482,7 +2257,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -2505,7 +2280,7 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",
@@ -2557,7 +2332,7 @@
         "-I",
         "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-gQyRee/clang-uiheader-gZxCnv",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
@@ -2580,7 +2355,232 @@
         "-DQT_NETWORK_LIB",
         "-DQT_CORE_LIB",
         "-I",
-        "/Users/wzr/Team5Checker/version without islegal/checker",
+        "/Users/wzr/Team5Checker/checker",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers",
+        "-I",
+        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang",
+        "-F",
+        "/Users/wzr/Qt/6.3.0/macos/lib",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "-isystem",
+        "/Applications/Qt Creator.app/Contents/Resources/libexec/clang/lib/clang/14.0.0/include",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+        "-fmessage-length=0",
+        "-fdiagnostics-show-note-include-stack",
+        "-fretain-comments-from-system-headers",
+        "-fmacro-backtrace-limit=0",
+        "-ferror-limit=1000",
+        "-x",
+        "c++-header",
+        "-Wno-unknown-pragmas",
+        "-Wno-unknown-warning-option",
+        "-Wno-documentation-unknown-command",
+        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_rank.h"
+    ],
+    "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
+    "file": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_rank.h"
+},
+{
+    "arguments": [
+        "clang",
+        "-I",
+        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders",
+        "-I",
+        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
+        "-I",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
+        "-nostdinc",
+        "-nostdinc++",
+        "-pipe",
+        "-stdlib=libc++",
+        "-g",
+        "-std=gnu++1z",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk",
+        "-mmacosx-version-min=10.14",
+        "-Wall",
+        "-Wextra",
+        "-fPIC",
+        "-fsyntax-only",
+        "-m64",
+        "--target=x86_64-apple-darwin21.3.0",
+        "-DQ_CREATOR_RUN",
+        "-DQT_QML_DEBUG",
+        "-DQT_WIDGETS_LIB",
+        "-DQT_GUI_LIB",
+        "-DQT_NETWORK_LIB",
+        "-DQT_CORE_LIB",
+        "-I",
+        "/Users/wzr/Team5Checker/checker",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers",
+        "-I",
+        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang",
+        "-F",
+        "/Users/wzr/Qt/6.3.0/macos/lib",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "-isystem",
+        "/Applications/Qt Creator.app/Contents/Resources/libexec/clang/lib/clang/14.0.0/include",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+        "-fmessage-length=0",
+        "-fdiagnostics-show-note-include-stack",
+        "-fretain-comments-from-system-headers",
+        "-fmacro-backtrace-limit=0",
+        "-ferror-limit=1000",
+        "-x",
+        "c++-header",
+        "-Wno-unknown-pragmas",
+        "-Wno-unknown-warning-option",
+        "-Wno-documentation-unknown-command",
+        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_wait.h"
+    ],
+    "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
+    "file": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_wait.h"
+},
+{
+    "arguments": [
+        "clang",
+        "-I",
+        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders",
+        "-I",
+        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
+        "-I",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
+        "-nostdinc",
+        "-nostdinc++",
+        "-pipe",
+        "-stdlib=libc++",
+        "-g",
+        "-std=gnu++1z",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk",
+        "-mmacosx-version-min=10.14",
+        "-Wall",
+        "-Wextra",
+        "-fPIC",
+        "-fsyntax-only",
+        "-m64",
+        "--target=x86_64-apple-darwin21.3.0",
+        "-DQ_CREATOR_RUN",
+        "-DQT_QML_DEBUG",
+        "-DQT_WIDGETS_LIB",
+        "-DQT_GUI_LIB",
+        "-DQT_NETWORK_LIB",
+        "-DQT_CORE_LIB",
+        "-I",
+        "/Users/wzr/Team5Checker/checker",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers",
+        "-I",
+        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/AGL.framework/Headers",
+        "-I",
+        "/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang",
+        "-F",
+        "/Users/wzr/Qt/6.3.0/macos/lib",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "-isystem",
+        "/Applications/Qt Creator.app/Contents/Resources/libexec/clang/lib/clang/14.0.0/include",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
+        "-isystem",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+        "-fmessage-length=0",
+        "-fdiagnostics-show-note-include-stack",
+        "-fretain-comments-from-system-headers",
+        "-fmacro-backtrace-limit=0",
+        "-ferror-limit=1000",
+        "-x",
+        "c++-header",
+        "-Wno-unknown-pragmas",
+        "-Wno-unknown-warning-option",
+        "-Wno-documentation-unknown-command",
+        "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_clientwindow.h"
+    ],
+    "directory": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/.qtc_clangd",
+    "file": "/Users/wzr/Team5Checker/build-checker-Qt_6_3_0_for_macOS-Debug/ui_clientwindow.h"
+},
+{
+    "arguments": [
+        "clang",
+        "-I",
+        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders",
+        "-I",
+        "/Applications/Qt Creator.app/Contents/Resources/cplusplus/wrappedQtHeaders/QtCore",
+        "-I",
+        "/private/var/folders/zg/vgcfzz3n5bx4416wgybbb7j40000gn/T/QtCreator-VTTRLp/clang-uiheader-rWVyvL",
+        "-nostdinc",
+        "-nostdinc++",
+        "-pipe",
+        "-stdlib=libc++",
+        "-g",
+        "-std=gnu++1z",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk",
+        "-mmacosx-version-min=10.14",
+        "-Wall",
+        "-Wextra",
+        "-fPIC",
+        "-fsyntax-only",
+        "-m64",
+        "--target=x86_64-apple-darwin21.3.0",
+        "-DQ_CREATOR_RUN",
+        "-DQT_QML_DEBUG",
+        "-DQT_WIDGETS_LIB",
+        "-DQT_GUI_LIB",
+        "-DQT_NETWORK_LIB",
+        "-DQT_CORE_LIB",
+        "-I",
+        "/Users/wzr/Team5Checker/checker",
         "-I",
         "/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers",
         "-I",

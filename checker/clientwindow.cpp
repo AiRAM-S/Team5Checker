@@ -1353,7 +1353,7 @@ int ClientWindow::PossibleValue(int t,int x,int y,int a,int b,int bx,int by){
     //int msv=0;
    // if(!t)
    // msv=morestepvalue(t);
-    return fv*50+1000+vb1-v1+v2+v3; //    v3+2*vb1-v1+
+    return fv*50+1000+vb1-v1+v2-v3; //    v3+2*vb1-v1+
 }
 
 float ddd;
