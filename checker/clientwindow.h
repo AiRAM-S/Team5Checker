@@ -49,9 +49,6 @@ public:
     NetworkSocket* getSocket(){
         return socket;
     }
-    float guessvalue1(int x,int y,int z);
-    float guessvalue2(int x1,int y1,int x2,int y2);
-    bool guessvalue3(int x,int y);
 
 
 
@@ -113,8 +110,8 @@ private:
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
-    QPushButton *ai;
-    int clicknum;
+   // QPushButton *ai;
+   // int clicknum;
 
     QPushButton* infoTest;//测试客户端向服务端发送错误信号
 
@@ -150,6 +147,8 @@ public:
      void dfsplus(int t,int k,int x,int y,int bx,int by);
     inline int distance(QPointF,QPointF);
     bool islonely(int,int);
+
+    bool guessvalue4(int x,int y);
 
 private:
     void passit1(QString a)

@@ -30,232 +30,6 @@ void ClientWindow::cbuttonpress()
     z->show();
 }
 
-float ddd,fll;
-float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目标要移动的位置的x,y坐标和该棋子的初始区域如‘A’，计算到目标区域的平均距离
-{
-    ddd=0;
-    fll=0;
-    float x1=0,y1=0;
-    if(z=='A')
-    {
-        for(int i=1;i<=4;i++)
-        {
-            for(int j=-5;j>=-i-4;j--)
-            {
-                if(!isfill[i+8][j+8])
-                {
-                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                    ddd+=sqrt(x1+y1);
-                }
-                else
-                {
-                    for(int k=0;k<10;k++)
-                    {
-                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
-                        {
-                            fll=1;
-                            break;
-                        }
-                    }
-                    if(!fll)
-                    {
-                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                        ddd+=sqrt(x1+y1);
-                    }
-                    fll=0;
-                }
-            }
-        }
-    }
-    else if(z=='B')
-    {
-        for(int j=-4;j<=-1;j++)
-        {
-            for(int i=-4;i<=-j-5;i++)
-            {
-                if(!isfill[i+8][j+8])
-                {
-                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                    ddd+=sqrt(x1+y1);
-                }
-                else
-                {
-                    for(int k=0;k<10;k++)
-                    {
-                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
-                        {
-                            fll=1;
-                            break;
-                        }
-                    }
-                    if(!fll)
-                    {
-                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                        ddd+=sqrt(x1+y1);
-                    }
-                    fll=0;
-                }
-            }
-        }
-    }
-    else if(z=='C')
-    {
-        for(int i=-8;i<=-5;i++)
-        {
-            for(int j=4;j>=-i-4;j--)
-            {
-                if(!isfill[i+8][j+8])
-                {
-                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                    ddd+=sqrt(x1+y1);
-                }
-                else
-                {
-                    for(int k=0;k<10;k++)
-                    {
-                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
-                        {
-                            fll=1;
-                            break;
-                        }
-                    }
-                    if(!fll)
-                    {
-                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                        ddd+=sqrt(x1+y1);
-                    }
-                    fll=0;
-                }
-            }
-        }
-    }
-    else if(z=='D')
-    {
-        for(int i=-4;i<=-1;i++)
-        {
-            for(int j=-i+4;j>=5;j--)
-            {
-                if(!isfill[i+8][j+8])
-                {
-                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                    ddd+=sqrt(x1+y1);
-                }
-                else
-                {
-                    for(int k=0;k<10;k++)
-                    {
-                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
-                        {
-                            fll=1;
-                            break;
-                        }
-                    }
-                    if(!fll)
-                    {
-                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                        ddd+=sqrt(x1+y1);
-                    }
-                    fll=0;
-                }
-            }
-        }
-    }
-    else if(z=='E')
-    {
-        for(int j=1;j<=4;j++)
-        {
-            for(int i=4;i>=-j+5;i--)
-            {
-                if(!isfill[i+8][j+8])
-                {
-                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                    ddd+=sqrt(x1+y1);
-                }
-                else
-                {
-                    for(int k=0;k<10;k++)
-                    {
-                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
-                        {
-                            fll=1;
-                            break;
-                        }
-                    }
-                    if(!fll)
-                    {
-                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                        ddd+=sqrt(x1+y1);
-                    }
-                    fll=0;
-                }
-            }
-        }
-    }
-    else if(z=='F')
-    {
-        for(int i=5;i<=8;i++)
-        {
-            for(int j=-4;j<=-i+4;j++)
-            {
-                if(!isfill[i+8][j+8])
-                {
-                    x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                    y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                    ddd+=sqrt(x1+y1);
-                }
-                else
-                {
-                    for(int k=0;k<10;k++)
-                    {
-                        if((i+8)==btn[z][k]->x&&(j+8)==btn[z][k]->y)
-                        {
-                            fll=1;
-                            break;
-                        }
-                    }
-                    if(!fll)
-                    {
-                        x1=(loc[x][y].rx()-loc[i+8][j+8].rx())*(x-loc[i+8][j+8].rx());
-                        y1=(loc[x][y].ry()-loc[i+8][j+8].ry())*(y-loc[i+8][j+8].ry());
-                        ddd+=sqrt(x1+y1);
-                    }
-                    fll=0;
-                }
-            }
-        }
-    }
-    return ddd/10.0;
-}
-
-float ClientWindow::guessvalue2(int x1,int y1,int x2,int y2)//这里传入的参数是目标位置和初始位置的x,y坐标，计算移动的距离大小,目前想的是，如果到中心区域一样，就选走到距离最长的
-{
-    return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-}
-
-bool ClientWindow::guessvalue3(int x,int y)//检查移动处是否可以跳跃
-{
-    int direction[6][2]={{1,0},{-1,0},{0,1},{-1,1},{0,-1},{1,1}};
-    for(int i=0;i<6;i++)
-    {
-        int x1=direction[i][0]+x,x2=direction[i][0]+x1;
-        int y1=direction[i][1]+y,y2=direction[i][1]+y1;
-        if(isfill[x1][y1]&&!isfill[x2][y2])
-            return true;
-    }
-    return false;
-}
-
-
 ClientWindow::ClientWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ClientWindow)
@@ -339,24 +113,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     connect(ui->QUIT, SIGNAL(clicked(bool)), this, SLOT(cbuttonpress()));  //弹出退出窗口
     //设置禁止摆烂弹窗
         
-    ai=new QPushButton(this);
-    ai->setGeometry(600,90,73,31);
-    ai->setText("deposit");
-    clicknum=0;
-    ai->setStyleSheet("background-color:  rgb(255,255,255);color: rgb(255, 85, 0);font:bold 16px;");
-        connect(ai, &QPushButton::clicked, [&]()  //进入AI
-        {
-                    ++clicknum;
-                    if(clicknum%2)//进入AI模式
-                    {
-                        ai->setText("cancel");
-                        //dfs();
-                    }
-                    else//退出AI模式
-                    {
-                        ai->setText("deposit");
-                    }
-        });
+
         
     nobai = new QDialog(this);
     QLabel *lb = new QLabel("禁止摆烂",nobai);
@@ -1837,6 +1594,21 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
  int ClientWindow::distance(QPointF p,QPointF q){
      return sqrt((p.rx()-q.rx())*(p.rx()-q.rx())+(p.ry()-q.ry())*(p.ry()-q.ry()));
  }
+
+
+ bool ClientWindow::guessvalue4(int x,int y)//检查移动处是否可以跳跃
+ {
+     int direction[6][2]={{1,0},{-1,0},{0,1},{-1,1},{0,-1},{1,1}};
+     for(int i=0;i<6;i++)
+     {
+         int x1=direction[i][0]+x,x2=direction[i][0]+x1;
+         int y1=direction[i][1]+y,y2=direction[i][1]+y1;
+         if(isfill[x1][y1]&&!isfill[x2][y2])
+             return true;
+     }
+     return false;
+ }
+
 
  //到达终点的估值
  int ClientWindow::fillvalue(int x){
