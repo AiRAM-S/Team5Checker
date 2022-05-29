@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
             e->hide();
             //e->setPort(port);
             //建立连接
-            e->getSocket()->hello(ip,9999);
+            e->getSocket()->hello("127.0.0.1",9999);
             qDebug() << "say hello to" << ip;
             //test
             //qDebug() << "client send hello:" << port;
@@ -52,19 +52,11 @@ int main(int argc, char *argv[])
             e2->hide();
             //e2->setPort(port);
             //建立连接
-            e2->getSocket()->hello(ip,9999);
+            e2->getSocket()->hello("127.0.0.1",9999);
             //test
             //qDebug() << "client send hello:" << port;
             //test end
             e2->cc.show();
-
-//            ClientWindow *e3 = new ClientWindow;
-//            qDebug() << "point 1";
-//            e3->hide();
-//            //e3->setPort(port);
-//            //建立连接
-//            e3->getSocket()->hello(ip,9999);
-//            e3->cc.show();
         //}
     return a.exec();
 }

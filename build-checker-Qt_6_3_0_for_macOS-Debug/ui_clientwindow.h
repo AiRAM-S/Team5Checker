@@ -12,9 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -24,19 +22,18 @@ class Ui_ClientWindow
 public:
     QWidget *centralwidget;
     QPushButton *pushButton;
-    QMenuBar *menubar;
-    QStatusBar *statusbar;
 
     void setupUi(QMainWindow *ClientWindow)
     {
         if (ClientWindow->objectName().isEmpty())
             ClientWindow->setObjectName(QString::fromUtf8("ClientWindow"));
-        ClientWindow->resize(823, 437);
+        ClientWindow->resize(823, 430);
         QFont font;
         font.setPointSize(11);
         font.setBold(true);
         ClientWindow->setFont(font);
         ClientWindow->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);"));
+        ClientWindow->setDockOptions(QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::VerticalTabs);
         centralwidget = new QWidget(ClientWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         pushButton = new QPushButton(centralwidget);
@@ -46,13 +43,6 @@ public:
         pushButton->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);\n"
 "background-color: rgb(255, 255, 255);"));
         ClientWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(ClientWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 823, 21));
-        ClientWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(ClientWindow);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        ClientWindow->setStatusBar(statusbar);
 
         retranslateUi(ClientWindow);
 

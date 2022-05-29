@@ -822,8 +822,6 @@ Widget::Widget(QWidget *parent)
                this->killTimer(id);
                timeleft = 30;
                clock2->setText("30 s");
-
-               if(totalstep>70*playernum){
                    if(isfinish(pln)){
                        server->send(client,NetworkData(OPCODE::END_TURN_OP,QString(),QString()));
                        //test
@@ -835,8 +833,14 @@ Widget::Widget(QWidget *parent)
                                break;
                            }
                        }
-               }}
-               if(overnum==playernum) {
+               }
+               if(overnum==playernum-1) {
+                   for(int i=0;i<playernum;i++){
+                       if(!isover[i]) {
+                           overlist.append(roomList[0].playerList[i].getID());
+                           break;
+                       }
+                   }
                     if(overlist.length()){
                        for(int g=0;g<overlist.length();g++)
                            ranklist.append(overlist[overlist.length()-g-1]).append(" ");
@@ -999,7 +1003,13 @@ Widget::Widget(QWidget *parent)
                 //if(i!=flag)
                     server->send(roomList[0].playerList[i].getSocket(),NetworkData(OPCODE::MOVE_OP,QString(roomList[0].playerList[flag].getPlace()),QString("-1")));
             }
-            if(overnum==playernum) {
+            if(overnum==playernum-1) {
+                for(int i=0;i<playernum;i++){
+                    if(!isover[i]) {
+                        overlist.append(roomList[0].playerList[i].getID());
+                        break;
+                    }
+                }
                  if(overlist.length()){
                     for(int g=0;g<overlist.length();g++)
                         ranklist.append(overlist[overlist.length()-g-1]).append(" ");

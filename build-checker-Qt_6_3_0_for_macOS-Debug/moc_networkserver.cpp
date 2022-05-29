@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../checker/networkserver.h"
+#include "../version without islegal/checker/networkserver.h"
 #include <QtNetwork/QSslPreSharedKeyAuthenticator>
 #include <QtNetwork/QSslError>
 #include <QtCore/qbytearray.h>
