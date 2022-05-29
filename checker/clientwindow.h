@@ -51,6 +51,7 @@ public:
     }
     float guessvalue1(int x,int y,int z);
     float guessvalue2(int x1,int y1,int x2,int y2);
+    bool guessvalue3(int x,int y);
 
 protected:
     void paintEvent(QPaintEvent *);
