@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
     if(!ifsta)
         return a.exec();
     QString str=h.settype->currentText();
-    QString ip = h.port;
+    QString ips = h.ip;
+    QString ports=h.port;
     qDebug() << "debug: port is";
     //qDebug() << port.toInt();
         if(str=="Server")
@@ -40,8 +41,8 @@ int main(int argc, char *argv[])
             e->hide();
             //e->setPort(port);
             //建立连接
-            e->getSocket()->hello(ip,9999);
-            qDebug() << "say hello to" << ip;
+            e->getSocket()->hello(ips,ports.toInt());
+//            qDebug() << "say hello to" << ip;
             e->cc.show();
         }
     return a.exec();

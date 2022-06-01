@@ -929,7 +929,8 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         default:
-
+        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+        break;
     }
 }
 

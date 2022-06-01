@@ -566,7 +566,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
             }
         }
         if(!isValid){
-            server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::INVALID_REQ)),QString()));
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::INVALID_REQ)),QString()));
             break;
         }
         //test
@@ -616,7 +616,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
             ServerWait->show();
         }
         if(nameConflict){
-            server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::INVALID_JOIN)),QString("")));
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::INVALID_JOIN)),QString("")));
             //test
             qDebug() << "server send INVALID_JOIN";
             //test end
@@ -624,7 +624,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
         if(canEnter&&objRoom>=0){
             if(roomList[objRoom].ifON()){
                 //如果目标房间游戏开始，则不允许加入
-                server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::ROOM_IS_RUNNING)),QString("")));
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::ROOM_IS_RUNNING)),QString("")));
             //test
             qDebug() << "server send ROOM_IS_RUNNING";
             //test end
@@ -692,7 +692,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
             }
         }
         if(!isValid){
-            server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::INVALID_REQ)),QString("")));
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::INVALID_REQ)),QString("")));
             break;
         }
         //test
@@ -735,14 +735,14 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
                     break;
                 }
                 else
-                    server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::NOT_IN_ROOM)),QString("")));
+                    server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::NOT_IN_ROOM)),QString("")));
                     //test
                     qDebug() << "server send NOT_IN_ROOM";
                     //test end
             }
         }
         if(!roomFound){
-            server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::OTHER_ERROR)),QString("RoomID Not Found")));
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::OTHER_ERROR)),QString("RoomID Not Found")));
             //test
             qDebug() << "server send OTHER_ERROR:RoomID Not Found";
             //test end
@@ -756,7 +756,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
         qDebug()<<"receive success";
         qDebug() << "path is " << data.data2;
         if(place2num(data.data1.toUtf8()[0])!=flag){
-            server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::OUTTURN_MOVE)),QString("")));
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::OUTTURN_MOVE)),QString("")));
             break;
         }
         QStringList step = data.data2.split(" ");
@@ -774,7 +774,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
             }
         }
         if(!belonged){
-            server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::OTHER_ERROR)),QString("not your checker")));
+            server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::OTHER_ERROR)),QString("not your checker")));
             break;
         }
         chosenloc[0]=btnx;
@@ -801,7 +801,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
                    else{
                        legalmove = false;
                        //发送错误信号
-                       server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::INVALID_MOVE)),QString("move is illegal")));
+                       server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::INVALID_MOVE)),QString("move is illegal")));
                        //test
                        qDebug() << "server send INVALID_MOVE";
                        //test end
@@ -903,7 +903,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
                 }
             }
             if(!isValid){
-                server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::INVALID_REQ)),QString("")));
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::INVALID_REQ)),QString("")));
                 break;
             }
             //test
@@ -989,7 +989,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
                     }
                 }
             if(!found)
-                server->send(client,NetworkData(OPCODE::ERROR_OP,QString(static_cast<int>(ERRCODE::NOT_IN_ROOM)),QString("")));
+                server->send(client,NetworkData(OPCODE::ERROR_OP,QString::number(static_cast<int>(ERRCODE::NOT_IN_ROOM)),QString("")));
         }
     default:
     break;

@@ -49,8 +49,9 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));  //不加入游戏
     connect(join, &QPushButton::clicked, [&]()  //加入游戏并关闭开始窗口
     {
-        if(settype->currentIndex()!=-1&&PORTS->text()!="请输入..."){
+        if(settype->currentIndex()!=-1&&PORTS->text()!="请输入端口号..."&&IPS->text()!="请输入IP地址..."){
                     port=PORTS->text();
+                    ip=IPS->text();
             joinSuccessed = true;
             hide();
         }
@@ -73,15 +74,29 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     settype->setGeometry(180,355,150,30);
 
     PORT=new QLabel(this);
-    PORT->move(178,390);
-    PORT->setText("IP");
+    PORT->move(178,413);
+    PORT->setText("Port");
     PORT->setStyleSheet("color:white;font:bold 12px;}");
 
-   // QValidator *validator=new QIntValidator(1024, 49151, this);
+    IP=new QLabel(this);
+    IP->move(178,385);
+    IP->setText("IP");
+    IP->setStyleSheet("QLabel{color:white;font:bold 12px;}");
+
+    QRegularExpression rx3;
+    rx3.setPattern("[0-9.]{7,15}");
+    QValidator *validator3 = new QRegularExpressionValidator(rx3,this);
+    IPS=new QLineEdit(this);
+    IPS->move(205,385);
+    IPS->setPlaceholderText("请输入IP地址...");
+    IPS->setStyleSheet("QLineEdit{color:black;font:11px}");
+    IPS->setValidator(validator3);
+
+    QValidator *validator=new QIntValidator(1024, 49151, this);
     PORTS=new QLineEdit(this);
-    PORTS->move(205,385);
-    PORTS->setPlaceholderText("请输入...");
+    PORTS->move(205,413);
+    PORTS->setPlaceholderText("请输入端口号...");
     PORTS->setStyleSheet("QLineEdit{color:black;font:11px}");
-   // PORTS->setValidator(validator);
+    PORTS->setValidator(validator);
 
 }
