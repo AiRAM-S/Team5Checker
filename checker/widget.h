@@ -44,6 +44,7 @@ public:
     bool isfinish(int x);
     CheckerButton* int2btn(int x,int y);
     int place2num(char pln);
+    char num2place(int);
     void setPort(QString p){
         Port = p;
         return;
