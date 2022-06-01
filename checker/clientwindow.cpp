@@ -6,6 +6,7 @@
 #include<QDebug>
 #include<QLabel>
 #include<QFont>
+#include<QDateTime>
 #include"networkdata.h"
 #include"chooseclient.h"
 
@@ -76,6 +77,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     connect(infoTest,&QPushButton::clicked,this,[=](){
         socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),QString("-2 5 -2 3")));
     });
+    infoTest->hide();
     //test end
 
     connect(ww.exi,&QPushButton::clicked,this,[=](){
@@ -132,7 +134,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         clock1->setGeometry(70,500,300,50);
         clock1->setStyleSheet("color:brown;");
         clock1->hide();
-        clock2 = new QLabel("30 s",this);
+        clock2 = new QLabel("15 s",this);
         clock2->setFont(QFont("Agency FB",20));
         clock2->setStyleSheet("color:brown;");
         clock2->setGeometry(70,530,300,50);
@@ -474,11 +476,11 @@ ClientWindow::~ClientWindow()
     delete ui;
 }
 
-int timeLeft=30;
+int timeLeft=15;
 
 void ClientWindow::receive(NetworkData data){
     switch(data.op){
-        case OPCODE::JOIN_ROOM_OP://有新玩家加入
+        case OPCODE::JOIN_ROOM_OP://有新玩家加入 判定了
         {
         //请求合法性判定
         bool isValid=true;
@@ -501,6 +503,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         if(!isValid){
+            QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
             break;
         }
         //test
@@ -512,8 +515,8 @@ void ClientWindow::receive(NetworkData data){
         playernum++;
         }
         break;
-        case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功
-    {
+        case OPCODE::JOIN_ROOM_REPLY_OP://加入房间成功 已判定
+        {
         //test
         qDebug() << "client receive JOIN_ROOM_REPLY_OP";
         //test end
@@ -540,8 +543,8 @@ void ClientWindow::receive(NetworkData data){
             playerState.append(0);
             playernum = players.length();
         }
-        //            qDebug() << "previous player name is " << players;
-        //            qDebug() << "now player number is " << players.length();
+//          qDebug() << "previous player name is " << players;
+//          qDebug() << "now player number is " << players.length();
         for(int i=0;i<players.length();i++)
         {
             ww.ids[i]->setText(players.at(i));
@@ -550,9 +553,9 @@ void ClientWindow::receive(NetworkData data){
         }
         cc.hide();
         ww.show();
-    }
+        }
         break;
-        case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间
+        case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间 已判定
         {
             //请求合法性判定
             bool isValid=true;
@@ -575,6 +578,7 @@ void ClientWindow::receive(NetworkData data){
                 }
             }
             if(!isValid){
+                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
                 break;
             }
             //test
@@ -582,22 +586,24 @@ void ClientWindow::receive(NetworkData data){
             //test end
 
             int Index = players.indexOf(data.data1);
-            players.removeAt(Index);
-            playerState.removeAt(Index);
-            for(int m=Index;m<playernum-1;m++){
-                ww.ids[m]->setText(ww.ids[m+1]->text());
-                ww.sis[m]->setText(ww.sis[m+1]->text());
+            if(Index>=0&&Index<=players.length()){
+                players.removeAt(Index);
+                playerState.removeAt(Index);
+                for(int m=Index;m<playernum-1;m++){
+                    ww.ids[m]->setText(ww.ids[m+1]->text());
+                    ww.sis[m]->setText(ww.sis[m+1]->text());
+                }
+                ww.ids[playernum-1]->setText("");
+                ww.sis[playernum-1]->setText("Waiting");
             }
-            ww.ids[playernum-1]->setText("");
-            ww.sis[playernum-1]->setText("Waiting");
         }
         break;
-        case OPCODE::CLOSE_ROOM_OP://关闭房间 应该是回到进房界面
+        case OPCODE::CLOSE_ROOM_OP://关闭房间 应该是回到进房界面 task里好像没有设计
             cc.show();
             ww.hide();
         break;
-        case OPCODE::PLAYER_READY_OP://有玩家准备就绪
-    {
+        case OPCODE::PLAYER_READY_OP://有玩家准备就绪 已判定
+        {
         //请求合法性判定
         bool isValid=true;
         if(data.data1.length()>20||data.data1.isEmpty())
@@ -619,9 +625,9 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         if(!isValid){
+            QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
             break;
         }
-
         //test
         qDebug() << "client receive PLAYER_READY_OP";
         //test end
@@ -629,109 +635,146 @@ void ClientWindow::receive(NetworkData data){
             playerState[players.indexOf(data.data1)] = 1;
             ww.sis[players.indexOf(data.data1)]->setText("Ready");
         }
-    }
+        }
         break;
-        case OPCODE::START_GAME_OP://开始游戏 实现了一半
+        case OPCODE::START_GAME_OP://开始游戏
            {
-            //test
-            qDebug() << "client receive START_GAME_OP";
-            //test end
-            QStringList pls = data.data1.split(" ");
-            if(pls[pls.length()-1]==""){
-                pls.removeLast();
+            if((!data.data1.isEmpty())&&(!data.data2.isEmpty())){
+                //test
+                qDebug() << "client receive START_GAME_OP";
+                //test end
+                QStringList pls = data.data1.split(" ");
+                if(pls[pls.length()-1]==""){
+                    pls.removeLast();
+                }
+                QStringList seq = data.data2.split(" ");
+                if(seq[seq.length()-1]==""){
+                    seq.removeLast();
+                }
+                if(pls.length()!=seq.length()||(!(pls.length()==2||pls.length()==3||pls.length()==6))){
+                    //玩家人数与序列人数不符 或玩家人数不对
+                    QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                    break;
+                }
+                playernum=seq.length();
+                for(int i=0;i<playernum;i++){
+                    players.replace(place2num(seq[i].toUtf8().at(0)),pls[i]);
+                }
+                myPos = seq.at(pls.indexOf(PlName)).toLatin1()[0];
+                //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
+                initializeChecker(data.data2);//画棋子
+                setPlayerTable();
+                ww.hide();
+                this->setWindowTitle(QString("Client %1").arg(PlName));
+                this->show();
+                qDebug()<<myPos<<' '<<place2num(myPos);
             }
-            QStringList seq = data.data2.split(" ");
-            if(seq[seq.length()-1]==""){
-                seq.removeLast();
+            else{
+                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
             }
-            if(pls.length()!=seq.length()){
-                //玩家人数与序列人数不符
-                break;
-            }
-            playernum=seq.length();
-            for(int i=0;i<playernum;i++){
-                players.replace(place2num(seq[i].toUtf8().at(0)),pls[i]);
-            }
-            myPos = seq.at(pls.indexOf(PlName)).toLatin1()[0];
-            //接下来需要设定 只有己方棋子可动,以及根据data2画棋盘
-            initializeChecker(data.data2);//画棋子
-            setPlayerTable();
-            if(myPos!='A'){
-//                for(int i=0;i<10;i++)
-//                    btn[0][i]->setCheckable(true);
-                nowplayer->setText("Not Your Turn");
-                nowplayer->setStyleSheet("color:grey");
-//                timeLeft = 30;
-//                id=startTimer(1000);
-//                clock1->show();
-//                clock2->show();
-            }
-            ww.hide();
-            this->setWindowTitle(QString("Client %1").arg(PlName));
-            this->show();
-            qDebug()<<myPos<<' '<<place2num(myPos);
         }
         break;
-    case OPCODE::START_TURN_OP://我的回合开始
-    {
-        //test
-        qDebug() << PlName <<" receive START_TURN_OP";
-        //test end
+        case OPCODE::START_TURN_OP://新玩家回合开始
+        {
+            if((!data.data1.isEmpty())&&(!data.data2.isEmpty()))
+            {
+                //在考虑做通过发过来的时间差确定延迟时间
+                if(data.data1.toLatin1()[0]==myPos)//本人下棋
+                {
+                    //test
+                    qDebug() << PlName <<" receive START_TURN_OP";
+                    //test end
+                  
+                    timeLeft=15;//暂时不考虑延迟
+                    id=startTimer(1000);
+                    clock2->setText("15 s");
+                    clock1->show();
+                    clock2->show();
+                    haveJumped=false;
+                    ischosen=false;
+                    isobjset=false;
+                    checked=NULL;
+                    jumped=NULL;
+                    path = "";
+                    flag =place2num(myPos);
+                    step=0;
+                    isaimove=false;
 
-        timeLeft=30;
-        id=startTimer(1000);
-        clock2->setText("30 s");
-        clock1->show();
-        clock2->show();
-        haveJumped=false;
-        ischosen=false;
-        isobjset=false;
-        checked=NULL;
-        jumped=NULL;
-        path = "";
-        flag=place2num(myPos);
-        step=0;
-        isaimove=false;
+                    if(aiflag&&!isaimove){
+                           ai();
+                           isaimove=true;
+                    }
+                    else{
+                        for(int i=0;i<10;i++){
+                            btn[place2num(myPos)][i]->setCheckable(true);
+                        }
+                    }
 
-        if(aiflag&&!isaimove){
-             ai();
-             isaimove=true;
+                    flag =place2num(myPos);
+                    qDebug()<<"now flag"<<myPos<<' '<<flag;                 
+                    nowplayer->setText("Your Turn");
+                    switch(flag){
+                    case red:
+                        nowplayer->setStyleSheet("color:red;");
+                        break;
+                    case blue:
+                        nowplayer->setStyleSheet("color:blue;");
+                        break;
+                    case green:
+                        nowplayer->setStyleSheet("color:green;");
+                        break;
+                    case pink:
+                        nowplayer->setStyleSheet("color:#DB7093;");
+                        break;
+                    case purple:
+                        nowplayer->setStyleSheet("color:#800080;");
+                        break;
+                    case orange:
+                        nowplayer->setStyleSheet("color:#FF4500;");
+                        break;
+                    }
+                    //nowplayer->setText(QString("Player:%1").arg(PlName));
+                }
+                else{
+                    int tmp = flag;
+                    flag = place2num(data.data1.toUtf8()[0]);
+                    if(flag>=playernum){
+                        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                        flag = tmp;
+                        break;
+                    }
+                    step=0;
+                    nowplayer->show();
+                    nowplayer->setText(QString("Now:%1").arg(players.at(flag)));
+                    switch(flag){
+                    case red:
+                        nowplayer->setStyleSheet("color:red;");
+                        break;
+                    case blue:
+                        nowplayer->setStyleSheet("color:blue;");
+                        break;
+                    case green:
+                        nowplayer->setStyleSheet("color:green;");
+                        break;
+                    case pink:
+                        nowplayer->setStyleSheet("color:#DB7093;");
+                        break;
+                    case purple:
+                        nowplayer->setStyleSheet("color:#800080;");
+                        break;
+                    case orange:
+                        nowplayer->setStyleSheet("color:#FF4500;");
+                        break;
+                    }
+                }
+            }
         }
-        else{
-        for(int i=0;i<10;i++){
-            btn[place2num(myPos)][i]->setCheckable(true);
-        }}
-
-        flag =place2num(myPos);
-        qDebug()<<"now flag"<<myPos<<' '<<flag;
-        nowplayer->setText("Your Turn");
-        switch(flag){
-        case red:
-            nowplayer->setStyleSheet("color:red;");
-            break;
-        case blue:
-            nowplayer->setStyleSheet("color:blue;");
-            break;
-        case green:
-            nowplayer->setStyleSheet("color:green;");
-            break;
-        case pink:
-            nowplayer->setStyleSheet("color:#DB7093;");
-            break;
-        case purple:
-            nowplayer->setStyleSheet("color:#800080;");
-            break;
-        case orange:
-            nowplayer->setStyleSheet("color:#FF4500;");
-            break;
-        }
-        //nowplayer->setText(QString("Player:%1").arg(PlName));
-    }
         break;
-    case OPCODE::MOVE_OP://其他玩家移动棋子
+        case OPCODE::MOVE_OP://移动棋子
             {
                 if(data.data1.isEmpty()||data.data2.isEmpty()){
                     //data1 data2不能为空
+                    QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
                     break;
                 }
                 //test
@@ -760,7 +803,7 @@ void ClientWindow::receive(NetworkData data){
                 if(data.data1[0].toLatin1()==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
                     this->killTimer(id);
                     changeplayer();
-                    nowplayer->setText("Not Your Turn");
+                    nowplayer->setText("");
                     nowplayer->setStyleSheet("color:grey;");
                     clock1->hide();
                     clock2->hide();
@@ -768,13 +811,13 @@ void ClientWindow::receive(NetworkData data){
                 }
                 else {
                     flag = place2num(data.data1.toLatin1()[0]);
-                    //nowplayer->setText(QString("Player:%1").arg(players[nowPlpos]));
                     QStringList checkerpath = data.data2.split(" ");
                     if(checkerpath.at(checkerpath.length()-1)==""){
                         checkerpath.removeLast();
                     }
                     if(checkerpath.length()%2==1){
                         //path格式不合法，应为偶数
+                        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
                         break;
                     }
                     int stepnum = checkerpath.length()/2;
@@ -814,11 +857,14 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_GAME_OP://游戏结束
     {
            if(data.data1.isEmpty()){
-               break;
+                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                break;
            }
            //弹排名界面
            QStringList pls = data.data1.split(" ");
-           pls.removeLast();
+           if(pls.at(pls.length()-1)==""){
+               pls.removeLast();
+           }
            rank->ranktable->setRowCount(pls.length());
            rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
            QLabel* conlb=new QLabel(rank);
@@ -857,56 +903,61 @@ void ClientWindow::receive(NetworkData data){
                cc.show();
                this->close();
                ww.hide();
+               this->nowplayer->setText("");
+               this->PlayerTable.clear();
                rank->hide();
            });
            rank->show();
     }
     break;
-    case OPCODE::ERROR_OP://错误
-    {
-        if(data.data1=="INVALID_JOIN")
-            QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
-        else if(data.data1=="INVALID_MOVE"){
-            //把棋子移回去
-            if(checked!=NULL){
-                CheckerMove(checked,loc[btnx][btny]);
-                isfill[btnx][btny] = 1;
-                isfill[objloc[0]][objloc[1]]=0;
-            }
-            QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");}
-        else if(data.data1=="INVALID_REQ")
-            QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
-        else if(data.data1=="NOT_IN_ROOM")
-            QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
-        else if(data.data1=="OUTTURN_MOVE"){
-            //把棋子移回去
-            if(checked!=NULL){
-                CheckerMove(checked,loc[btnx][btny]);
-                isfill[btnx][btny] = 1;
-                isfill[objloc[0]][objloc[1]]=0;
-            }
-            QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
-            }
-        else if(data.data1=="ROOM_IS_RUNNING")
-            QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
-        else if(data.data1=="ROOM_NOT_RUNNING"){
-            //把棋子移回去
-            if(checked!=NULL)
-            {
-                CheckerMove(checked,loc[btnx][btny]);
-                isfill[btnx][btny] = 1;
-                isfill[objloc[0]][objloc[1]]=0;
-            }
-            QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");}
-        else{
-            if(data.data2.isEmpty()){
-                QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
-            }
+        case OPCODE::ERROR_OP://错误
+        {
+            if(data.data1.toInt()==400003)
+                QMessageBox::information(this,QString("error"),QString("用户名已存在"),"OK");
+            else if(data.data1.toInt()==400005){
+                //把棋子移回去
+                if(checked!=NULL){
+                    CheckerMove(checked,loc[btnx][btny]);
+                    isfill[btnx][btny] = 1;
+                    isfill[objloc[0]][objloc[1]]=0;
+                }
+                QMessageBox::information(this,QString("error"),QString("移动不合法"),"OK");}
+            else if(data.data1.toInt()==400006)
+                QMessageBox::information(this,QString("error"),QString("无法解析该请求"),"OK");
+            else if(data.data1.toInt()==400000)
+                QMessageBox::information(this,QString("error"),QString("您不在该房间内"),"OK");
+            else if(data.data1.toInt()==400004){
+                //把棋子移回去
+                if(checked!=NULL){
+                    CheckerMove(checked,loc[btnx][btny]);
+                    isfill[btnx][btny] = 1;
+                    isfill[objloc[0]][objloc[1]]=0;
+                }
+                QMessageBox::information(this,QString("error"),QString("现在不是您的回合"),"OK");
+                }
+            else if(data.data1.toInt()==400001)
+                QMessageBox::information(this,QString("error"),QString("该房间正在游戏中"),"OK");
+            else if(data.data1.toInt()==400002){
+                //把棋子移回去
+                if(checked!=NULL)
+                {
+                    CheckerMove(checked,loc[btnx][btny]);
+                    isfill[btnx][btny] = 1;
+                    isfill[objloc[0]][objloc[1]]=0;
+                }
+                QMessageBox::information(this,QString("error"),QString("房间内无游戏进行"),"OK");}
             else{
-                QMessageBox::information(this,QString("error"),data.data2,"OK");
+                if(data.data2.isEmpty()){
+                    QMessageBox::information(this,QString("error"),QString("未知错误"),"OK");
+                }
+                else{
+                    QMessageBox::information(this,QString("error"),data.data2,"OK");
+                }
             }
         }
-    }
+        default:
+        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+        break;
     }
 }
 
@@ -1168,13 +1219,13 @@ void ClientWindow::initializeChecker(QString data){
 void ClientWindow::setPlayerTable(){
     QLabel* Title = new QLabel(this);
     Title->setFont(QFont("Agency FB",20));
-    Title->setGeometry(15,5,300,50);
+    Title->setGeometry(15,5,200,50);
     Title->setText("Players:");
     Title->setStyleSheet("color:black;");
     PlayerTable.append(Title);
 
     int plnum = players.length();
-    int cir=30;
+    int cir=20;
     for(int i=0;i<plnum;i++){
         QLabel* pl = new QLabel(this);
         pl->setFont(QFont("Agency FB",15));
@@ -1201,7 +1252,7 @@ void ClientWindow::setPlayerTable(){
             break;
         }
         PlayerTable.append(pl);
-        cir += 25;
+        cir += 20;
     }
 }
 

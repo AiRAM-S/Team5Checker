@@ -38,6 +38,7 @@ public:
     QComboBox *setplayer;
     QComboBox *settype;
     QString port;
+    QString ip;
     QPushButton* getJoin(){
         return join;
     }
@@ -52,6 +53,7 @@ private:
     QPushButton *join;  //加入游戏
     QPushButton *an;
     QPushButton *quit;  //退出游戏
+    QLabel *IP;
 
     QLabel *setp;
 
@@ -59,6 +61,7 @@ private:
 
     QPoint p;
     QLineEdit *PORTS;
+    QLineEdit *IPS;
 
 
 
