@@ -840,7 +840,7 @@ void Widget::receiveData(QTcpSocket *client, NetworkData data){
            if(overnum==playernum-1) {
                 for(int i=0;i<playernum;i++){
                     if(!isover[i]){
-                          ranklist.append(roomList[0].playerList[i].getID()).append(" ");
+                           overlist.append(roomList[0].playerList[i].getID());
                           break;
                     }
                 }
@@ -1017,7 +1017,7 @@ void Widget::timerEvent(QTimerEvent *event){
         if(overnum==playernum-1) {
             for(int i=0;i<playernum;i++){
                 if(!isover[i]){
-                    ranklist.append(roomList[0].playerList[i].getID()).append(" ");
+                    overlist.append(roomList[0].playerList[i].getID());
                     break;
                 }
             }

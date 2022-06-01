@@ -1096,6 +1096,9 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
@@ -1234,7 +1237,6 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \
@@ -1306,8 +1308,6 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qhostaddress.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
-		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/wait.h \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/clientwindow.h -o moc_clientwindow.cpp
@@ -1339,6 +1339,9 @@ moc_mydialog.cpp: ../checker/mydialog.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/mydialog.h -o moc_mydialog.cpp
 
@@ -1820,6 +1823,8 @@ moc_serverwait.cpp: ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/serverwait.h -o moc_serverwait.cpp
 
@@ -1866,6 +1871,9 @@ moc_widget.cpp: ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
@@ -2000,7 +2008,6 @@ moc_widget.cpp: ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \
@@ -2259,6 +2266,9 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
@@ -2397,7 +2407,6 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \
@@ -2469,8 +2478,6 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qhostaddress.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
-		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/wait.h \
 		../checker/ui_clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QPainter \
@@ -2511,6 +2518,9 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
@@ -2645,7 +2655,6 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \
@@ -2770,8 +2779,6 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../checker/chooseclient.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QHostAddress \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
-		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/wait.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../checker/main.cpp
 
@@ -2802,6 +2809,9 @@ mydialog.o: ../checker/mydialog.cpp ../checker/mydialog.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QWidget \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -2940,7 +2950,6 @@ mydialog.o: ../checker/mydialog.cpp ../checker/mydialog.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \
@@ -3713,7 +3722,8 @@ networksocket.o: ../checker/networksocket.cpp ../checker/networksocket.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qwaitcondition.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qwineventnotifier.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qxmlstream.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qtcoreversion.h
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qtcoreversion.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o networksocket.o ../checker/networksocket.cpp
 
 rank.o: ../checker/rank.cpp ../checker/rank.h \
@@ -3752,6 +3762,8 @@ serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qdebug.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QPushButton \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
+		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
 		../checker/ui_serverwait.h \
 		../checker/widget.h \
 		../checker/checkerbutton.h \
@@ -3760,8 +3772,6 @@ serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qapplication.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QDialog \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qdialog.h \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLabel \
-		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlabel.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QLineEdit \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qlineedit.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/QVBoxLayout \
@@ -3776,6 +3786,9 @@ serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtWidgets.framework/Headers/qcombobox.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QValidator \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
@@ -3910,7 +3923,6 @@ serverwait.o: ../checker/serverwait.cpp ../checker/serverwait.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \
@@ -4064,6 +4076,9 @@ widget.o: ../checker/widget.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qvalidator.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QString \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qstring.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QRegularExpression \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QRegularExpressionValidator \
 		../checker/mydialog1.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPropertyAnimation \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qpropertyanimation.h \
@@ -4198,7 +4213,6 @@ widget.o: ../checker/widget.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qreadwritelock.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrect.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrefcount.h \
-		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qregularexpression.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresource.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qresultstore.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/qrunnable.h \

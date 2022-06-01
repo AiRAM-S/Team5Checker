@@ -15,6 +15,8 @@
 #include <QDebug>
 #include<QValidator>
 #include<QString>
+#include<QRegularExpression>
+#include<QRegularExpressionValidator>
 
 class myDialog:public QDialog
 {

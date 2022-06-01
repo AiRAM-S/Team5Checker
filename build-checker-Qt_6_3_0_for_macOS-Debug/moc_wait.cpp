@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../checker/wait.h"
+#include "../version without islegal/checker/wait.h"
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
