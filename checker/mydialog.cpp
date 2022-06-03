@@ -75,7 +75,7 @@ myDialog::myDialog(QWidget *parent, Qt::WindowFlags f)
     PORT=new QLabel(this);
     PORT->move(178,413);
     PORT->setText("Port");
-    PORT->setStyleSheet("color:white;font:bold 12px;}");
+    PORT->setStyleSheet("QLabel{color:white;font:bold 12px;}");
 
     IP=new QLabel(this);
     IP->move(178,385);
