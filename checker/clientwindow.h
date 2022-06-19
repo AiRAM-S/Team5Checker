@@ -144,7 +144,7 @@ public:
     int fillvalueplus(int);
     int lonelypointvalue(int);
     int morestepvalue(int);
-     void dfsplus(int t,int k,int x,int y,int bx,int by);
+    void dfsplus(int t,int k,int x,int y,int bx,int by);
     inline int distance(QPointF,QPointF);
     bool islonely(int,int);
 

@@ -479,6 +479,7 @@ ClientWindow::~ClientWindow()
 int timeLeft=15;
 
 void ClientWindow::receive(NetworkData data){
+    qDebug() << "receive data" << data.encode();
     switch(data.op){
         case OPCODE::JOIN_ROOM_OP://有新玩家加入 判定了
         {
@@ -503,7 +504,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         if(!isValid){
-            QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+            QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
             break;
         }
         //test
@@ -578,7 +579,7 @@ void ClientWindow::receive(NetworkData data){
                 }
             }
             if(!isValid){
-                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                 break;
             }
             //test
@@ -625,7 +626,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         if(!isValid){
-            QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+            QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
             break;
         }
         //test
@@ -644,16 +645,19 @@ void ClientWindow::receive(NetworkData data){
                 qDebug() << "client receive START_GAME_OP";
                 //test end
                 QStringList pls = data.data1.split(" ");
+                qDebug() << "test playerList:" << pls;
                 if(pls[pls.length()-1]==""){
                     pls.removeLast();
                 }
+
                 QStringList seq = data.data2.split(" ");
                 if(seq[seq.length()-1]==""){
                     seq.removeLast();
                 }
+                qDebug() << "test seqList:" << seq;
                 if(pls.length()!=seq.length()||(!(pls.length()==2||pls.length()==3||pls.length()==6))){
                     //玩家人数与序列人数不符 或玩家人数不对
-                    QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                    QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                     break;
                 }
                 playernum=seq.length();
@@ -670,7 +674,8 @@ void ClientWindow::receive(NetworkData data){
                 qDebug()<<myPos<<' '<<place2num(myPos);
             }
             else{
-                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
+                break;
             }
         }
         break;
@@ -710,7 +715,7 @@ void ClientWindow::receive(NetworkData data){
                         }
                     }
 
-                    flag =place2num(myPos);
+                    flag = place2num(myPos);
                     qDebug()<<"now flag"<<myPos<<' '<<flag;                 
                     nowplayer->setText("Your Turn");
                     switch(flag){
@@ -739,7 +744,7 @@ void ClientWindow::receive(NetworkData data){
                     int tmp = flag;
                     flag = place2num(data.data1.toUtf8()[0]);
                     if(flag>=playernum){
-                        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                        QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                         flag = tmp;
                         break;
                     }
@@ -774,7 +779,7 @@ void ClientWindow::receive(NetworkData data){
             {
                 if(data.data1.isEmpty()||data.data2.isEmpty()){
                     //data1 data2不能为空
-                    QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                    QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                     break;
                 }
                 //test
@@ -817,7 +822,7 @@ void ClientWindow::receive(NetworkData data){
                     }
                     if(checkerpath.length()%2==1){
                         //path格式不合法，应为偶数
-                        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                        QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                         break;
                     }
                     int stepnum = checkerpath.length()/2;
@@ -857,7 +862,7 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_GAME_OP://游戏结束
     {
            if(data.data1.isEmpty()){
-                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+               QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                 break;
            }
            //弹排名界面
@@ -956,7 +961,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         default:
-        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+        QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
         break;
     }
 }
@@ -1322,36 +1327,36 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
         way.append(y);
     }
     if(!k){
-    for(int i=0;i<6;i++){
-        int a=x+flatm[i][0],b=y+flatm[i][1];
-        bool pl=isPlaceLegal(a,b);
-       // qDebug()<<a<<' '<<b<<" ispl:"<<pl;
-        if(pl){
-            if(!isfill[a][b]){
-                isfill[a][b]=flag+1;
-                isfill[x][y]=0;
-                int pv=PossibleValue(0,x,y,a,b,bx,by);
-                qDebug()<<"pv:"<<pv;
-                if(val<pv) {
-                    val=pv;
-                    //记录轨迹
-                    if(flagg)
-                    {
-                        way.removeLast();
-                        way.removeLast();
+        for(int i=0;i<6;i++){
+            int a=x+flatm[i][0],b=y+flatm[i][1];
+            bool pl=isPlaceLegal(a,b);
+           // qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+            if(pl){
+                if(!isfill[a][b]){
+                    isfill[a][b]=flag+1;
+                    isfill[x][y]=0;
+                    int pv=PossibleValue(0,x,y,a,b,bx,by);
+                    qDebug()<<"pv:"<<pv;
+                    if(val<pv) {
+                        val=pv;
+                        //记录轨迹
+                        if(flagg)
+                        {
+                            way.removeLast();
+                            way.removeLast();
+                        }
+                            way.append(a);
+                            way.append(b);
+                        aipath=way;
+                        flagg=1;
+                        qDebug()<<"way now:"<<way;
                     }
-                        way.append(a);
-                        way.append(b);
-                    aipath=way;
-                    flagg=1;
-                    qDebug()<<"way now:"<<way;
+                    valueback3(x,y,a,b);
+                    isfill[a][b]=0;
+                    isfill[x][y]=flag+1;
                 }
-                valueback3(x,y,a,b);
-                isfill[a][b]=0;
-                isfill[x][y]=flag+1;
             }
         }
-    }
     }
     for(int i=0;i<6;i++){
         int a=x+jumpm[i][0],b=y+jumpm[i][1];
