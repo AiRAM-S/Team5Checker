@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../version without islegal/checker/mydialog.h"
+#include "../checker/mydialog.h"
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
