@@ -150,6 +150,7 @@ public:
 
     int oa,ob,obx,oby;
     int morestepvalue(int);
+
      void dfsplus(int t,int k,int x,int y,int bx,int by);
 
     inline int distance(QPointF,QPointF);
