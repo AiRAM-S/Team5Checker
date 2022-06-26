@@ -421,24 +421,52 @@ int ClientWindow::pixel2int(QPointF pixel){
 void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     if(iswin)
         return;//赢了就不让动 su
+    qDebug()<<btn->x<<" "<<btn->y;
+    qDebug()<<btn->player;
+    if(!step){
+        for(int i=0;i<20;i++){
+            pointpath[btn->player][i]->hide();
+        }
+    }
+    qDebug()<<"hide done";
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
     anim->setDuration(500);
     QPointF obj;
     obj.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
     obj.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
+    qDebug()<<obj;
     anim->setStartValue(obj);
     anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
   //  anim->start(QPropertyAnimation::DeleteWhenStopped);
-    QPauseAnimation *pause=new QPauseAnimation(this);
-    pause->setDuration(500);
-   // pause->start(QPropertyAnimation::DeleteWhenStopped);
     QSequentialAnimationGroup* group = new QSequentialAnimationGroup(this);
     group->addAnimation(anim);
     group->addPause(2000);
     group->start(QPropertyAnimation::DeleteWhenStopped);
-  /*  QPainter pointpath(this);
-    pointpath.setBrush(Qt::black);
-    pointpath.drawEllipse(loc[btn->x][btn->y].x()-R/2,loc[btn->x][btn->y].y()-R/2,10,10);*/
+   QString label_style;
+    switch(btn->player){
+    case pink:
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#DB7093";
+        break;
+    case green:
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:green";
+        break;
+    case blue:
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:blue";
+        break;
+    case red:
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:red";
+        break;
+    case orange:
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#FF4500";
+        break;
+    case purple:
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#800080";
+        break;
+    }
+
+    pointpath[btn->player][step]->setStyleSheet(label_style);
+    pointpath[btn->player][step]->setGeometry(loc[btn->x][btn->y].rx()-R/4+1,loc[btn->x][btn->y].ry()-R/4+0.5,1,1);
+    pointpath[btn->player][step]->show();
     btn->x=objloc[0];
     btn->y=objloc[1];
     isfill[objloc[0]][objloc[1]]=btn->player+1;
@@ -1223,6 +1251,12 @@ void ClientWindow::initializeChecker(QString data){
     });
 
     memset(fillnum,0,sizeof(fillnum));
+
+    for(int i=0;i<playernum;i++){
+        for(int j=0;j<20;j++){
+            pointpath[i][j]=new QLabel(this);
+        }
+    }
 
 }
 

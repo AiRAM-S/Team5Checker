@@ -125,7 +125,7 @@ private:
     int ov;
     int fillnum[6];
     bool ispass2[17][17];
-    QPainter* pointpath;
+    QLabel *pointpath[6][20];
 
 public:
     //myDialog dd;
