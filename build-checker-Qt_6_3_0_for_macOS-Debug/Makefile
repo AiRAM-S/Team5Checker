@@ -2484,7 +2484,8 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qpainter.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPointF \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QFont \
-		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qfont.h
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qfont.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDateTime
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o clientwindow.o ../checker/clientwindow.cpp
 
 main.o: ../checker/main.cpp ../checker/widget.h \
@@ -4332,7 +4333,8 @@ widget.o: ../checker/widget.cpp ../checker/widget.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qpainter.h \
 		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QPointF \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QFont \
-		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qfont.h
+		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qfont.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QDateTime
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o widget.o ../checker/widget.cpp
 
 qrc_image.o: qrc_image.cpp 

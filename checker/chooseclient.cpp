@@ -53,12 +53,12 @@ chooseclient::chooseclient(QWidget *parent) :
     ID=new QLabel(this);
     ID->move(66,76);
     ID->setText("ID");
-    ID->setStyleSheet("color:black;font:bold 11px;}");
+    ID->setStyleSheet("QLabel{color:black;font:bold 11px;}");
 
     ROOM=new QLabel(this);
     ROOM->move(66,125);
     ROOM->setText("Room");
-    ROOM->setStyleSheet("color:black;font:bold 11px;}");
+    ROOM->setStyleSheet("QLAbel{color:black;font:bold 11px;}");
 
     IPS=new QLineEdit(this);
     IPS->move(110,60);

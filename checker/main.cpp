@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     QString ports=h.port;
     qDebug() << "debug: port is";
     //qDebug() << port.toInt();
-        if(str=="Server")
+     //   if(str=="Server")
         {
             Widget* w = new Widget;
             w->hide();
@@ -34,14 +34,14 @@ int main(int argc, char *argv[])
             w->ChooseServer->show();
             w->ServerWait->hide();
         }
-        else if(str=="Client")
+      //  else if(str=="Client")
         {
             ClientWindow *e = new ClientWindow;
             qDebug() << "point 1";
             e->hide();
             //e->setPort(port);
             //建立连接
-            e->getSocket()->hello(ips,ports.toInt());
+            e->getSocket()->hello("127.0.0.1",9999);
 //            qDebug() << "say hello to" << ip;
             e->cc.show();
         }
@@ -52,16 +52,16 @@ int main(int argc, char *argv[])
 //             //test end
 //             e->cc.show();
 
-//             ClientWindow *e2 = new ClientWindow;
+             ClientWindow *e2 = new ClientWindow;
 //             qDebug() << "point 1";
 //             e2->hide();
 //             //e2->setPort(port);
 //             //建立连接
-//             e2->getSocket()->hello("127.0.0.1",9999);
+            e2->getSocket()->hello("127.0.0.1",9999);
 //             //test
 //             //qDebug() << "client send hello:" << port;
 //             //test end
-//             e2->cc.show();
+             e2->cc.show();
 //         //}
     return a.exec();
 }

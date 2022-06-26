@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../version without islegal/checker/widget.h"
+#include "../checker/widget.h"
 #include <QtGui/qtextcursor.h>
 #include <QtNetwork/QSslPreSharedKeyAuthenticator>
 #include <QtNetwork/QSslError>

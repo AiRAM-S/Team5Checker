@@ -248,6 +248,7 @@ void ClientWindow::changeplayer(){
 void ClientWindow::paintEvent(QPaintEvent *)
 {
     DrawCheckerboard();       //棋盘
+
     update();          //强制更新界面
 }
 
@@ -416,6 +417,7 @@ int ClientWindow::pixel2int(QPointF pixel){
     return x*17+y;//进行一个下标的转换
 }
 
+
 void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     if(iswin)
         return;//赢了就不让动 su
@@ -426,9 +428,17 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     obj.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
     anim->setStartValue(obj);
     anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
-    anim->start(QPropertyAnimation::DeleteWhenStopped);
+  //  anim->start(QPropertyAnimation::DeleteWhenStopped);
     QPauseAnimation *pause=new QPauseAnimation(this);
     pause->setDuration(500);
+   // pause->start(QPropertyAnimation::DeleteWhenStopped);
+    QSequentialAnimationGroup* group = new QSequentialAnimationGroup(this);
+    group->addAnimation(anim);
+    group->addPause(2000);
+    group->start(QPropertyAnimation::DeleteWhenStopped);
+  /*  QPainter pointpath(this);
+    pointpath.setBrush(Qt::black);
+    pointpath.drawEllipse(loc[btn->x][btn->y].x()-R/2,loc[btn->x][btn->y].y()-R/2,10,10);*/
     btn->x=objloc[0];
     btn->y=objloc[1];
     isfill[objloc[0]][objloc[1]]=btn->player+1;
@@ -651,11 +661,11 @@ void ClientWindow::receive(NetworkData data){
                 if(seq[seq.length()-1]==""){
                     seq.removeLast();
                 }
-                if(pls.length()!=seq.length()||(!(pls.length()==2||pls.length()==3||pls.length()==6))){
+               /* if(pls.length()!=seq.length()||(!(pls.length()==2||pls.length()==3||pls.length()==6))){
                     //玩家人数与序列人数不符 或玩家人数不对
                     QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
                     break;
-                }
+                }*/
                 playernum=seq.length();
                 for(int i=0;i<playernum;i++){
                     players.replace(place2num(seq[i].toUtf8().at(0)),pls[i]);
@@ -1271,10 +1281,11 @@ int jumpm[6][2]={{2,0},{0,2},{-2,0},{0,-2},{2,-2},{-2,2}};
 
 void ClientWindow::ai(){
     int t=place2num(myPos);
-    val=0;
+    val1=0;
+    val2=0;
+    val3=0;
     bool ispass[17][17];
     for(int i=0;i<10;i++){
-        ov=originvalue3();
         way.clear();
         memset(ispass,false,sizeof(ispass));
         qDebug()<<"button:"<<t<<' '<<i;
@@ -1330,10 +1341,11 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
             if(!isfill[a][b]){
                 isfill[a][b]=flag+1;
                 isfill[x][y]=0;
-                int pv=PossibleValue(0,x,y,a,b,bx,by);
-                qDebug()<<"pv:"<<pv;
-                if(val<pv) {
-                    val=pv;
+                int pv1=PossibleValue1(0,x,y,a,b,bx,by);
+               // qDebug()<<"pv1:"<<pv1<<" pv2:"<<pv2;
+                if(val1<pv1) {
+                //    val2=pv2;||(val1==pv1&&val2<pv2)
+                    val1=pv1;
                     //记录轨迹
                     if(flagg)
                     {
@@ -1346,7 +1358,6 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
                     flagg=1;
                     qDebug()<<"way now:"<<way;
                 }
-                valueback3(x,y,a,b);
                 isfill[a][b]=0;
                 isfill[x][y]=flag+1;
             }
@@ -1356,9 +1367,9 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
     for(int i=0;i<6;i++){
         int a=x+jumpm[i][0],b=y+jumpm[i][1];
         bool pl=isPlaceLegal(a,b);
-     //   qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+        qDebug()<<a<<' '<<b<<" ispl:"<<pl;
         if(pl){
-           // qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
+            qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
             if(!isfill[a][b]&&!ispass[a][b]&&isfill[(a+x)/2][(b+y)/2]){
                 isfill[a][b]=flag+1;
                 isfill[x][y]=0;
@@ -1369,16 +1380,17 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
                 }
                 way.append(a);
                 way.append(b);
-                int vv=PossibleValue(0,x,y,a,b,bx,by);
-                qDebug()<<"value after jump: "<<vv;
-                if(vv>val) {
-                    val=vv;
+                int vv1=PossibleValue1(0,x,y,a,b,bx,by);
+               // int vv2=PossibleValue2(0,x,y,a,b,bx,by);
+                qDebug()<<"value after jump: "<<vv1;
+                if(vv1>val1) {
+                 //   val2=vv2;||(vv1==val1&&vv2>val2)
+                    val1=vv1;
                     aipath.clear();
                 aipath=way;
                 qDebug()<<"way now:"<<way;
-                if(vv==1000000) return;}
+                if(vv1==1000000) return;}
                 dfs(k+1,a,b,bx,by);
-                valueback3(x,y,a,b);
                 way.removeLast();
                 way.removeLast();
                 isfill[a][b]=0;
@@ -1392,26 +1404,98 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
     return;
 }
 
+int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,125,-1,-1,-1,-1},
+                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,120,120,-1,-1,-1,-1},
+                      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,115,110,115,-1,-1,-1,-1},
+                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,110,105,105,110,-1,-1,-1,-1},
+                            {-1,-1,-1,-1,0,10,30,70,90,95,100,95,90,70,30,10,0},
+                             {-1,-1,-1,-1,15,25,40,80,85,90,90,85,80,40,25,15,-1},
+                               {-1,-1,-1,-1,20,30,50,70,75,80,75,70,50,30,20,-1,-1},
+                                {-1,-1,-1,-1,25,35,55,65,70,70,65,55,35,25,-1,-1,-1},
+                                 {-1,-1,-1,-1,30,50,55,60,65,60,55,50,30,-1,-1,-1,-1},
+                                   {-1,-1,-1,15,35,45,50,55,55,50,45,35,15,-1,-1,-1,-1},
+                                    {-1,-1,10,25,35,40,45,50,45,40,35,25,10,-1,-1,-1,-1},
+                                       {-1,5,15,25,30,35,40,40,35,30,25,15,5,-1,-1,-1,-1},
+                                         {0,10,15,20,25,30,35,30,25,20,15,10,0,-1,-1,-1,-1},
+                                          {-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                           {-1,-1,-1,-1,10,15,10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                             {-1,-1,-1,-1,0,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                              {-1,-1,-1,-1,-5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+
+int valueD[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-5,-1,-1,-1,-1},
+                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,-1,-1,-1,-1},
+                      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,15,10,-1,-1,-1,-1},
+                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1},
+                            {-1,-1,-1,-1,0,10,15,20,25,30,35,30,25,20,15,5,0},
+                             {-1,-1,-1,-1,5,15,25,30,35,40,40,35,30,25,15,5,-1},
+                               {-1,-1,-1,-1,10,25,35,40,45,50,45,40,35,25,10,-1,-1},
+                                {-1,-1,-1,-1,15,35,45,50,55,55,50,45,35,15,-1,-1,-1},
+                                 {-1,-1,-1,-1,30,50,55,60,65,60,55,50,30,-1,-1,-1,-1},
+                                   {-1,-1,-1,25,35,55,65,70,70,65,55,35,25,-1,-1,-1,-1},
+                                    {-1,-1,20,30,50,70,75,80,75,70,50,30,20,-1,-1,-1,-1},
+                                       {-1,15,25,40,80,85,90,90,85,80,40,25,15,-1,-1,-1,-1},
+                                         {0,10,30,70,90,95,100,95,90,70,30,10,0-1,-1,-1,-1},
+                                          {-1,-1,-1,-1,110,105,105,110,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                           {-1,-1,-1,-1,115,110,115,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                            {-1,-1,-1,-1,120,120,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                            {-1,-1,-1,-1,125,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+
 //估值   待实现
 //x,y跳前位置，a,b跳后位置，bx,by原始位置
-int ClientWindow::PossibleValue(int t,int x,int y,int a,int b,int bx,int by){
-    int fv=fillvalue(myPos);
-    if(fv==10) return 1000000;
-    int v3=guessvalue3(x,y,a,b);
-    int vb1=guessvalue1(bx,by,myPos);
-    int v1=guessvalue1(a,b,myPos);
+int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
+
+    oa=a;ob=b;obx=bx;oby=by;
+
+    int msv=morestepvalue(t);
+
     int lpv=lonelypointvalue(myPos);
-    int il=0;
-    if(islonely(bx,by)) il=1000;
-    int v2=guessvalue2(bx,by,a,b);
-    //int msv=0;
-   // if(!t)
-   // msv=morestepvalue(t);
-    return fv*50+1000+vb1-v1+v2-v3; //    v3+2*vb1-v1+
+
+    if(myPos=='A')
+    return valueA[b][a]-valueA[by][bx]+100+msv-lpv*5;
+    else if(myPos=='D')
+        return valueD[b][a]-valueD[by][bx]+100+msv-lpv*5;
 }
 
-float ddd;
 
+
+float ClientWindow::longdistancefirst(int bx,int by,int pos){
+    float d=0;
+    switch(pos){
+    case'A':
+        d=distance(loc[bx][by],loc[12][0]);
+        break;
+    case'C':
+        d=distance(loc[bx][by],loc[0][12]);
+        break;
+    case'D':
+        d=distance(loc[bx][by],loc[4][16]);
+        break;
+    case'E':
+        d=distance(loc[bx][by],loc[12][12]);
+        break;
+    }
+    return d;
+}
+
+int ClientWindow::stepvalue(int x,int y,int pos){
+    int d=0;
+    switch(pos){
+    case'A':
+        d=abs(x-12)+abs(y-0);
+        break;
+    case'C':
+        d=abs(x-0)+abs(y-12);
+        break;
+    case'D':
+        d=abs(x-4)+abs(y-16);
+        break;
+    case'E':
+        d=abs(x-12)+abs(y-12);
+        break;
+    }
+    return d;
+}
+float ddd;
 //目标位置到终点平均位置距离估值
 float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目标要移动的位置的x,y坐标和该棋子的初始区域如‘A’，计算到目标区域的平均距离
  {
@@ -1521,7 +1605,8 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
 //目标位置和初始位置的距离估值
  float ClientWindow::guessvalue2(int x1,int y1,int x2,int y2)//这里传入的参数是目标位置和初始位置的x,y坐标，计算移动的距离大小,目前想的是，如果到中心区域一样，就选走到距离最长的
  {
-     return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+     //return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+     return abs(x1-x2)+abs(y1-y2);
  }
 
  int ClientWindow::originvalue3(){
@@ -1570,7 +1655,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
  }
 
  //button到目标位置三角中心点坐标距离（移动步数）估值
- int ClientWindow::guessvalue3(int x,int y,int a,int b){
+/* int ClientWindow::guessvalue3(int x,int y,int a,int b){
      switch(myPos){
      case'A':{
          ov-=abs(x-12)+abs(y);
@@ -1641,6 +1726,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
      }
      return;
  }
+ */
 
  int ClientWindow::distance(QPointF p,QPointF q){
      return sqrt((p.rx()-q.rx())*(p.rx()-q.rx())+(p.ry()-q.ry())*(p.ry()-q.ry()));
@@ -1708,7 +1794,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
                          if(j==8) flg+=10;
                          else if(j==7) flg+=5;
                          else if(j==6) flg+=3;
-                         if(i==4||i+i-j==-4) flg+=2;
+                         if(i==4||i-j==-4) flg+=2;
                      }
                  }
          }
@@ -1761,13 +1847,13 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
                  bool ff=false;
                  for(int p=0;p<6;p++){
                      if(isPlaceLegal(i+flatm[p][0],j+flatm[p][1])){
-                         if(isfill[i+flatm[p][0]][j+flatm[p][1]]==t+1){
+                         if(isfill[i+flatm[p][0]][j+flatm[p][1]]){
                              ff=true;
                              break;
                          }
                      }
                      if(isPlaceLegal(i+jumpm[p][0],j+jumpm[p][1])){
-                         if(isfill[i+jumpm[p][0]][j+jumpm[p][1]]==t+1){
+                         if(isfill[i+jumpm[p][0]][j+jumpm[p][1]]){
                              ff=true;
                              break;
                          }
@@ -1798,19 +1884,24 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
      if(k<2) return true;
      return false;
  }
+
  int ClientWindow::morestepvalue(int t){
+     if(t) return 0;
      int mpos=place2num(myPos);
-     val2=0;
+     mval=0;
      memset(ispass2,false,sizeof(ispass2));
-     for(int i=0;i<10;i++){
-         dfsplus(t+1,0,btn[mpos][i]->x,btn[mpos][i]->y,btn[mpos][i]->x,btn[mpos][i]->y);
+     for(int i=0;i<17;i++){
+         for(int j=0;j<17;j++){
+             if(isfill[i][j]==mpos-'A'+1){
+                 dfsplus(t+1,0,i,j,i,j);
+             }
+         }
      }
-     return val2-1;
-   //  int msv=morestepvalue(t+2);
-    // return val2>msv?val2:msv;
+     return mval;
 
  }
- void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
+void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
+    if(bx==oa&&by==ob&&ispass[x][y]==true) return;
      qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
      ispass2[x][y]=true;
      if(!k){
@@ -1822,12 +1913,11 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
              if(!isfill[a][b]){
                  isfill[a][b]=flag+1;
                  isfill[x][y]=0;
-                 int pv=PossibleValue(t,x,y,a,b,bx,by);
+                 int pv=PossibleValue1(k,x,y,a,b,bx,by);
                  qDebug()<<"pv:"<<pv;
-                 if(val2<pv) {
-                     val2=pv;
+                 if(mval<pv) {
+                     mval=pv;
                  }
-                 valueback3(x,y,a,b);
                  isfill[a][b]=0;
                  isfill[x][y]=flag+1;
              }
@@ -1843,13 +1933,12 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
              if(!isfill[a][b]&&!ispass2[a][b]&&isfill[(a+x)/2][(b+y)/2]){
                  isfill[a][b]=flag+1;
                  isfill[x][y]=0;
-                 int vv=PossibleValue(t,x,y,a,b,bx,by);
+                 int vv=PossibleValue1(k+1,x,y,a,b,bx,by);
                  qDebug()<<"value after jump: "<<vv;
-                 if(vv>val2) {
-                     val2=vv;
+                 if(vv>mval) {
+                     mval=vv;
                  if(vv==1000000) return;}
-                 dfs(k+1,a,b,bx,by);
-                 valueback3(x,y,a,b);
+                 dfsplus(t,k+1,a,b,bx,by);
                  isfill[a][b]=0;
                  isfill[x][y]=flag+1;
                  ispass2[a][b]=false;
@@ -1859,3 +1948,4 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
      ispass2[x][y]=false;
      return;
  }
+

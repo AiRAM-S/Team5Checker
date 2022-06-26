@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../version without islegal/checker/rank.h"
+#include "../checker/rank.h"
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
