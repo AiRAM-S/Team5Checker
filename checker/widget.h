@@ -112,6 +112,7 @@ private:
     QLabel* clock1;//显示倒计时提示
     QLabel* clock2;//显示时间
     QString Port;//端口号
+
 public:
     serverwait* ServerWait;//房间等待界面
     chooseservice* ChooseServer;//服务端等待第一个玩家接入界面

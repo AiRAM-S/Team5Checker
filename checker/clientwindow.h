@@ -110,7 +110,7 @@ private:
     QString RoomID;//该客户端所处房间号
     QString PlName;//玩家姓名
     QString Port;//端口号
-   // QPushButton *ai;
+// QPushButton *ai;
    // int clicknum;
 
     QPushButton* infoTest;//测试客户端向服务端发送错误信号
@@ -126,6 +126,9 @@ private:
     int fillnum[6];
     bool ispass2[17][17];
     QLabel *pointpath[6][20];
+
+    QLabel *lbrn;
+    QLabel *ronm;//显示房间号
 
 public:
     //myDialog dd;

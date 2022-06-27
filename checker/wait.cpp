@@ -16,6 +16,7 @@ Wait::Wait(QWidget *parent) :
 
     rea = ui->YES;
     exi=ui->EXIT;
+    rn=ui->roomnum;
 
     for(int i=0;i<6;i++)
     {

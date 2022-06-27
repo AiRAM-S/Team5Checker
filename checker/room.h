@@ -70,8 +70,11 @@ public:
     }
     void addPl(QString _name,QTcpSocket* _client);
     QList<Player> getPl() const{
-        return playerList;
+
+return playerList;
     }
+            return playerList;
+        }
     int getID() const{
         return roomID;
     }

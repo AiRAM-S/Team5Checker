@@ -84,13 +84,14 @@ ClientWindow::ClientWindow(QWidget *parent) :
         socket->send(NetworkData(OPCODE::LEAVE_ROOM_OP,RoomID,PlName));
         for(int i=0;i<6;i++)
         {
-//            if(ww.ids[i]->text()==PlName)
-//            {
-//                ww.sis[i]->setText("Waiting");
-//                break;
-//            }
-            ww.ids[i]->setText("");
+        ww.ids[i]->setText("");
             ww.sis[i]->setText("Waiting");
+            if(ww.ids[i]->text()==PlName)
+            {
+                ww.reID(i);
+                ww.sis[i]->setText("waiting");
+                break;
+            }
         }
         players.clear();
         playerState.clear();
@@ -146,6 +147,15 @@ ClientWindow::ClientWindow(QWidget *parent) :
                 isfill[i1][i2]=0;
             }
         }
+        lbrn=new QLabel(this);
+        lbrn->setGeometry(70,560,300,50);
+        lbrn->setText("ROOM");
+        lbrn->setStyleSheet("QLabel {color:blue;font:bold 25px;}");
+
+        ronm=new QLabel(this);
+        ronm->setGeometry(190,560,300,50);
+        ronm->setStyleSheet("QLabel {color:black;font:bold 21px;}");
+
 
         //初始化是否需要更换棋手
         shouldSwitch=false;
@@ -251,6 +261,7 @@ void ClientWindow::paintEvent(QPaintEvent *)
 
     update();          //强制更新界面
 }
+
 
 
 void ClientWindow::DrawCheckerboard(void)
@@ -578,12 +589,10 @@ void ClientWindow::receive(NetworkData data){
             for(int i=0;i<data.data2.length();i++){
                 playerState.append(QString(data.data2.at(i)).toInt());
             }
-            players.append(PlName);
+  players.append(PlName);
             playerState.append(0);
             playernum = players.length();
         }
-//          qDebug() << "previous player name is " << players;
-//          qDebug() << "now player number is " << players.length();
         for(int i=0;i<players.length();i++)
         {
             ww.ids[i]->setText(players.at(i));
@@ -592,7 +601,11 @@ void ClientWindow::receive(NetworkData data){
         }
         cc.hide();
         ww.show();
-        }
+}
+            ww.rn->setText(RoomID);
+            ronm->setText(RoomID);
+            cc.hide();
+            ww.show();
         break;
         case OPCODE::LEAVE_ROOM_OP://有其他玩家离开了房间 已判定
         {
@@ -719,7 +732,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         break;
-        case OPCODE::START_TURN_OP://新玩家回合开始
+  case OPCODE::START_TURN_OP://新玩家回合开始
         {
             if((!data.data1.isEmpty())&&(!data.data2.isEmpty()))
             {
@@ -812,6 +825,49 @@ void ClientWindow::receive(NetworkData data){
                         break;
                     }
                 }
+
+   case OPCODE::START_TURN_OP://我的回合开始
+        //test
+        qDebug() << "client receive START_TURN_OP";
+        //test end
+        for(int i=0;i<10;i++){
+        btn[place2num(myPos)][i]->setCheckable(true);
+        }
+            timeLeft=30;
+            id=startTimer(1000);
+            clock1->show();
+            clock2->show();
+
+            haveJumped=false;
+            ischosen=false;
+            isobjset=false;
+            checked=NULL;
+            jumped=NULL;
+            path = "";
+
+            flag =place2num(myPos);
+            qDebug()<<"now flag"<<myPos<<' '<<flag;
+            step=0;
+            nowplayer->setText("Your Turn");
+            switch(flag){
+            case red:
+                nowplayer->setStyleSheet("color:red;");
+                break;
+            case blue:
+                nowplayer->setStyleSheet("color:blue;");
+                break;
+            case green:
+                nowplayer->setStyleSheet("color:green;");
+                break;
+            case pink:
+                nowplayer->setStyleSheet("color:#DB7093;");
+                break;
+            case purple:
+                nowplayer->setStyleSheet("color:#800080;");
+                break;
+              case orange:
+                nowplayer->setStyleSheet("color:#FF4500;");
+                break;
             }
         }
         break;
@@ -901,7 +957,7 @@ void ClientWindow::receive(NetworkData data){
     break;
     case OPCODE::END_GAME_OP://游戏结束
     {
-           if(data.data1.isEmpty()){
+  if(data.data1.isEmpty()){
                QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                 break;
            }
@@ -953,6 +1009,37 @@ void ClientWindow::receive(NetworkData data){
                rank->hide();
            });
            rank->show();
+        //弹排名界面
+        QStringList pls = data.data1.split(" ");
+        pls.removeLast();
+        rank->ranktable->setRowCount(data.data1.length());
+        rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
+        QStringList header;
+        for(int i=0;i<data.data1.length();i++){
+            if(i==0)
+                header << "1st";
+            else if(i==1)
+                header << "2nd";
+            else{
+                header << QString("%1th").arg(i);
+            }
+        }
+        rank->ranktable->setVerticalHeaderLabels(header);
+        for(int i=0;i<pls.length();i++){
+           rank->ranktable->setItem(i,0,new QTableWidgetItem(pls[i]));
+
+         }
+         rank->show();
+         //断开连接
+         // socket->bye();
+         for(int i=0;i<6;i++)
+         {
+                 ww.reID(i);
+                 ww.sis[i]->setText("waiting");
+         }
+         players.clear();
+         playerState.clear();
+         cc.show();
     }
     break;
         case OPCODE::ERROR_OP://错误
@@ -1004,6 +1091,7 @@ void ClientWindow::receive(NetworkData data){
         QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
         break;
     }
+}
 }
 
 void ClientWindow::timerEvent(QTimerEvent *event){
@@ -1388,8 +1476,6 @@ bool ClientWindow::isPlaceLegal(int x,int y){
     if((5<=b&&b<=8&&-4<=a&&a<=4-b)||((5<=-b&&-b<=8&&-4<=-a&&-a<=4+b))) return true;
     return false;
 }
-
-
 void ClientWindow::dfs(int k,int x,int y,int bx,int by){
     qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
     ispass[x][y]=true;

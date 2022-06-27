@@ -8,7 +8,6 @@ serverwait::serverwait(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    /*b=new QPushButton(this);
     b->move(450,50);
     b->setText("ok");*/
     ui->name1->setReadOnly(true);
