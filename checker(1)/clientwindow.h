@@ -16,6 +16,7 @@
 #include"mydialog.h"
 #include"chooseclient.h"
 #include"wait.h"
+#include<QAnimationGroup>
 
 namespace Ui {
 class ClientWindow;
@@ -127,6 +128,9 @@ private:
     bool ispass[5][17][17];
     bool ispass3[17][17];
     QLabel *pointpath[6][20];
+    QSequentialAnimationGroup* group;
+    QPropertyAnimation* anim[20];
+    QPointF objc;
 
 public:
     //myDialog dd;

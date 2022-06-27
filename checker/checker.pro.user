@@ -1,7 +1,6 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.0, 2022-06-27T10:46:12. -->
+<!-- Written by QtCreator 7.0.0, 2022-06-27T16:41:39. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -264,4 +263,3 @@
   <value type="int">22</value>
  </data>
 </qtcreator>
-
