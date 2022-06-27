@@ -1593,6 +1593,10 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
            vc=valueC[b][a]-valueC[by][bx];
        else if(myPos=='E')
            vc=valueE[b][a]-valueE[by][bx];
+    else if(myPos=='B')
+        vc=qzbB[a][b]-qzbB[bx][by];
+    else if(myPos=='F')
+        vc=qzbF[a][b]-qzbF[bx][by];
     return vc+100+msv+obv+ldf;
 
 }
