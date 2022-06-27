@@ -517,6 +517,7 @@ ClientWindow::~ClientWindow()
 int timeLeft=15;
 
 void ClientWindow::receive(NetworkData data){
+    qDebug() << "receive data" << data.encode();
     switch(data.op){
         case OPCODE::JOIN_ROOM_OP://有新玩家加入 判定了
         {
@@ -541,7 +542,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         if(!isValid){
-            QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+            QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
             break;
         }
         //test
@@ -616,7 +617,7 @@ void ClientWindow::receive(NetworkData data){
                 }
             }
             if(!isValid){
-                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                 break;
             }
             //test
@@ -663,7 +664,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         if(!isValid){
-            QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+            QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
             break;
         }
         //test
@@ -682,16 +683,21 @@ void ClientWindow::receive(NetworkData data){
                 qDebug() << "client receive START_GAME_OP";
                 //test end
                 QStringList pls = data.data1.split(" ");
+                qDebug() << "test playerList:" << pls;
                 if(pls[pls.length()-1]==""){
                     pls.removeLast();
                 }
+
                 QStringList seq = data.data2.split(" ");
                 if(seq[seq.length()-1]==""){
                     seq.removeLast();
                 }
-               /* if(pls.length()!=seq.length()||(!(pls.length()==2||pls.length()==3||pls.length()==6))){
+
+               /* qDebug() << "test seqList:" << seq;
+                if(pls.length()!=seq.length()||(!(pls.length()==2||pls.length()==3||pls.length()==6))){
+
                     //玩家人数与序列人数不符 或玩家人数不对
-                    QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                    QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                     break;
                 }*/
                 playernum=seq.length();
@@ -708,7 +714,8 @@ void ClientWindow::receive(NetworkData data){
                 qDebug()<<myPos<<' '<<place2num(myPos);
             }
             else{
-                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
+                break;
             }
         }
         break;
@@ -748,7 +755,7 @@ void ClientWindow::receive(NetworkData data){
                         }
                     }
 
-                    flag =place2num(myPos);
+                    flag = place2num(myPos);
                     qDebug()<<"now flag"<<myPos<<' '<<flag;                 
                     nowplayer->setText("Your Turn");
                     switch(flag){
@@ -777,7 +784,7 @@ void ClientWindow::receive(NetworkData data){
                     int tmp = flag;
                     flag = place2num(data.data1.toUtf8()[0]);
                     if(flag>=playernum){
-                        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                        QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                         flag = tmp;
                         break;
                     }
@@ -812,7 +819,7 @@ void ClientWindow::receive(NetworkData data){
             {
                 if(data.data1.isEmpty()||data.data2.isEmpty()){
                     //data1 data2不能为空
-                    QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                    QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                     break;
                 }
                 //test
@@ -855,7 +862,7 @@ void ClientWindow::receive(NetworkData data){
                     }
                     if(checkerpath.length()%2==1){
                         //path格式不合法，应为偶数
-                        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+                        QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                         break;
                     }
                     int stepnum = checkerpath.length()/2;
@@ -895,7 +902,7 @@ void ClientWindow::receive(NetworkData data){
     case OPCODE::END_GAME_OP://游戏结束
     {
            if(data.data1.isEmpty()){
-                QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+               QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
                 break;
            }
            //弹排名界面
@@ -994,7 +1001,7 @@ void ClientWindow::receive(NetworkData data){
             }
         }
         default:
-        QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
+        QMessageBox::information(this,QString("error"),QString("错误请求:\n%1").arg(data.encode()),"OK");
         break;
     }
 }
@@ -1313,6 +1320,31 @@ void ClientWindow::connected(){
 int flatm[6][2]={{1,0},{0,1},{-1,0},{0,-1},{1,-1},{-1,1}};
 int jumpm[6][2]={{2,0},{0,2},{-2,0},{0,-2},{2,-2},{-2,2}};
 
+int qzbA[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,-2,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,-1,-1,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0},
+                  /*4*/{0,0,0,0,0,1,3,4,3,3,3,2,3,3,2,1,0},/*5*/{0,0,0,0,1,3,5,5,4,4,5,5,4,3,2,1,0},/*6*/{0,0,0,0,3,6,7,7,6,6,6,5,4,3,2,0,0},/*7*/{0,0,0,0,7,9,9,8,7,7,6,5,4,3,0,0,0},
+                  /*8*/{0,0,0,0,11,11,10,9,8,7,6,5,3,0,0,0,0},/*9*/{0,0,0,13,12,11,10,9,7,6,5,2,1,0,0,0,0},/*10*/{0,0,14,13,12,11,10,8,6,4,3,1,0,0,0,0,0},/*11*/{0,15,14,13,12,11,9,7,4,3,1,0,-1,0,0,0,0},
+                  /*12*/{16,15,14,13,11,9,7,5,3,1,0,-1,-2,0,0,0,0},/*13*/{0,0,0,0,7,6,5,4,0,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+int qzbB[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,7,6,5,4,0,0,0,0},
+                  /*4*/{0,0,0,0,16,15,14,13,11,9,7,5,3,1,0,-1,-2},/*5*/{0,0,0,0,15,14,13,12,11,9,7,4,3,1,0,-1,0},/*6*/{0,0,0,0,14,13,12,11,10,8,6,4,3,1,0,0,0},/*7*/{0,0,0,0,13,12,11,10,9,7,6,5,2,1,0,0,0},/*8*/{0,0,0,0,11,11,10,9,8,7,6,5,3,0,0,0,0},
+                   /*9*/{0,0,0,7,9,9,8,7,7,6,5,4,3,0,0,0,0},/*10*/{0,0,3,6,7,7,6,6,6,5,4,3,2,0,0,0,0},/*11*/{0,1,3,5,5,4,4,5,5,4,3,2,1,0,0,0,0},/*12*/{0,1,3,4,3,3,3,2,3,3,2,1,0,0,0,0,0},
+                   /*13*/{0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,-1,-1,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,-2,0,0,0,0,0,0,0,0,0,0,0,0}};
+int qzbC[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,15,15,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,14,14,14,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,13,13,13,13,0,0,0,0},
+                  /*4*/{0,0,0,0,0,1,3,7,11,12,12,12,11,7,3,1,0},/*5*/{0,0,0,0,1,3,6,9,11,11,11,11,9,6,3,1,0},/*6*/{0,0,0,0,3,5,7,9,10,10,10,9,7,5,3,0,0},/*7*/{0,0,0,0,4,5,7,8,9,9,8,7,5,4,0,0,0},
+                  /*8*/{0,0,0,0,3,4,6,7,8,7,6,4,3,0,0,0,0},/*9*/{0,0,0,1,3,4,6,7,7,6,4,3,1,0,0,0,0},/*10*/{0,0,0,1,3,5,6,6,6,5,3,1,0,0,0,0,0},/*11*/{0,-1,0,1,2,5,5,5,5,2,1,0,-1,0,0,0,0},/*12*/{-2,-1,0,1,3,4,4,4,3,1,0,-1,-2,0,0,0,0},
+                  /*13*/{0,0,0,0,3,3,3,3,0,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+int qzbD[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,4,5,6,7,0,0,0,0},
+                  /*4*/{0,0,0,0,-2,-1,0,1,3,5,7,9,11,13,14,15,16},/*5*/{0,0,0,0,-1,0,1,3,4,7,9,11,12,13,14,15,0},/*6*/{0,0,0,0,0,1,3,4,6,8,10,11,12,13,14,0,0},/*7*/{0,0,0,0,1,2,5,6,7,9,10,11,12,13,0,0,0},/*8*/{0,0,0,0,3,5,6,7,8,9,10,11,11,0,0,0,0},
+                  /*9*/{0,0,0,3,4,5,6,7,7,8,9,9,7,0,0,0,0},/*10*/{0,0,2,3,4,5,6,6,6,7,7,6,3,0,0,0,0},/*11*/{0,1,2,3,4,5,5,4,4,5,5,3,1,0,0,0,0},/*12*/{0,1,2,3,3,2,3,3,3,4,3,1,0,0,0,0,0},
+                  /*13*/{0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,-1,-1,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,-2,0,0,0,0,0,0,0,0,0,0,0,0}};
+int qzbE[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,-2,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,-1,-1,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0},
+                  /*4*/{0,0,0,0,0,1,2,3,3,2,3,3,3,4,3,1,0},/*5*/{0,0,0,0,1,2,3,4,5,5,4,4,5,5,3,1,0},/*6*/{0,0,0,0,2,3,4,5,6,6,6,7,7,6,3,0,0},/*7*/{0,0,0,0,3,4,5,6,7,7,8,9,9,7,0,0,0},/*8*/{0,0,0,0,3,5,6,7,8,9,10,11,11,0,0,0,0},
+                  /*9*/{0,0,0,1,2,5,6,7,9,10,11,12,13,0,0,0,0},/*10*/{0,0,0,1,3,4,6,8,10,11,12,13,14,0,0,0,0},/*11*/{0,-1,0,1,3,4,7,9,11,12,13,14,15,0,0,0,0},/*12*/{-2,-1,0,1,3,5,7,9,11,13,14,15,16,0,0,0,0},
+                  /*13*/{0,0,0,0,4,5,6,7,0,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+int qzbF[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0},
+                  /*4*/{0,0,0,0,-2,-1,0,1,3,4,4,4,3,1,0,-1,-2},/*5*/{0,0,0,0,-1,0,1,2,5,5,5,5,2,1,0,-1,0},/*6*/{0,0,0,0,0,1,3,5,6,6,6,5,3,1,0,0,0},/*7*/{0,0,0,0,1,3,4,6,7,7,6,4,3,1,0,0,0},/*8*/{0,0,0,0,3,4,6,7,8,7,6,4,3,0,0,0,0},
+                  /*9*/{0,0,0,4,5,7,8,9,9,8,7,5,4,0,0,0,0},/*10*/{0,0,3,5,7,9,10,10,10,9,7,5,3,0,0,0,0},/*11*/{0,1,3,6,9,11,11,11,11,9,6,3,1,0,0,0,0},/*12*/{0,1,3,7,11,12,12,12,11,7,3,1,0,0,0,0,0},
+                  /*13*/{0,0,0,0,13,13,13,13,0,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,14,14,14,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,15,15,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0}};
+
 void ClientWindow::ai(){
     int t=place2num(myPos);
     val1=0;
@@ -1385,18 +1417,17 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
                     {
                         way.removeLast();
                         way.removeLast();
+
                     }
-                        way.append(a);
-                        way.append(b);
-                    aipath=way;
-                    flagg=1;
-                    qDebug()<<"way now:"<<way;
+                    valueback3(x,y,a,b);
+                    isfill[a][b]=0;
+                    isfill[x][y]=flag+1;
                 }
                 isfill[a][b]=0;
                 isfill[x][y]=flag+1;
+
             }
         }
-    }
     }
     for(int i=0;i<6;i++){
         int a=x+jumpm[i][0],b=y+jumpm[i][1];
@@ -1485,9 +1516,19 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
     int lpv=lonelypointvalue(myPos);
 
     if(myPos=='A')
-    return valueA[b][a]-valueA[by][bx]+100+msv;
+
+    return valueA[b][a]-valueA[by][bx]+100+msv-lpv*5;
+    else if(myPos=='B')
+        return qzbB[b][a]*5-qzbB[by][bx]*5+100+msv-lpv*5;
+    else if(myPos=='C')
+        return qzbC[b][a]*5-qzbC[by][bx]*5+100+msv-lpv*5;
     else if(myPos=='D')
-        return valueD[b][a]-valueD[by][bx]+100+msv;
+        return valueD[b][a]-valueD[by][bx]+100+msv-lpv*5;
+    else if(myPos=='E')
+        return qzbE[b][a]*5-qzbE[by][bx]*5+100+msv-lpv*5;
+    else if(myPos=='F')
+        return qzbF[b][a]*5-qzbF[by][bx]*5+100+msv-lpv*5;
+
 }
 
 
