@@ -421,38 +421,41 @@ int ClientWindow::pixel2int(QPointF pixel){
 void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     if(iswin)
         return;//赢了就不让动 su
-    qDebug()<<btn->x<<" "<<btn->y;
-    qDebug()<<btn->player;
-    if(!step){
-        for(int i=0;i<20;i++){
-            pointpath[btn->player][i]->hide();
-        }
-    }
-    qDebug()<<"hide done";
-    //btn->setStyleSheet("min-width:28px;min-height:28px;max-width:28px;max-height:28px;border-radius:14px;background:black");
-    QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
-    anim->setDuration(500);
-    QPointF obj;
-    obj.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
-    obj.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
+    objc.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
+    objc.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
     qDebug()<<obj;
-    anim->setStartValue(obj);
-    anim->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
-  //  anim->start(QPropertyAnimation::DeleteWhenStopped);
-    QSequentialAnimationGroup* group = new QSequentialAnimationGroup(this);
-    group->addAnimation(anim);
-    group->addPause(2000);
-    group->start(QPropertyAnimation::DeleteWhenStopped);
+    if(btn->player==place2num(myPos)&&aiflag==false){
+    QPropertyAnimation *ani = new QPropertyAnimation(btn, "pos", this);
+    ani->setDuration(500);
+    ani->setStartValue(objc);
+    ani->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
+    ani->start(QPropertyAnimation::KeepWhenStopped);
+    }
+    else{
+        if(!step){
+            group->clear();
+        }
+        qDebug()<<"anim step:"<<step;
+        anim[step]=new QPropertyAnimation(btn,"pos",this);
+        anim[step]->setDuration(500);
+        anim[step]->setStartValue(objc);
+        anim[step]->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
+        qDebug()<<"anim step done"<<step;
+        group->addPause(400);
+        group->addAnimation(anim[step]);
+        group->addPause(400);
+        qDebug()<<"anim group add";
+    }
    QString label_style;
     switch(btn->player){
     case pink:
         label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#DB7093";
         break;
     case green:
-        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:green";
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:lightgreen";
         break;
     case blue:
-        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:blue";
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:rgb(70, 180, 255)";
         break;
     case red:
         label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:red";
@@ -464,17 +467,23 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
         label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#800080";
         break;
     }
-
-    pointpath[btn->player][step]->setStyleSheet(label_style);
-    pointpath[btn->player][step]->setGeometry(loc[btn->x][btn->y].rx()-R/4+1,loc[btn->x][btn->y].ry()-R/4+0.5,1,1);
-    pointpath[btn->player][step]->show();
+    if(!step){
+        for(int i=0;i<20;i++){
+            pointpath[btn->player][i]->hide();
+        }
+        pointpath[btn->player][step]->setStyleSheet(label_style);
+        pointpath[btn->player][step]->setGeometry(loc[btn->x][btn->y].rx()-R/4+1,loc[btn->x][btn->y].ry()-R/4+0.5,1,1);
+        pointpath[btn->player][step]->show();
+    }
     btn->x=objloc[0];
     btn->y=objloc[1];
     isfill[objloc[0]][objloc[1]]=btn->player+1;
     isfill[chosenloc[0]][chosenloc[1]]=0;
     ischange=false;
     step++;
-
+    pointpath[btn->player][step]->setStyleSheet(label_style);
+    pointpath[btn->player][step]->setGeometry(loc[btn->x][btn->y].rx()-R/4+1,loc[btn->x][btn->y].ry()-R/4+0.5,1,1);
+    pointpath[btn->player][step]->show();
     //test
         qDebug() << "chosen is" << chosenloc[0]-8 << "," << chosenloc[1]-8;
         qDebug() << "test:obj is " << objloc[0]-8 << "," << objloc[1]-8;
@@ -878,10 +887,12 @@ void ClientWindow::receive(NetworkData data){
                                 QPointF obj;
                                 obj.setX(loc[objloc[0]][objloc[1]].rx()-RR/4);
                                 obj.setY(loc[objloc[0]][objloc[1]].ry()-RR/4);
+                                checked=btn[nowPlpos][i];
                                 CheckerMove(btn[nowPlpos][i],obj);
                                 chosenloc[0]=objloc[0];
                                 chosenloc[1]=objloc[1];
                             }
+                            group->start(QPropertyAnimation::KeepWhenStopped);
                         }
                     }
                 }
@@ -1000,6 +1011,7 @@ void ClientWindow::receive(NetworkData data){
                 }
             }
         }
+        break;
         default:
         QMessageBox::information(this,QString("error"),QString("错误请求，请检查网络"),"OK");
         break;
@@ -1217,6 +1229,7 @@ void ClientWindow::initializeChecker(QString data){
    for(int i=0;i<10;i++){
         for(int j=0;j<playernum;j++){
             btn[j][i]->setCheckable(false);
+            if(j!=place2num(myPos)) btn[j][i]->setAttribute(Qt::WA_TransparentForMouseEvents,true);
         }
     }
     for(int i=0;i<playernum;i++){
@@ -1226,7 +1239,7 @@ void ClientWindow::initializeChecker(QString data){
     for(int t=0;t<10;t++){
         for(int j=0;j<playernum;j++){
             connect(btn[j][t],&CheckerButton::is_chosen,this,[=](CheckerButton& but){
-                if(flag==but.player&&step==0){
+                if(place2num(myPos)==but.player&&step==0){
                    chosen.setX(but.pos().rx());
                    chosen.setY(but.pos().ry());
                    chosenloc[0]=but.x;
@@ -1281,7 +1294,10 @@ void ClientWindow::initializeChecker(QString data){
             pointpath[i][j]=new QLabel(this);
         }
     }
-
+    group=new QSequentialAnimationGroup(this);
+    for(int i=0;i<20;i++){
+        anim[i]=new QPropertyAnimation(this);
+    }
 }
 
 void ClientWindow::setPlayerTable(){
@@ -1368,6 +1384,9 @@ void ClientWindow::ai(){
             chosenloc[1]=objloc[1];
         }
     }
+    checked->setCheckable(true);
+    checked->click();
+    group->start(QPropertyAnimation::KeepWhenStopped);
     socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),path));
    // changeplayer();
 }
@@ -1488,7 +1507,7 @@ int qzbF[17][17]={/*0*/{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-5,-1,-1,-1,-1},/*1*
                   /*13*/{-1,-1,-1,-1,110,105,105,110,-1,-1,-1,-1,-1,-1,-1,-1,-1},/*14*/{-1,-1,-1,-1,115,110,115,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},/*15*/{-1,-1,-1,-1,120,120,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},/*16*/{-1,-1,-1,-1,125,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 
 
-int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,150,-1,-1,-1,-1},
+int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,155,-1,-1,-1,-1},
                      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,145,145,-1,-1,-1,-1},
                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,135,140,-1,-1,-1,-1},
                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,130,125,125,130,-1,-1,-1,-1},
@@ -1574,13 +1593,13 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
 
     oa=a;ob=b;obx=bx;oby=by;
     int fv=fillvalue(myPos);
-    if(fv==10) return 1000000;
+    if(fv==10) return 10000000;
     int ldf=stepvalue(bx,by,myPos);
     if(fv<6){
         ldf=0;
     }
     int msv=morestepvalue(t);
-
+    if(msv==10000000) return 10000000;
     int lpv=lonelypointvalue(myPos);
 
     int obv=bv-bridgevalue();
@@ -1594,11 +1613,8 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
            vc=valueC[b][a]-valueC[by][bx];
        else if(myPos=='E')
            vc=valueE[b][a]-valueE[by][bx];
-    else if(myPos=='B')
-        vc=qzbB[a][b]-qzbB[bx][by];
-    else if(myPos=='F')
-        vc=qzbF[a][b]-qzbF[bx][by];
-    return vc+100+msv+obv+ldf;
+    return vc*2+100+msv*2+obv+ldf;
+
 
 }
 
