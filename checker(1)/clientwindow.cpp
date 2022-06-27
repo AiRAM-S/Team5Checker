@@ -914,7 +914,7 @@ void ClientWindow::receive(NetworkData data){
            rank->ranktable->setHorizontalHeaderLabels(QStringList("玩家ID"));
            QLabel* conlb=new QLabel(rank);
            conlb->setGeometry(220,400,150,50);
-           conlb->setFont(QFont("Microsoft YaHei",20));
+           conlb->setFont(QFont("Microsoft YaHei",15));
            conlb->setStyleSheet("color:brown;");
            QStringList header;
            for(int i=0;i<pls.length();i++){
@@ -1250,6 +1250,7 @@ void ClientWindow::initializeChecker(QString data){
     dep=new QPushButton(this);
     dep->setText("deposit");
     dep->setGeometry(600,100,80,40);
+    dep->setStyleSheet("QPushButton{background-color: rgb(255,255,255);color:blue;font:bold 16px;}");
     connect(dep,&QPushButton::clicked,[&](){
         if(!aiflag){
             dep->setText("cancel");
