@@ -42,6 +42,7 @@ public:
     void shouldSwitcht2f();
     void isfinish();//棋子是否走完
     int place2num(char);
+    int num2place(int);
     void setPort(QString p){
         Port = p;
         return;
@@ -116,15 +117,15 @@ private:
     QPushButton* infoTest;//测试客户端向服务端发送错误信号
 
     //stage3
-    bool ispass[17][17];
     QList<int> way,aipath;
-    int mval,val1,val2,val3;
+    int mval,val1,bval,bv;
     QPushButton* dep;
     bool aiflag;
     bool isaimove;
     int ov;
     int fillnum[6];
-    bool ispass2[17][17];
+    bool ispass[5][17][17];
+    bool ispass3[17][17];
     QLabel *pointpath[6][20];
 
 public:
@@ -158,6 +159,8 @@ public:
     float longdistancefirst(int,int,int);
    // void drawpath();
     int stepvalue(int,int,int);
+    int bridgevalue();
+    void dfsbridge(int,int,int,int,int,int);
 
 
 private:

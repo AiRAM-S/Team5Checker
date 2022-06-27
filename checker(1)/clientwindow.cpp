@@ -429,6 +429,7 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
         }
     }
     qDebug()<<"hide done";
+    //btn->setStyleSheet("min-width:28px;min-height:28px;max-width:28px;max-height:28px;border-radius:14px;background:black");
     QPropertyAnimation *anim = new QPropertyAnimation(btn, "pos", this);
     anim->setDuration(500);
     QPointF obj;
@@ -716,6 +717,12 @@ void ClientWindow::receive(NetworkData data){
         {
             if((!data.data1.isEmpty())&&(!data.data2.isEmpty()))
             {
+                this->killTimer(id);
+                changeplayer();
+                nowplayer->setText("");
+                nowplayer->setStyleSheet("color:grey;");
+                clock1->hide();
+                clock2->hide();
                 //在考虑做通过发过来的时间差确定延迟时间
                 if(data.data1.toLatin1()[0]==myPos)//本人下棋
                 {
@@ -839,13 +846,13 @@ void ClientWindow::receive(NetworkData data){
                 }
                 else{
                 if(data.data1[0].toLatin1()==myPos&&path==data.data2){//自己的移动合法 服务端发来反馈
-                    this->killTimer(id);
+                   /* this->killTimer(id);
                     changeplayer();
                     nowplayer->setText("");
                     nowplayer->setStyleSheet("color:grey;");
                     clock1->hide();
                     clock2->hide();
-                    break;
+                    break;*/
                 }
                 else {
                     flag = place2num(data.data1.toLatin1()[0]);
@@ -1025,6 +1032,22 @@ int ClientWindow::place2num(char pln){
     }
     else if(playernum==6){
         k=pln-'A';
+    }
+    return k;
+}
+int ClientWindow::num2place(int pln){
+    int k=0;
+    if(playernum==2){
+        if(pln==0) k='A';
+        else if(pln==1) k='D';
+    }
+    else if(playernum==3){
+        if(pln==0) k='A';
+        else if(pln==1) k='C';
+        else if(pln==2) k='E';
+    }
+    else if(playernum==6){
+        k=pln+'A';
     }
     return k;
 }
@@ -1316,12 +1339,11 @@ int jumpm[6][2]={{2,0},{0,2},{-2,0},{0,-2},{2,-2},{-2,2}};
 void ClientWindow::ai(){
     int t=place2num(myPos);
     val1=0;
-    val2=0;
-    val3=0;
-    bool ispass[17][17];
+    qDebug()<<"ai begin";
+    bv=bridgevalue();
     for(int i=0;i<10;i++){
         way.clear();
-        memset(ispass,false,sizeof(ispass));
+        memset(ispass[0],false,sizeof(ispass[0]));
         qDebug()<<"button:"<<t<<' '<<i;
         dfs(0,btn[t][i]->x,btn[t][i]->y,btn[t][i]->x,btn[t][i]->y);
         qDebug()<<"aipath now:"<<aipath;
@@ -1360,7 +1382,7 @@ bool ClientWindow::isPlaceLegal(int x,int y){
 
 void ClientWindow::dfs(int k,int x,int y,int bx,int by){
     qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
-    ispass[x][y]=true;
+    ispass[0][x][y]=true;
     int flagg=0;
     if(!k){
         way.append(x);
@@ -1403,8 +1425,8 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
         bool pl=isPlaceLegal(a,b);
         qDebug()<<a<<' '<<b<<" ispl:"<<pl;
         if(pl){
-            qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
-            if(!isfill[a][b]&&!ispass[a][b]&&isfill[(a+x)/2][(b+y)/2]){
+            qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[0][a][b];
+            if(!isfill[a][b]&&!ispass[0][a][b]&&isfill[(a+x)/2][(b+y)/2]){
                 isfill[a][b]=flag+1;
                 isfill[x][y]=0;
                 if(flagg==1)
@@ -1429,14 +1451,15 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
                 way.removeLast();
                 isfill[a][b]=0;
                 isfill[x][y]=flag+1;
-                ispass[a][b]=false;
+                ispass[0][a][b]=false;
                 flagg=2;
             }
         }
     }
-    ispass[x][y]=false;
+    ispass[0][x][y]=false;
     return;
 }
+
 
 int qzbA[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,-2,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0,0,0,0,-1,-1,0,0,0,0},/*2*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*3*/{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0},
                   /*4*/{0,0,0,0,0,1,3,4,3,3,3,2,3,3,2,1,0},/*5*/{0,0,0,0,1,3,5,5,4,4,5,5,4,3,2,1,0},/*6*/{0,0,0,0,3,6,7,7,6,6,6,5,4,3,2,0,0},/*7*/{0,0,0,0,7,9,9,8,7,7,6,5,4,3,0,0,0},
@@ -1469,7 +1492,7 @@ int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,150,-1,-1,-1,-1},
                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,130,125,125,130,-1,-1,-1,-1},
                          {-1,-1,-1,-1,0,10,30,70,110,115,120,115,110,70,30,10,0},
                           {-1,-1,-1,-1,15,25,40,80,105,110,110,105,80,40,25,15,-1},
-                            {-1,-1,-1,-1,20,30,60,90,95,100,95,90,60,30,20,-1,-1},
+                            {-1,-1,-1,-1,20,30,70,90,95,100,95,90,70,30,20,-1,-1},
                               {-1,-1,-1,-1,25,50,80,85,90,90,85,80,50,25,-1,-1,-1},
                                 {-1,-1,-1,-1,30,65,70,75,80,75,70,65,30,-1,-1,-1,-1},
                                   {-1,-1,-1,15,35,60,65,70,70,65,60,35,15,-1,-1,-1,-1},
@@ -1477,50 +1500,100 @@ int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,150,-1,-1,-1,-1},
                                        {-1,5,15,20,40,45,50,50,45,40,20,15,5,-1,-1,-1,-1},
                                          {0,10,15,20,30,35,40,35,30,20,15,10,0,-1,-1,-1,-1},
                                           {-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                           {-1,-1,-1,-1,10,15,10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                           {-1,-1,-1,-1,10,12,10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                                              {-1,-1,-1,-1,0,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                              {-1,-1,-1,-1,-5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+                                              {-1,-1,-1,-1,-10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 
-int valueD[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-5,-1,-1,-1,-1},
-                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,-1,-1,-1,-1},
-                      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,15,10,-1,-1,-1,-1},
-                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1},
-                            {-1,-1,-1,-1,0,10,15,20,25,30,35,30,25,20,15,5,0},
-                             {-1,-1,-1,-1,5,15,25,30,35,40,40,35,30,25,15,5,-1},
-                               {-1,-1,-1,-1,10,25,35,40,45,50,45,40,35,25,10,-1,-1},
-                                {-1,-1,-1,-1,15,35,45,50,55,55,50,45,35,15,-1,-1,-1},
-                                 {-1,-1,-1,-1,30,50,55,60,65,60,55,50,30,-1,-1,-1,-1},
-                                   {-1,-1,-1,25,35,55,65,70,70,65,55,35,25,-1,-1,-1,-1},
-                                    {-1,-1,20,30,50,70,75,80,75,70,50,30,20,-1,-1,-1,-1},
-                                       {-1,15,25,40,80,85,90,90,85,80,40,25,15,-1,-1,-1,-1},
-                                         {0,10,30,70,90,95,100,95,90,70,30,10,0-1,-1,-1,-1},
-                                          {-1,-1,-1,-1,110,105,105,110,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                           {-1,-1,-1,-1,115,110,115,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                            {-1,-1,-1,-1,120,120,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                            {-1,-1,-1,-1,125,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+int valueD[17][17]={
+                   {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-10,-1,-1,-1,-1},
+                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,-1,-1,-1,-1},
+                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,12,10,-1,-1,-1,-1},
+                         {-1,-1,-1,-1,-1,-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1},
+                            {-1,-1,-1,-1,0,10,15,20,30,35,40,35,30,20,15,10,0},
+                              {-1,-1,-1,-1,5,15,20,40,45,50,50,45,40,20,15,5,-1},
+                               {-1,-1,-1,-1,10,20,45,50,55,60,55,50,45,20,10,-1,-1},
+                                {-1,-1,-1,-1,15,35,60,65,70,70,65,60,35,15,-1,-1,-1},
+                                 {-1,-1,-1,-1,30,65,70,75,80,75,70,65,30,-1,-1,-1,-1},
+                                   {-1,-1,-1,25,50,80,85,90,90,85,80,50,25,-1,-1,-1,-1},
+                                      {-1,-1,20,30,70,90,95,100,95,90,70,30,20,-1,-1,-1,-1},
+                                       {-1,15,25,40,80,105,110,110,105,80,40,25,15,-1,-1,-1,-1},
+                                         {0,10,30,70,110,115,120,115,110,70,30,10,0,-1,-1,-1,-1},
+                                          {-1,-1,-1,-1,130,125,125,130,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                           {-1,-1,-1,-1,140,135,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                            {-1,-1,-1,-1,145,145,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                              {-1,-1,-1,-1,155,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+
+
+int valueE[17][17]={
+                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1},
+                         {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,5,10,-1,-1,-1,-1},
+                          {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,15,15,-1,-1,-1,-1},
+                           {-1,-1,-1,-1,-1,-1,-1,-1,-1,20,20,20,15,-1,-1,-1,-1},
+                             {-1,-1,-1,-1,-10,0,10,20,30,40,45,35,30,25,20,15,0},
+                              {-1,-1,-1,-1,0,12,25,35,45,50,60,65,50,30,25,10,-1},
+                                {-1,-1,-1,-1,10,25,40,50,55,65,70,80,70,40,30,-1,-1},
+                                  {-1,-1,-1,-1,20,35,50,60,70,75,85,90,80,70,-1,-1,-1},
+                                    {-1,-1,-1,-1,30,45,55,70,80,90,95,105,110,-1,-1,-1,-1},
+                                      {-1,-1,-1,20,40,50,65,75,90,100,110,115,130,-1,-1,-1,-1},
+                                        {-1,-1,15,20,45,60,70,85,95,110,120,125,140,-1,-1,-1,-1},
+                                           {-1,10,15,20,35,65,80,90,105,115,125,135,145,-1,-1,-1,-1},
+                                             {0,5,10,15,30,50,70,80,110,130,140,145,155,-1,-1,-1,-1},
+                                              {-1,-1,-1,-1,25,30,40,70,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                               {-1,-1,-1,-1,20,25,30,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                                 {-1,-1,-1,-1,15,10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                                 {-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+
+
+int valueC[17][17]={
+                            {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1},
+                             {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,5,10,-1,-1,-1,-1},
+                              {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,15,15,-1,-1,-1,-1},
+                               {-1,-1,-1,-1,-1,-1,-1,-1,-1,15,20,20,20,-1,-1,-1,-1},
+                             {-1,-1,-1,-1,0,15,20,25,30,35,45,40,30,20,10,0,-10},
+                                {-1,-1,-1,-1,10,25,30,50,65,60,50,45,35,25,12,0,-1},
+                                  {-1,-1,-1,-1,30,40,70,80,70,65,55,50,40,25,10,-1,-1},
+                                    {-1,-1,-1,-1,70,80,90,85,75,70,60,50,35,20,-1,-1,-1},
+                                     {-1,-1,-1,-1,110,105,95,90,80,70,55,45,30,-1,-1,-1,-1},
+                                        {-1,-1,-1,130,115,110,100,90,75,65,50,40,20,-1,-1,-1,-1},
+                                         {-1,-1,140,125,120,110,95,85,70,60,45,20,15,-1,-1,-1,-1},
+                                           {-1,145,135,125,115,105,90,80,65,35,20,15,10,-1,-1,-1,-1},
+                                              {155,145,140,130,110,80,70,50,30,15,10,5,0,-1,-1,-1,-1},
+                                               {-1,-1,-1,-1,70,40,30,25,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                                {-1,-1,-1,-1,30,25,20,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                                  {-1,-1,-1,-1,10,15,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                                   {-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}
+
+};
+
 
 //估值   待实现
 //x,y跳前位置，a,b跳后位置，bx,by原始位置
 int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
 
     oa=a;ob=b;obx=bx;oby=by;
-
+    int fv=fillvalue(myPos);
+    if(fv==10) return 1000000;
+    int ldf=stepvalue(bx,by,myPos);
+    if(fv<6){
+        ldf=0;
+    }
     int msv=morestepvalue(t);
 
     int lpv=lonelypointvalue(myPos);
 
+    int obv=bv-bridgevalue();
+    qDebug()<<"obv:"<<obv;
+    int vc = 0;
     if(myPos=='A')
-    return valueA[b][a]-valueA[by][bx]+100+msv;
+    vc=valueA[b][a]-valueA[by][bx];
     else if(myPos=='D')
-        return valueD[b][a]-valueD[by][bx]+100+msv;
-    else if(myPos=='C')
-        return qzbC[a][b]*5-qzbC[bx][by]*5+100+msv;
-    else if(myPos=='B')
-        return valueD[a][b]-valueD[bx][by]+100+msv;
-    else if(myPos=='E')
-        return qzbE[a][b]*5-qzbE[bx][by]*5+100+msv;
-    else if(myPos=='F')
-        return qzbF[a][b]*5-qzbF[bx][by]*5+100+msv;
+        vc=valueD[b][a]-valueD[by][bx];
+       else if(myPos=='C')
+           vc=valueC[b][a]-valueC[by][bx];
+       else if(myPos=='E')
+           vc=valueE[b][a]-valueE[by][bx];
+    return vc+100+msv+obv+ldf;
+
 }
 
 
@@ -1676,7 +1749,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
      return abs(x1-x2)+abs(y1-y2);
  }
 
- int ClientWindow::originvalue3(){
+/* int ClientWindow::originvalue3(){
      int d=0;
      int t=place2num(myPos);
      switch(myPos){
@@ -1722,7 +1795,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
  }
 
  //button到目标位置三角中心点坐标距离（移动步数）估值
-/* int ClientWindow::guessvalue3(int x,int y,int a,int b){
+ int ClientWindow::guessvalue3(int x,int y,int a,int b){
      switch(myPos){
      case'A':{
          ov-=abs(x-12)+abs(y);
@@ -1846,9 +1919,9 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
              }
          }
          fillnum[place2num(myPos)]=flg;
-         if(flg>=5) {
+         /*if(flg>=5) {
              flg+=fillvalueplus(x);
-         }
+         }*/
      return flg;
 }
 
@@ -1953,10 +2026,10 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
  }
 
  int ClientWindow::morestepvalue(int t){
-     if(t) return 0;
+     if(t>4) return 0;
      int mpos=place2num(myPos);
      mval=0;
-     memset(ispass2,false,sizeof(ispass2));
+     memset(ispass[t+1],false,sizeof(ispass[t+1]));
      for(int i=0;i<17;i++){
          for(int j=0;j<17;j++){
              if(isfill[i][j]==mpos-'A'+1){
@@ -1968,9 +2041,9 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
 
  }
 void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
-    if(bx==oa&&by==ob&&ispass[x][y]==true) return;
+    if(bx==oa&&by==ob&&ispass[t-1][x][y]==true) return;
      qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
-     ispass2[x][y]=true;
+     ispass[t][x][y]=true;
      if(!k){
      for(int i=0;i<6;i++){
          int a=x+flatm[i][0],b=y+flatm[i][1];
@@ -1997,7 +2070,7 @@ void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
       //   qDebug()<<a<<' '<<b<<" ispl:"<<pl;
          if(pl){
             // qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
-             if(!isfill[a][b]&&!ispass2[a][b]&&isfill[(a+x)/2][(b+y)/2]){
+             if(!isfill[a][b]&&!ispass[t][a][b]&&isfill[(a+x)/2][(b+y)/2]){
                  isfill[a][b]=flag+1;
                  isfill[x][y]=0;
                  int vv=PossibleValue1(k+1,x,y,a,b,bx,by);
@@ -2008,11 +2081,82 @@ void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
                  dfsplus(t,k+1,a,b,bx,by);
                  isfill[a][b]=0;
                  isfill[x][y]=flag+1;
-                 ispass2[a][b]=false;
+                 ispass[t][a][b]=false;
              }
          }
      }
-     ispass2[x][y]=false;
+     ispass[t][x][y]=false;
      return;
  }
 
+int ClientWindow::bridgevalue(){
+    int f=place2num(myPos);
+    int t=f+1;
+    int v=0;
+    qDebug()<<"bridge begin";
+    while(t!=f){
+        bval=0;
+        memset(ispass3,false,sizeof(ispass3));
+        for(int i=0;i<17;i++){
+            for(int j=0;j<17;j++){
+                if(isfill[i][j]==t+1){
+                    dfsbridge(t,0,i,j,i,j);
+                }
+            }
+        }
+        v+=bval;
+        t++;
+        t=t%playernum;
+    }
+    qDebug()<<"bridgevalue:"<<v;
+    return v;
+}
+void ClientWindow::dfsbridge(int t,int k,int x,int y,int bx,int by){
+    ispass3[x][y]=true;
+    if(!k){
+    for(int i=0;i<6;i++){
+        int a=x+flatm[i][0],b=y+flatm[i][1];
+        bool pl=isPlaceLegal(a,b);
+       // qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+        if(pl){
+            if(!isfill[a][b]){
+                int pv=PossibleValue2(t,x,y,a,b,bx,by);
+                qDebug()<<"pv2:"<<pv;
+                if(bval<pv) {
+                    bval=pv;
+                }
+            }
+        }
+    }
+    }
+    for(int i=0;i<6;i++){
+        int a=x+jumpm[i][0],b=y+jumpm[i][1];
+        bool pl=isPlaceLegal(a,b);
+     //   qDebug()<<a<<' '<<b<<" ispl:"<<pl;
+        if(pl){
+           // qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
+            if(!isfill[a][b]&&!ispass3[a][b]&&isfill[(a+x)/2][(b+y)/2]){
+                int vv=PossibleValue2(t,x,y,a,b,bx,by);
+                qDebug()<<"value2 after jump: "<<vv;
+                if(vv>bval) {
+                    bval=vv;}
+                dfsbridge(t,k+1,a,b,bx,by);
+                ispass3[a][b]=false;
+            }
+        }
+    }
+    ispass3[x][y]=false;
+    return;
+}
+int ClientWindow::PossibleValue2(int t,int x,int y,int a,int b,int bx,int by){
+
+    int k=num2place(t);
+    if(k=='A')
+    return valueA[b][a]-valueA[by][bx];
+    else if(k=='D')
+        return valueD[b][a]-valueD[by][bx];
+       else if(k=='C')
+           return valueC[b][a]-valueC[by][bx];
+       else if(k=='E')
+           return valueE[b][a]-valueE[by][bx];
+}
