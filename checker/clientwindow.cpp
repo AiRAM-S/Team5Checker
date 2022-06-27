@@ -732,6 +732,7 @@ void ClientWindow::receive(NetworkData data){
                   
                     timeLeft=15;//暂时不考虑延迟
                     id=startTimer(1000);
+                    qDebug() << "timekeeper start";
                     clock2->setText("15 s");
                     clock1->show();
                     clock2->show();
@@ -1378,7 +1379,7 @@ void ClientWindow::ai(){
         }
     }
     socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),path));
-    changeplayer();
+    //changeplayer();
 }
 
 bool ClientWindow::isPlaceLegal(int x,int y){
@@ -1428,6 +1429,7 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
 
             }
         }
+    }
     }
     for(int i=0;i<6;i++){
         int a=x+jumpm[i][0],b=y+jumpm[i][1];
@@ -1755,7 +1757,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
      }
      return ov;
  }
-
+*/
  void ClientWindow::valueback3(int x,int y,int a,int b){
      switch(myPos){
      case'A':{
@@ -1791,7 +1793,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
      }
      return;
  }
- */
+
 
  int ClientWindow::distance(QPointF p,QPointF q){
      return sqrt((p.rx()-q.rx())*(p.rx()-q.rx())+(p.ry()-q.ry())*(p.ry()-q.ry()));
