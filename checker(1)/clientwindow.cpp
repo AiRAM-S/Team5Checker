@@ -1488,6 +1488,14 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
     return valueA[b][a]-valueA[by][bx]+100+msv;
     else if(myPos=='D')
         return valueD[b][a]-valueD[by][bx]+100+msv;
+    else if(myPos=='C')
+        return qzbC[a][b]*5-qzbC[bx][by]*5+100+msv;
+    else if(myPos=='B')
+        return valueD[a][b]-valueD[bx][by]+100+msv;
+    else if(myPos=='E')
+        return qzbE[a][b]*5-qzbE[bx][by]*5+100+msv;
+    else if(myPos=='F')
+        return qzbF[a][b]*5-qzbF[bx][by]*5+100+msv;
 }
 
 
