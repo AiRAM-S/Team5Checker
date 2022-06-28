@@ -199,6 +199,7 @@ void ClientWindow::shouldSwitcht2f(){
 void ClientWindow::changeplayer(){
     for(int i=0;i<10;i++){
         btn[flag][i]->setCheckable(false);
+        btn[flag][i]->setAttribute(Qt::WA_TransparentForMouseEvents,true);
     }
 //    Su:我觉得flag的修改可以不用客户端自己来，当客户端接收到服务端的行棋信号时，根据信号内容修改即可
     flag = (flag+1)%playernum;
@@ -208,6 +209,7 @@ void ClientWindow::changeplayer(){
     }
     if(place2num(myPos)==flag)
     for(int j=0;j<10;j++){
+        btn[flag][j]->setAttribute(Qt::WA_TransparentForMouseEvents,false);
         btn[flag][j]->setCheckable(true);
     }
    /* switch(flag){
@@ -424,32 +426,32 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     objc.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
     objc.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
     qDebug()<<obj;
-    if(btn->player==place2num(myPos)&&aiflag==false){
+   // if(btn->player==place2num(myPos)&&aiflag==false){
     QPropertyAnimation *ani = new QPropertyAnimation(btn, "pos", this);
     ani->setDuration(500);
     ani->setStartValue(objc);
     ani->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
     ani->start(QPropertyAnimation::KeepWhenStopped);
-    }
-    else{
+   // }
+   /* else{
         if(!step){
             group->clear();
         }
         qDebug()<<"anim step:"<<step;
         anim[step]=new QPropertyAnimation(btn,"pos",this);
-        anim[step]->setDuration(500);
+        anim[step]->setDuration(300);
         anim[step]->setStartValue(objc);
         anim[step]->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
         qDebug()<<"anim step done"<<step;
-        group->addPause(400);
+        group->addPause(200);
         group->addAnimation(anim[step]);
-        group->addPause(400);
+        group->addPause(200);
         qDebug()<<"anim group add";
-    }
+    }*/
    QString label_style;
     switch(btn->player){
     case pink:
-        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#DB7093";
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#DB7090";
         break;
     case green:
         label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:lightgreen";
@@ -458,13 +460,13 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
         label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:rgb(70, 180, 255)";
         break;
     case red:
-        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:red";
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:rgb(240,90,90)";
         break;
     case orange:
-        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#FF4500";
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:yellow";
         break;
     case purple:
-        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#800080";
+        label_style="min-width:8px;min-height:8px;max-width:8px;max-height:8px;border-radius:4px;background:#DB70DB";
         break;
     }
     if(!step){
@@ -759,8 +761,10 @@ void ClientWindow::receive(NetworkData data){
                            isaimove=true;
                     }
                     else{
+                        int p2n=place2num(myPos);
                         for(int i=0;i<10;i++){
-                            btn[place2num(myPos)][i]->setCheckable(true);
+                            btn[p2n][i]->setAttribute(Qt::WA_TransparentForMouseEvents,false);
+                            btn[p2n][i]->setCheckable(true);
                         }
                     }
 
@@ -851,6 +855,10 @@ void ClientWindow::receive(NetworkData data){
                         btn[nowPlpos][i]->close();
                      delete btn[nowPlpos][i];
                     }
+                    for(int i=0;i<20;i++){
+                        pointpath[nowPlpos][i]->hide();
+                    }
+                    isover[nowPlpos]=true;
                     PlayerTable[place2num(data.data1.toUtf8()[0])+1]->setStyleSheet("color:grey");
                 }
                 else{
@@ -892,7 +900,7 @@ void ClientWindow::receive(NetworkData data){
                                 chosenloc[0]=objloc[0];
                                 chosenloc[1]=objloc[1];
                             }
-                            group->start(QPropertyAnimation::KeepWhenStopped);
+                         //   group->start(QPropertyAnimation::KeepWhenStopped);
                         }
                     }
                 }
@@ -961,6 +969,19 @@ void ClientWindow::receive(NetworkData data){
                ww.hide();
                this->nowplayer->setText("");
                this->PlayerTable.clear();
+               //初始化isfill
+               for(int i1=0;i1<17;i1++){
+                   for(int i2=0;i2<17;i2++){
+                       isfill[i1][i2]=0;
+                   }
+               }
+
+               //初始化是否需要更换棋手
+               shouldSwitch=false;
+               //初始化是否胜利
+               iswin=false;
+               //记录上一步是否为跳子
+               haveJumped=false;
                rank->hide();
            });
            rank->show();
@@ -1270,6 +1291,7 @@ void ClientWindow::initializeChecker(QString data){
             if(flag==place2num(myPos)){
                 for(int i=0;i<10;i++){
                     btn[flag][i]->setCheckable(false);
+                    btn[flag][i]->setAttribute(Qt::WA_TransparentForMouseEvents,true);
                 }
                 if(!isaimove){
                     ai();
@@ -1351,7 +1373,7 @@ void ClientWindow::connected(){
 
 int flatm[6][2]={{1,0},{0,1},{-1,0},{0,-1},{1,-1},{-1,1}};
 int jumpm[6][2]={{2,0},{0,2},{-2,0},{0,-2},{2,-2},{-2,2}};
-
+bool il;
 void ClientWindow::ai(){
     int t=place2num(myPos);
     val1=0;
@@ -1361,6 +1383,7 @@ void ClientWindow::ai(){
         way.clear();
         memset(ispass[0],false,sizeof(ispass[0]));
         qDebug()<<"button:"<<t<<' '<<i;
+        il=islonely(btn[t][i]->x,btn[t][i]->y);
         dfs(0,btn[t][i]->x,btn[t][i]->y,btn[t][i]->x,btn[t][i]->y);
         qDebug()<<"aipath now:"<<aipath;
     }
@@ -1383,9 +1406,7 @@ void ClientWindow::ai(){
             chosenloc[1]=objloc[1];
         }
     }
-    checked->setCheckable(true);
-    checked->click();
-    group->start(QPropertyAnimation::KeepWhenStopped);
+   // group->start(QPropertyAnimation::KeepWhenStopped);
     socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),path));
    // changeplayer();
 }
@@ -1431,6 +1452,7 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
                         way.append(b);
                     aipath=way;
                     flagg=1;
+                    if(pv1>=10000000) return;
                     qDebug()<<"way now:"<<way;
                 }
                 isfill[a][b]=0;
@@ -1464,7 +1486,7 @@ void ClientWindow::dfs(int k,int x,int y,int bx,int by){
                     aipath.clear();
                 aipath=way;
                 qDebug()<<"way now:"<<way;
-                if(vv1==1000000) return;}
+                if(vv1>=10000000) return;}
                 dfs(k+1,a,b,bx,by);
                 way.removeLast();
                 way.removeLast();
@@ -1505,11 +1527,11 @@ int qzbF[17][17]={/*0*/{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},/*1*/{0,0,0,0,0,0,0,0
                   /*9*/{0,0,0,4,5,7,8,9,9,8,7,5,4,0,0,0,0},/*10*/{0,0,3,5,7,9,10,10,10,9,7,5,3,0,0,0,0},/*11*/{0,1,3,6,9,11,11,11,11,9,6,3,1,0,0,0,0},/*12*/{0,1,3,7,11,12,12,12,11,7,3,1,0,0,0,0,0},
                   /*13*/{0,0,0,0,13,13,13,13,0,0,0,0,0,0,0,0,0},/*14*/{0,0,0,0,14,14,14,0,0,0,0,0,0,0,0,0,0},/*15*/{0,0,0,0,15,15,0,0,0,0,0,0,0,0,0,0,0},/*16*/{0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0}};
 
-int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,155,-1,-1,-1,-1},
-                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,145,145,-1,-1,-1,-1},
-                      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,135,140,-1,-1,-1,-1},
-                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,130,125,125,130,-1,-1,-1,-1},
-                         {-1,-1,-1,-1,0,10,30,70,110,115,120,115,110,70,30,10,0},
+int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,160,-1,-1,-1,-1},
+                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,150,150,-1,-1,-1,-1},
+                      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,145,140,145,-1,-1,-1,-1},
+                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,135,130,130,135,-1,-1,-1,-1},
+                         {-1,-1,-1,-1,0,10,30,70,115,120,125,120,115,70,30,10,0},
                           {-1,-1,-1,-1,15,25,40,80,105,110,110,105,80,40,25,15,-1},
                             {-1,-1,-1,-1,20,30,70,90,95,100,95,90,70,30,20,-1,-1},
                               {-1,-1,-1,-1,25,50,80,85,90,90,85,80,50,25,-1,-1,-1},
@@ -1520,27 +1542,27 @@ int valueA[17][17]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,155,-1,-1,-1,-1},
                                          {0,10,15,20,30,35,40,35,30,20,15,10,0,-1,-1,-1,-1},
                                           {-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                                            {-1,-1,-1,-1,10,12,10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                             {-1,-1,-1,-1,0,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                              {-1,-1,-1,-1,-10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+                                             {-1,-1,-1,-1,-5,-5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                              {-1,-1,-1,-1,-15,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 
 int valueD[17][17]={
-                   {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-10,-1,-1,-1,-1},
-                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,-1,-1,-1,-1},
+                   {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-15,-1,-1,-1,-1},
+                       {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-5,-5,-1,-1,-1,-1},
                         {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,12,10,-1,-1,-1,-1},
                          {-1,-1,-1,-1,-1,-1,-1,-1,-1,20,25,25,20,-1,-1,-1,-1},
                             {-1,-1,-1,-1,0,10,15,20,30,35,40,35,30,20,15,10,0},
-                              {-1,-1,-1,-1,5,15,20,40,45,50,50,45,40,20,15,5,-1},
+                              {-1,-1,-1,-1,5,15,20,40,40,50,50,40,40,20,15,5,-1},
                                {-1,-1,-1,-1,10,20,45,50,55,60,55,50,45,20,10,-1,-1},
                                 {-1,-1,-1,-1,15,35,60,65,70,70,65,60,35,15,-1,-1,-1},
                                  {-1,-1,-1,-1,30,65,70,75,80,75,70,65,30,-1,-1,-1,-1},
                                    {-1,-1,-1,25,50,80,85,90,90,85,80,50,25,-1,-1,-1,-1},
                                       {-1,-1,20,30,70,90,95,100,95,90,70,30,20,-1,-1,-1,-1},
                                        {-1,15,25,40,80,105,110,110,105,80,40,25,15,-1,-1,-1,-1},
-                                         {0,10,30,70,110,115,120,115,110,70,30,10,0,-1,-1,-1,-1},
-                                          {-1,-1,-1,-1,130,125,125,130,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                           {-1,-1,-1,-1,140,135,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                            {-1,-1,-1,-1,145,145,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                              {-1,-1,-1,-1,155,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
+                                         {0,10,30,70,115,120,125,120,115,70,30,10,0,-1,-1,-1,-1},
+                                          {-1,-1,-1,-1,135,130,130,135,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                           {-1,-1,-1,-1,145,140,145,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                            {-1,-1,-1,-1,150,150,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                              {-1,-1,-1,-1,160,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 
 
 int valueE[17][17]={
@@ -1548,15 +1570,15 @@ int valueE[17][17]={
                          {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,5,10,-1,-1,-1,-1},
                           {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,15,15,-1,-1,-1,-1},
                            {-1,-1,-1,-1,-1,-1,-1,-1,-1,20,20,20,15,-1,-1,-1,-1},
-                             {-1,-1,-1,-1,-10,0,10,20,30,40,45,35,30,25,20,15,0},
-                              {-1,-1,-1,-1,0,12,25,35,45,50,60,65,50,30,25,10,-1},
+                             {-1,-1,-1,-1,-15,-5,10,20,30,40,45,35,30,25,20,15,0},
+                              {-1,-1,-1,-1,-5,12,25,35,45,50,60,65,50,30,25,10,-1},
                                 {-1,-1,-1,-1,10,25,40,50,55,65,70,80,70,40,30,-1,-1},
                                   {-1,-1,-1,-1,20,35,50,60,70,75,85,90,80,70,-1,-1,-1},
-                                    {-1,-1,-1,-1,30,45,55,70,80,90,95,105,110,-1,-1,-1,-1},
-                                      {-1,-1,-1,20,40,50,65,75,90,100,110,115,130,-1,-1,-1,-1},
-                                        {-1,-1,15,20,45,60,70,85,95,110,120,125,140,-1,-1,-1,-1},
-                                           {-1,10,15,20,35,65,80,90,105,115,125,135,145,-1,-1,-1,-1},
-                                             {0,5,10,15,30,50,70,80,110,130,140,145,155,-1,-1,-1,-1},
+                                    {-1,-1,-1,-1,30,45,55,70,80,90,95,105,115,-1,-1,-1,-1},
+                                      {-1,-1,-1,20,40,50,65,75,90,100,110,120,135,-1,-1,-1,-1},
+                                        {-1,-1,15,20,45,60,70,85,95,110,125,130,145,-1,-1,-1,-1},
+                                           {-1,10,15,20,35,65,80,90,105,120,130,140,150,-1,-1,-1,-1},
+                                             {0,5,10,15,30,50,70,80,115,135,145,150,160,-1,-1,-1,-1},
                                               {-1,-1,-1,-1,25,30,40,70,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                                                {-1,-1,-1,-1,20,25,30,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                                                  {-1,-1,-1,-1,15,10,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -1568,15 +1590,15 @@ int valueC[17][17]={
                              {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,5,10,-1,-1,-1,-1},
                               {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,10,15,15,-1,-1,-1,-1},
                                {-1,-1,-1,-1,-1,-1,-1,-1,-1,15,20,20,20,-1,-1,-1,-1},
-                             {-1,-1,-1,-1,0,15,20,25,30,35,45,40,30,20,10,0,-10},
-                                {-1,-1,-1,-1,10,25,30,50,65,60,50,45,35,25,12,0,-1},
+                             {-1,-1,-1,-1,0,15,20,25,30,35,45,40,30,20,10,-5,-15},
+                                {-1,-1,-1,-1,10,25,30,50,65,60,50,45,35,25,12,-5,-1},
                                   {-1,-1,-1,-1,30,40,70,80,70,65,55,50,40,25,10,-1,-1},
                                     {-1,-1,-1,-1,70,80,90,85,75,70,60,50,35,20,-1,-1,-1},
-                                     {-1,-1,-1,-1,110,105,95,90,80,70,55,45,30,-1,-1,-1,-1},
-                                        {-1,-1,-1,130,115,110,100,90,75,65,50,40,20,-1,-1,-1,-1},
-                                         {-1,-1,140,125,120,110,95,85,70,60,45,20,15,-1,-1,-1,-1},
-                                           {-1,145,135,125,115,105,90,80,65,35,20,15,10,-1,-1,-1,-1},
-                                              {155,145,140,130,110,80,70,50,30,15,10,5,0,-1,-1,-1,-1},
+                                     {-1,-1,-1,-1,115,105,95,90,80,70,55,45,30,-1,-1,-1,-1},
+                                        {-1,-1,-1,135,120,110,100,90,75,65,50,40,20,-1,-1,-1,-1},
+                                         {-1,-1,145,130,125,110,95,85,70,60,45,20,15,-1,-1,-1,-1},
+                                           {-1,150,140,130,120,105,90,80,65,35,20,15,10,-1,-1,-1,-1},
+                                              {160,150,145,135,115,80,70,50,30,15,10,5,0,-1,-1,-1,-1},
                                                {-1,-1,-1,-1,70,40,30,25,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                                                 {-1,-1,-1,-1,30,25,20,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                                                   {-1,-1,-1,-1,10,15,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -1591,16 +1613,24 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
 
     oa=a;ob=b;obx=bx;oby=by;
     int fv=fillvalue(myPos);
-    if(fv==10) return 10000000;
-    int ldf=stepvalue(bx,by,myPos);
-    if(fv<6){
+    if(fv==10) return 10000000+10-t;
+    int ldf=0;
+    if(!t)
+    ldf=stepvalue(bx,by,myPos);
+
+    if(fv<4){
         ldf=0;
     }
+    int lp=0;
+    if(!t&&il) {
+        lp=100;
+    }
     int msv=morestepvalue(t);
-    if(msv==10000000) return 10000000;
-    int lpv=lonelypointvalue(myPos);
+    if(msv>=10000000) return msv;
+    int obv=0;
 
-    int obv=bv-bridgevalue();
+   // if(!t)
+        obv=bv-bridgevalue();
     qDebug()<<"obv:"<<obv;
     int vc = 0;
     if(myPos=='A')
@@ -1611,7 +1641,7 @@ int ClientWindow::PossibleValue1(int t,int x,int y,int a,int b,int bx,int by){
            vc=valueC[b][a]-valueC[by][bx];
        else if(myPos=='E')
            vc=valueE[b][a]-valueE[by][bx];
-    return vc*2+100+msv*2+obv+ldf;
+    return vc*1.5+100+msv*1.5+obv+ldf*5;
 
 }
 
@@ -2006,13 +2036,13 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
                  bool ff=false;
                  for(int p=0;p<6;p++){
                      if(isPlaceLegal(i+flatm[p][0],j+flatm[p][1])){
-                         if(isfill[i+flatm[p][0]][j+flatm[p][1]]){
+                         if(isfill[i+flatm[p][0]][j+flatm[p][1]]==t+1){
                              ff=true;
                              break;
                          }
                      }
                      if(isPlaceLegal(i+jumpm[p][0],j+jumpm[p][1])){
-                         if(isfill[i+jumpm[p][0]][j+jumpm[p][1]]){
+                         if(isfill[i+jumpm[p][0]][j+jumpm[p][1]]==t+1){
                              ff=true;
                              break;
                          }
@@ -2060,6 +2090,7 @@ float ClientWindow::guessvalue1(int x,int y,int z)//这里传入的参数是目�
 
  }
 void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
+    int f=place2num(myPos);
     if(bx==oa&&by==ob&&ispass[t-1][x][y]==true) return;
      qDebug()<<"k:"<<k<<" x:"<<x<<" y:"<<y;
      ispass[t][x][y]=true;
@@ -2070,15 +2101,17 @@ void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
         // qDebug()<<a<<' '<<b<<" ispl:"<<pl;
          if(pl){
              if(!isfill[a][b]){
-                 isfill[a][b]=flag+1;
+                 isfill[a][b]=f+1;
                  isfill[x][y]=0;
-                 int pv=PossibleValue1(k,x,y,a,b,bx,by);
+                 int pv=PossibleValue1(t,x,y,a,b,bx,by);
                  qDebug()<<"pv:"<<pv;
                  if(mval<pv) {
                      mval=pv;
+
+                     if(pv>=10000000) return;
                  }
                  isfill[a][b]=0;
-                 isfill[x][y]=flag+1;
+                 isfill[x][y]=f+1;
              }
          }
      }
@@ -2090,16 +2123,16 @@ void ClientWindow::dfsplus(int t,int k,int x,int y,int bx,int by){
          if(pl){
             // qDebug()<<"isfill:"<<isfill[a][b]<<" ispass:"<<ispass[a][b];
              if(!isfill[a][b]&&!ispass[t][a][b]&&isfill[(a+x)/2][(b+y)/2]){
-                 isfill[a][b]=flag+1;
+                 isfill[a][b]=f+1;
                  isfill[x][y]=0;
-                 int vv=PossibleValue1(k+1,x,y,a,b,bx,by);
+                 int vv=PossibleValue1(t,x,y,a,b,bx,by);
                  qDebug()<<"value after jump: "<<vv;
                  if(vv>mval) {
                      mval=vv;
-                 if(vv==1000000) return;}
+                 if(vv>=10000000) return;}
                  dfsplus(t,k+1,a,b,bx,by);
                  isfill[a][b]=0;
-                 isfill[x][y]=flag+1;
+                 isfill[x][y]=f+1;
                  ispass[t][a][b]=false;
              }
          }
@@ -2114,6 +2147,11 @@ int ClientWindow::bridgevalue(){
     int v=0;
     qDebug()<<"bridge begin";
     while(t!=f){
+        if(isover[t]){
+            t++;
+            t=t%playernum;
+            continue;
+        }
         bval=0;
         memset(ispass3,false,sizeof(ispass3));
         for(int i=0;i<17;i++){
