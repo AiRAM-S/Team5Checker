@@ -424,28 +424,28 @@ void ClientWindow::CheckerMove(CheckerButton*btn,QPointF p){
     objc.setX(loc[btn->x][btn->y].rx()-RR/4-R/2+1);
     objc.setY(loc[btn->x][btn->y].ry()-RR/4-R/2+0.5);
     qDebug()<<obj;
-    if(btn->player==place2num(myPos)&&aiflag==false){
+//    if(btn->player==place2num(myPos)&&aiflag==false){
     QPropertyAnimation *ani = new QPropertyAnimation(btn, "pos", this);
     ani->setDuration(500);
     ani->setStartValue(objc);
     ani->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
     ani->start(QPropertyAnimation::KeepWhenStopped);
-    }
-    else{
-        if(!step){
-            group->clear();
-        }
-        qDebug()<<"anim step:"<<step;
-        anim[step]=new QPropertyAnimation(btn,"pos",this);
-        anim[step]->setDuration(500);
-        anim[step]->setStartValue(objc);
-        anim[step]->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
-        qDebug()<<"anim step done"<<step;
-        group->addPause(400);
-        group->addAnimation(anim[step]);
-        group->addPause(400);
-        qDebug()<<"anim group add";
-    }
+//    }
+//    else{
+//        if(!step){
+//            group->clear();
+//        }
+//        qDebug()<<"anim step:"<<step;
+//        anim[step]=new QPropertyAnimation(btn,"pos",this);
+//        anim[step]->setDuration(500);
+//        anim[step]->setStartValue(objc);
+//        anim[step]->setEndValue(QPointF(p.rx()-R/2+1,p.ry()-R/2+0.5));
+//        qDebug()<<"anim step done"<<step;
+//        group->addPause(400);
+//        group->addAnimation(anim[step]);
+//        group->addPause(400);
+//        qDebug()<<"anim group add";
+//    }
    QString label_style;
     switch(btn->player){
     case pink:
@@ -852,6 +852,10 @@ void ClientWindow::receive(NetworkData data){
                         btn[nowPlpos][i]->close();
                      delete btn[nowPlpos][i];
                     }
+                    for(int i=0;i<20;i++){
+                        pointpath[nowPlpos][i]->hide();
+                    }
+                    isover[nowPlpos]=true;
                     PlayerTable[place2num(data.data1.toUtf8()[0])+1]->setStyleSheet("color:grey");
                 }
                 else{
@@ -893,7 +897,7 @@ void ClientWindow::receive(NetworkData data){
                                 chosenloc[0]=objloc[0];
                                 chosenloc[1]=objloc[1];
                             }
-                            group->start(QPropertyAnimation::KeepWhenStopped);
+//                            group->start(QPropertyAnimation::KeepWhenStopped);
                         }
                     }
                 }
@@ -904,11 +908,11 @@ void ClientWindow::receive(NetworkData data){
     {
         iswin=true;
         QWidget* win=new QWidget(this);
-        QLabel* wlb=new QLabel("Congratulations!",win);
-        win->setFixedSize(200,100);
-        wlb->setFont(QFont("Microsoft YaHei",20,75));
-        wlb->setGeometry(45,25,200,50);
-        win->show();
+//        QLabel* wlb=new QLabel("Congratulations!",win);
+//        win->setFixedSize(200,100);
+//        wlb->setFont(QFont("Microsoft YaHei",20,75));
+//        wlb->setGeometry(45,25,200,50);
+//        win->show();
     }
     break;
     case OPCODE::END_GAME_OP://游戏结束
@@ -955,6 +959,10 @@ void ClientWindow::receive(NetworkData data){
                    ww.ids[i]->setText("");
                    ww.sis[i]->setText("Waiting");
                }
+               for(int i=0;i<playernum;i++){
+                   for(int j=0;j<10;j++)
+                       delete btn[i][j];
+               }
                players.clear();
                playerState.clear();
                cc.show();
@@ -962,6 +970,21 @@ void ClientWindow::receive(NetworkData data){
                ww.hide();
                this->nowplayer->setText("");
                this->PlayerTable.clear();
+
+               //初始化isfill
+               for(int i1=0;i1<17;i1++){
+                   for(int i2=0;i2<17;i2++){
+                       isfill[i1][i2]=0;
+                   }
+               }
+               //初始化是否需要更换棋手
+               shouldSwitch=false;
+               //初始化是否胜利
+               iswin=false;
+               //记录上一步是否为跳子
+               haveJumped=false;
+
+               conlb->clear();
                rank->hide();
            });
            rank->show();
@@ -1385,9 +1408,9 @@ void ClientWindow::ai(){
             chosenloc[1]=objloc[1];
         }
     }
-    checked->setCheckable(true);
-    checked->click();
-    group->start(QPropertyAnimation::KeepWhenStopped);
+//    checked->setCheckable(true);
+//    checked->click();
+//    group->start(QPropertyAnimation::KeepWhenStopped);
     socket->send(NetworkData(OPCODE::MOVE_OP,QString(myPos),path));
    // changeplayer();
 }
@@ -2118,6 +2141,11 @@ int ClientWindow::bridgevalue(){
     int v=0;
     qDebug()<<"bridge begin";
     while(t!=f){
+        if(isover[t]){
+            t++;
+            t = t%playernum;
+            continue;
+        }
         bval=0;
         memset(ispass3,false,sizeof(ispass3));
         for(int i=0;i<17;i++){
