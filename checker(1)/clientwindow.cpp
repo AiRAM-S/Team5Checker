@@ -1316,6 +1316,7 @@ void ClientWindow::initializeChecker(QString data){
             aiflag=false;
             for(int i=0;i<10;i++){
                 btn[flag][i]->setCheckable(true);
+                btn[flag][i]->setAttribute(Qt::WA_TransparentForMouseEvents,false);
             }
         }
     });

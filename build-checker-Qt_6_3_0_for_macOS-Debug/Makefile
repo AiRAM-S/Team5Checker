@@ -1309,6 +1309,7 @@ moc_clientwindow.cpp: ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
 		../checker/wait.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QAnimationGroup \
 		../../Qt/6.3.0/macos/libexec/moc
 	/Users/wzr/Qt/6.3.0/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=13 -D__clang_minor__=1 -D__clang_patchlevel__=6 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/wzr/Qt/6.3.0/macos/mkspecs/macx-clang -I/Users/wzr/Team5Checker/checker -I/Users/wzr/Qt/6.3.0/macos/lib/QtWidgets.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtGui.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtNetwork.framework/Headers -I/Users/wzr/Qt/6.3.0/macos/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/wzr/Qt/6.3.0/macos/lib ../checker/clientwindow.h -o moc_clientwindow.cpp
 
@@ -2479,6 +2480,7 @@ clientwindow.o: ../checker/clientwindow.cpp ../checker/clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/qnetworkinterface.h \
 		../checker/wait.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QAnimationGroup \
 		../checker/ui_clientwindow.h \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/QPainter \
 		../../Qt/6.3.0/macos/lib/QtGui.framework/Headers/qpainter.h \
@@ -2780,7 +2782,8 @@ main.o: ../checker/main.cpp ../checker/widget.h \
 		../checker/chooseclient.h \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QHostAddress \
 		../../Qt/6.3.0/macos/lib/QtNetwork.framework/Headers/QNetworkInterface \
-		../checker/wait.h
+		../checker/wait.h \
+		../../Qt/6.3.0/macos/lib/QtCore.framework/Headers/QAnimationGroup
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../checker/main.cpp
 
 mydialog.o: ../checker/mydialog.cpp ../checker/mydialog.h \
